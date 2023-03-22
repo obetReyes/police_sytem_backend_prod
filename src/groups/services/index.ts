@@ -1,1 +1,1 @@
-export { getGroupsService } from "./groups.service";
+export { getGroupsService, getGroupService } from "./groups.service";

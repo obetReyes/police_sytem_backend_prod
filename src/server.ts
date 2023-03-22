@@ -4,16 +4,19 @@ import cors from "cors";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import {Server, createServer, routes} from "./server.utils";
+import { locationGateway } from "./sockets";
 
 export const app = express();
-const server = createServer(app);
+export const server = createServer(app);
 
-const io = new Server(server, {
+export const io = new Server(server, {
   cors:{
     origin:"http://localhost:5173",
     credentials:true
   }
 });
+
+
 
 
 
@@ -38,6 +41,7 @@ function main(){
     console.log(`[Server]: I am running at http://localhost:${port}`);
   });
   routes(app);
+  locationGateway({io});
 }
 main();
 

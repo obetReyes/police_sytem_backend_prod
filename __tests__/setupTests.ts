@@ -24,6 +24,16 @@ beforeAll(async () => {
   });
   
   afterAll(async () => {
+
+    // flush the Redis database
+redis.flushall((err, result) => {
+  if (err) {
+    console.error(err);
+  } else {
+    console.log("Redis database flushed successfully");
+  }
+});
+
     await prisma.user.deleteMany();
     await prisma.$disconnect();
     await prisma.group.deleteMany();
