@@ -66,6 +66,8 @@ import { app } from "../src/server";
         await request(app).post("/auth/singn-up")
           .expect(404);
       });
+
+      
       it("if the  user is   is signed up successfully  the server should store it in the db", async () => {
          await request(app).post("/auth/signin").set("Accept", "application/json")
         .expect("Content-Type", /json/)

@@ -17,10 +17,14 @@ export const updateUserGroupController = tryCatch(
         });
         console.log("rol:", getUser);
         if (getUser?.role !== "OFFICER") {
-            throw new CustomError("usuarios", "el usuario no tiene asignado ningun grupo", "", 400);
+            throw new CustomError("usuarios", "el agnete no tiene asignado ningun grupo", "", 400);
+        }
+
+        if(getUser.name == null){
+            throw new CustomError("usuarios", "el agente no existe", "", 400);
         }
         if (getUser.groupName == name) {
-            throw new CustomError("grupos", "el usuario ya tiene asignado este grupo", "", 400);
+            throw new CustomError("grupos", "el agente ya tiene asignado este grupo", "", 400);
         }
 
         const updateGroup = await updateUserService({

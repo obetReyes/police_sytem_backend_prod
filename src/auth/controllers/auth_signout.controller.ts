@@ -35,7 +35,7 @@ export const signOutController = tryCatch(
         res
         .status(200).json({
           data:[
-            {campo:"autorizacion",
+            {field:"autorizacion",
           details: "el usuario ha cerrado sesion"
           }
           ]
@@ -63,7 +63,7 @@ export const signOutController = tryCatch(
         .json({
           data: [
             {
-              campo: "formulario",
+              field: "formulario",
               details: `${foundOfficer?.name} ha salido de la sesion`,
             },
           ],
