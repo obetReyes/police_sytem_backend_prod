@@ -2,6 +2,7 @@ import  { Express, Request, Response, NextFunction } from "express";
 import { authRoutes } from "./auth";
 import { usersRoutes } from "./users";
 import { groupsRoutes } from "./groups";
+import { reportsRoutes } from "./reports";
 import { errorInterceptor, notFound } from "./middlewares";
 
 
@@ -12,7 +13,7 @@ export function routes(app:Express) {
     app.use("/auth", authRoutes);
     app.use("/users", usersRoutes);
     app.use("/groups", groupsRoutes);
-
+    app.use("/reports", reportsRoutes);
     // get the current session
     app.use(errorInterceptor);
     app.use(notFound);
