@@ -10,4 +10,4 @@ router.post("/signup-superior", createLimiter, validator(signUpValidator), signU
 router.post("/signup-dispatcher",createLimiter,  verifyJwt, verifyRoles(roles.OPERATOR), validator(signUpValidator), signUpDispatcherController);
 router.post("/signup-officer",createLimiter,  verifyJwt,  verifyRoles(roles.OPERATOR), validator(signUpOfficerValidator), signUpOfficerController);
 router.get("/signout", deleteLimiter, signOutController);
-router.get("/update-token", tokenLimiter,  tokenController);
+router.get("/update-token", /*tokenLimiter,*/  tokenController);

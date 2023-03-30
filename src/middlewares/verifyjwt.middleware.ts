@@ -12,6 +12,7 @@ export const verifyJwt = (req:customReq, res:Response, next:NextFunction) => {
     const JwtToken = req.cookies["jwt"];
     const authHeader = req.headers.authorization || req.headers.Authorization;
     if (!authHeader ) {
+        console.log("jwt",JwtToken);
         return res.status(403).json({errors:[
             {"campo":"headers", "error":"el token de autorizacion es requerido", "href":""}]});  
     }
@@ -23,6 +24,7 @@ export const verifyJwt = (req:customReq, res:Response, next:NextFunction) => {
         (err: any, decoded:any) => {
             if (err || !JwtToken) {
                 console.log(err);
+                console.log("jwt",JwtToken);
                 return res.status(403).json({errors:[
                     {field:"authorization", error:"el token de autorizacion es invalido o ah expirado", href:""}]});            
             } 
