@@ -44,7 +44,7 @@ export const getReportsController = tryCatch(
         if(isOfficer?.name || req.query.officer == undefined){
             
         /* cache the response in redis */
-        const response = ({data:
+        const response = (
                 {
                     field:"reportes",
                     details:reports,
@@ -52,7 +52,7 @@ export const getReportsController = tryCatch(
                     starting_after: isOfficer?.name ? dbStarting_after_extract : dbStarting_after_value ? dbStarting_after_value - 1 : 0
                 }
             
-        });
+        );
         return res.status(200).send(response);
     }
     }
