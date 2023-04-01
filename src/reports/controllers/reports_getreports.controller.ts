@@ -53,7 +53,8 @@ export const getReportsController = tryCatch(
                 }
             
         );
-        return res.status(200).send(response);
+        // if it does not work later change to send instead of json
+        return res.status(200).json(response);
     }
     }
 );

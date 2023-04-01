@@ -45,15 +45,13 @@ export const getSummariesController = tryCatch(
 
         if(isDispatcher != undefined && summaries!.length >= 0){
         const response = ({
-            data:[
-                {
+            
                         field:"sumarios",
                         details:summaries,
                         limit:dbLimit,
                         starting_after:dispatcher ? dbStarting_after_extract : dbStarting_after_value ? dbStarting_after_value - 1 : 0
 
-                }
-            ]
+               
         }) ;
         
        

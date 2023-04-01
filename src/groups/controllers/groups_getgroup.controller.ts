@@ -15,14 +15,12 @@ export const getGroupController = tryCatch(
             throw new CustomError("grupos", "el grupo no existe", "", 404);
         }
 
-        const response = ({
-            data: [
+        const response = (
                 {
                     field: "grupos",
                     details: getGroup
                 }
-            ]
-        });
+        );
         redis.set("group", JSON.stringify(response), "EX", 900);
         return res.status(200).json(response);
     }

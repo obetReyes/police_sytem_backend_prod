@@ -18,14 +18,12 @@ export const  getReportController = tryCatch(
             throw new CustomError("reportes", "el reporte no existe", "", 404);
         }
 
-        const response = ({
-            data:[
+        const response = (
                 {
                     field:"reportes",
                     details:getReport
                 }
-            ]
-        });
+        );
 
         redis.set("reportId", JSON.stringify(response), "EX", 3600);  //cached for 1 hour
         return res.status(200).json(response);      

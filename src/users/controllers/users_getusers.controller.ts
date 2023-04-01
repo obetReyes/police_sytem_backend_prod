@@ -7,12 +7,10 @@ export const getUsersController = tryCatch(
     async (req: Request, res: Response) => {
         const users = await getAllUsersService();
         return res.status(200).json({
-          data: [
-            {
+          
               campo: "usuarios",
               details: users
             }
-          ]
-        });
+          );
       }
 );

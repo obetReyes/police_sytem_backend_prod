@@ -21,12 +21,10 @@ export const createSummaryController = tryCatch(
             phone:phone
         });
         res.status(201).json({
-            data:[
-                {
+            
                     field:"sumarios",
                     details:createSummary
-                }
-            ]
+              
         });
     }
 );

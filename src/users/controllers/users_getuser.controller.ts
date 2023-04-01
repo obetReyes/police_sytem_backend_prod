@@ -27,11 +27,10 @@ export const getUserController = tryCatch(
       };
       
       const response = ({
-        data: [{
+        
           campo: "usuarios",
           details: getUserFilteredData
-        }
-        ]
+       
       });
       
       redis.set("username", JSON.stringify(response), "EX", 60);

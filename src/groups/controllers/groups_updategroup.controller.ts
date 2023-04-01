@@ -14,13 +14,13 @@ export const updateGroupController = tryCatch(
                 name: name
             }
         });
-        res.status(200).json({
-            data: [
+        res.status(200).json(
+          
                 {
                     field: "grupos",
                     details: updateGroup
                 }
-            ]
-        });
+            
+        );
     }
 );

@@ -9,14 +9,12 @@ export const deleteUserController = tryCatch(
         name: username
       });
       res.status(200).json({
-        data: [
-          {
+        
             campo: "usuarios",
             details: {
               info: `el usuario ${deleteUser.name}  fue removido`
             }
-          }
-        ]
+        
       });
     }
   );

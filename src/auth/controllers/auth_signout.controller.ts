@@ -13,11 +13,9 @@ export const signOutController = tryCatch(
       if (!cookies.jwt) {
         res
         .status(200).json({
-          data:[
-            {field:"autorizacion",
+            field:"autorizacion",
            details: "el usuario ha cerrado sesion"
-          }
-          ]
+          
         });
       }
       
@@ -61,12 +59,10 @@ export const signOutController = tryCatch(
       res
         .status(200)
         .json({
-          data: [
-            {
+          
               field: "formulario",
               details: `${foundOfficer?.name} ha salido de la sesion`,
-            },
-          ],
+          
       });
     }
   );

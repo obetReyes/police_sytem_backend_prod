@@ -126,10 +126,10 @@ export const signInController =tryCatch(
         res.cookie("jwt", newRefreshToken,{ httpOnly: true, secure: false, sameSite: "strict", maxAge: 24 * 60 * 60 * 1000 });
         res
           .status(201)
-          .json({ data: [{ field: "formulario", details: { 
+          .json({ field: "formulario", details: { 
             token:accessToken,
             role:signInOfficer.role
-          } }] });
+          } });
   
           res.end();
           

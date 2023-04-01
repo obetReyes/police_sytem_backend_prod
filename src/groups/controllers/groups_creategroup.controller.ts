@@ -11,13 +11,13 @@ export const createGroupController = tryCatch(
             area: area
         });
 
-        res.status(201).json({
-            data: [
+        res.status(201).json(
+         
                 {
                     field: "grupos",
                     details: createGroup
                 }
-            ]
-        });
+            
+        );
     }
 );

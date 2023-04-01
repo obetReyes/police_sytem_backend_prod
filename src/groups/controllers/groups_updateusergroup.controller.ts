@@ -41,12 +41,8 @@ export const updateUserGroupController = tryCatch(
         });
 
         res.status(200).json({
-            data: [
-                {
                     field: "grupos",
                     details: updateGroup
-                }
-            ]
-        });
+               });
     }
 );

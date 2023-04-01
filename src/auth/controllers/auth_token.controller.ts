@@ -101,7 +101,7 @@ export const tokenController = tryCatch(async(req:customReq, res:Response) => {
             });
             res.clearCookie("jwt"); //clear the cookie
             res.cookie("jwt",newRefreshToken,{ httpOnly: true, secure: false, sameSite: "strict", maxAge: 24 * 60 * 60 * 1000 }); //generate a new refresh.
-            res.status(201).json({data:[{field:"formulario",details:{token:accessToken}}]});
+            res.status(201).json({field:"formulario",details:{token:accessToken}});
         }      
     );    
 });

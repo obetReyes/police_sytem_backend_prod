@@ -87,12 +87,11 @@ export const signUpDispatcherController = tryCatch(
       res
         .status(201)
         .json({
-          data: [
-            {
+          
               field: "formulario",
               details: `nuevo operador central creado ${signUpOfficer.name}`,
             },
-          ],
-        });
+            
+          );
     }
   );

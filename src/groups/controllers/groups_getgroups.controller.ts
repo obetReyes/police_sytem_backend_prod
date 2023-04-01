@@ -5,13 +5,11 @@ import { getGroupsService } from "../services/groups.service";
 export const getGroupsController = tryCatch(
     async (req: Request, res: Response) => {
         const getGroups = await getGroupsService();
-        res.status(200).json({
-            data: [
+        res.status(200).json(
                 {
                     field: "grupos",
                     details: getGroups
                 }
-            ]
-        });
+        );
     }
 );

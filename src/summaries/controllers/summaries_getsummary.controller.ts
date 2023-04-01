@@ -19,12 +19,10 @@ export const getSummaryController = tryCatch(
 
 
         const response = ({
-            data:[
-                {
+            
                     field:"sumarios",
                     details:getSummary
-                }
-            ]
+               
         });
         redis.set("summaryId", JSON.stringify(response), "EX", 3600);  //cached for 1 hour
         return res.status(200).json(response);

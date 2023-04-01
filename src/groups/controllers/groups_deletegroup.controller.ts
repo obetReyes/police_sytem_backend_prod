@@ -10,14 +10,14 @@ export const deleteGroupController = tryCatch(
             name: group
         });
 
-        res.status(200).json({
-            data: [
+        res.status(200).json(
+          
                 {
                     field: "grupos",
                     details: `el grupo ${deleteGroup.name}  ha sido removido`
                     
                 }
-            ]
-        });
+            
+        );
     }
 );
