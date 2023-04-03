@@ -5,6 +5,17 @@ import { getReportService } from "../services/reports.service";
 export const  getReportController = tryCatch(
     async(req:CustomReq, res:Response) => {
         const {reportId} = req.params;
+
+    // Check if report data already exists in cache
+    const cachedReport = await redis.get(`report:${reportId}`);
+    if (cachedReport) {
+      const response = {
+        field: "reportes",
+        details: JSON.parse(cachedReport),
+      };
+      return res.status(200).json(response);
+    }
+
         const getReport = await getReportService({
             id:Number(reportId)
         });
@@ -18,6 +29,10 @@ export const  getReportController = tryCatch(
             throw new CustomError("reportes", "el reporte no existe", "", 404);
         }
 
+
+         // Store report data in cache for future requests
+    await redis.set(`report:${reportId}`, JSON.stringify(getReport), "EX", 300); //cached for 5 minutes
+
         const response = (
                 {
                     field:"reportes",
@@ -25,7 +40,6 @@ export const  getReportController = tryCatch(
                 }
         );
 
-        redis.set("reportId", JSON.stringify(response), "EX", 3600);  //cached for 1 hour
         return res.status(200).json(response);      
     }
 );
