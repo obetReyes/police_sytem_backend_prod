@@ -7,9 +7,7 @@ export const getUsersController = tryCatch(
     async (req: Request, res: Response) => {
         const users = await getAllUsersService();
         return res.status(200).json({
-          
-              campo: "usuarios",
-              details: users
+              message: users
             }
           );
       }

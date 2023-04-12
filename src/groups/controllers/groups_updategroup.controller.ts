@@ -17,8 +17,7 @@ export const updateGroupController = tryCatch(
         res.status(200).json(
           
                 {
-                    field: "grupos",
-                    details: updateGroup
+                message: updateGroup
                 }
             
         );

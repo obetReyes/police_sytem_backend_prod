@@ -38,16 +38,15 @@ export const getReportsController = tryCatch(
 
         /* if the an officer name was given the db will retrieve the data but if the officer does not exists we will throw an error */
         if(req.query.officer != undefined &&  isOfficer?.name == undefined){
-            throw new CustomError("reportes", "no existe el oficial solicitado", "",404);
+            throw new CustomError("no existe el oficial solicitado", "", 404);
         }
         /* if  the officer name is found in the db we will send the response or if an officer name wasn't given all the reports will be sent ) */
         if(isOfficer?.name || req.query.officer == undefined){
             
-        /* cache the response in redis */
         const response = (
                 {
-                    field:"reportes",
-                    details:reports,
+                   
+                    message:reports,
                     limit:dbLimit,
                     starting_after: isOfficer?.name ? dbStarting_after_extract : dbStarting_after_value ? dbStarting_after_value - 1 : 0
                 }

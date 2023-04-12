@@ -1,7 +1,5 @@
 import rateLimit from "express-rate-limit";
 
-import { RateLimiterMemory, RateLimiterRedis } from "rate-limiter-flexible";
-import { redis } from "../utils";
 
   // if the redit server is down we apply an memory limiter
   export const tokenLimiter = rateLimit({

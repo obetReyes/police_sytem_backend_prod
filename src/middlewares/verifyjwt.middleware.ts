@@ -13,8 +13,8 @@ export const verifyJwt = (req:customReq, res:Response, next:NextFunction) => {
     const authHeader = req.headers.authorization || req.headers.Authorization;
     if (!authHeader ) {
         console.log("jwt",JwtToken);
-        return res.status(403).json({errors:[
-            {"campo":"headers", "error":"el token de autorizacion es requerido", "href":""}]});  
+        return res.status(403).json(
+            {errrorCode:403, messsage:"el token de autorizacion es requerido", "href":"https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"});  
     }
     const token = (authHeader as string).split(" ")[1];
     jwt.verify(
@@ -23,10 +23,8 @@ export const verifyJwt = (req:customReq, res:Response, next:NextFunction) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (err: any, decoded:any) => {
             if (err || !JwtToken) {
-                console.log(err);
-                console.log("jwt",JwtToken);
-                return res.status(403).json({errors:[
-                    {field:"authorization", error:"el token de autorizacion es invalido o ah expirado", href:""}]});            
+                return res.status(403).json(
+                    {errorCode:403, message:"el token de autorizacion es invalido o ah expirado", href:"https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/40"});            
             } 
         
             //invalid token

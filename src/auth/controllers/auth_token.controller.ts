@@ -22,7 +22,7 @@ interface JwtPayload {
 export const tokenController = tryCatch(async(req:customReq, res:Response) => {
     const cookies = req.cookies;
     if(!cookies.jwt) 
-    {throw new CustomError("authorization", "el token de autorizacion no es valido","", 401);}
+    {throw new CustomError("el token de autorizacion no es valido","", 401);}
     const token = cookies.jwt;
     const decodeToken = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET as string) as JwtPayload;
     console.log(decodeToken);
@@ -37,10 +37,10 @@ export const tokenController = tryCatch(async(req:customReq, res:Response) => {
            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             async(err:any, decoded:any) => {
                 if(err){
-                    throw new CustomError("authorization", "el token de autorizacion no es valido", "", 403);
+                    throw new CustomError("el token de autorizacion no es valido", "", 403);
                 }
                 //if the token is stolen  the next function will invalid the token deleting it 
-                const invalidToken = await updateTokenService({
+                await updateTokenService({
                     where:{
                         name:decoded.info.username
                     },
@@ -50,7 +50,7 @@ export const tokenController = tryCatch(async(req:customReq, res:Response) => {
                 });
             }
         );
-        throw new CustomError("authorization", "el token de autorizacion no es valido", "", 403);
+        throw new CustomError("el token de autorizacion no es valido", "", 403);
     }
 
     
@@ -66,7 +66,7 @@ export const tokenController = tryCatch(async(req:customReq, res:Response) => {
         async(err:any, decoded:any) => {
             //if the token for some reason is already in the db we wont add the token to the db and we will stay with the ones that we already had
             if(err){
-                const delToken = await updateTokenService({
+                await updateTokenService({
                     data:{
                         token:[...newRefreshTokenArray]
                     },
@@ -76,7 +76,7 @@ export const tokenController = tryCatch(async(req:customReq, res:Response) => {
                 });
             }
             if(err || foundUser.name !== decoded.info.username){
-                throw new CustomError("authorization", "el token de autorizacion no es valido", "", 403);
+                throw new CustomError("el token de autorizacion no es valido", "", 403);
             }
             const accessToken = jwt.sign(
                 {info:{username:decoded.info.username, role:decoded.info.role}},
@@ -90,8 +90,7 @@ export const tokenController = tryCatch(async(req:customReq, res:Response) => {
             );
 
             //if everything goes ok we will merge the current refresh token with the other ones generated in other devices
-
-            const updateTokens = await updateTokenService({
+            await updateTokenService({
                 data:{
                     token:[...newRefreshTokenArray, newRefreshToken]
                 },
@@ -101,7 +100,7 @@ export const tokenController = tryCatch(async(req:customReq, res:Response) => {
             });
             res.clearCookie("jwt"); //clear the cookie
             res.cookie("jwt",newRefreshToken,{ httpOnly: true, secure: false, sameSite: "strict", maxAge: 24 * 60 * 60 * 1000 }); //generate a new refresh.
-            res.status(201).json({field:"formulario",details:{token:accessToken}});
+            res.status(201).json({message:accessToken});
         }      
     );    
 });

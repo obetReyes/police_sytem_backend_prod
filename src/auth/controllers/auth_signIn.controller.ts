@@ -56,7 +56,7 @@ export const signInController =tryCatch(
       if (retrySecs > 0) {
       
         res.set(headers);
-        throw new CustomError("autorizacion", `se ha intentado muchas veces ingresar y has introducido credenciales invalidas, por favor intentarlo en ${String(retrySecs)} segundos`, "", 429);
+        throw new CustomError(`se ha intentado muchas veces ingresar y has introducido credenciales invalidas, por favor intentarlo en ${String(retrySecs)} segundos`, "", 429);
       }
     // if everything goes fine
       const signInOfficer = await getUserService({
@@ -67,7 +67,6 @@ export const signInController =tryCatch(
       if (signInOfficer === null) {
         res.set(headers);
         throw new CustomError(
-          "formulario",
           "las credenciales son invalidas",
           "",
           401
@@ -86,19 +85,22 @@ export const signInController =tryCatch(
         const accessToken = jwt.sign(
           { info: {username: signInOfficer.name, role:signInOfficer.role} },
           process.env.ACCESS_TOKEN_SECRET as string,
-          { expiresIn: "1h" }
+          { expiresIn: "1h" , algorithm: "HS256"}
         );
+
+        console.log(process.env.ACCESS_TOKEN_SECRET);
         const newRefreshToken = jwt.sign(
           { info:{username: signInOfficer.name, role:signInOfficer.role} },
           process.env.REFRESH_TOKEN_SECRET as string,
-          { expiresIn: "1d" }
+          { expiresIn: "1d", algorithm: "HS256"}
         );
    
         const cookieInReq = signInOfficer.token.filter((token:string) => token != cookies.jwt);
   
        
         //arrray of tokens
-       const newRefreshTokenArray = !cookies.jwt ?  await updateTokenService({
+
+      !cookies.jwt ?  await updateTokenService({
           data:{
             token:{
               push:newRefreshToken
@@ -126,10 +128,13 @@ export const signInController =tryCatch(
         res.cookie("jwt", newRefreshToken,{ httpOnly: true, secure: false, sameSite: "strict", maxAge: 24 * 60 * 60 * 1000 });
         res
           .status(201)
-          .json({ field: "formulario", details: { 
+          .json(
+            {message:{
             token:accessToken,
-            role:signInOfficer.role
-          } });
+            role:signInOfficer.role   
+            }
+          }
+          );
   
           res.end();
           
@@ -151,7 +156,6 @@ export const signInController =tryCatch(
         };
        res.set(headers);
         throw new CustomError(
-          "formulario",
           "las credenciales son invalidas",
           "",
           401

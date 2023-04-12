@@ -12,16 +12,16 @@ export const getGroupController = tryCatch(
         });
 
         if(getGroup  == null){
-            throw new CustomError("grupos", "el grupo no existe", "", 404);
+            throw new CustomError("el grupo no existe", "", 404);
         }
 
+            // Store report data in cache for future requests
+    await redis.set(`report:${group}`, JSON.stringify(getGroup), "EX", 300); //cached for 5 minutes
         const response = (
                 {
-                    field: "grupos",
-                    details: getGroup
+                    messsage: getGroup,
                 }
         );
-        redis.set("group", JSON.stringify(response), "EX", 900);
         return res.status(200).json(response);
     }
 );

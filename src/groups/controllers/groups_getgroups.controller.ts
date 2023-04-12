@@ -7,8 +7,7 @@ export const getGroupsController = tryCatch(
         const getGroups = await getGroupsService();
         res.status(200).json(
                 {
-                    field: "grupos",
-                    details: getGroups
+                    message: getGroups
                 }
         );
     }

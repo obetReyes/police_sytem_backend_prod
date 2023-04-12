@@ -17,9 +17,7 @@ export const createReportController = tryCatch(
         });
 
         res.status(201).json({
-            
-                    field:"reportes",
-                    details:createReport
+            message:createReport
             
         });
     }

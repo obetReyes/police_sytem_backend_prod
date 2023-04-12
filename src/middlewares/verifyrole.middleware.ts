@@ -13,7 +13,7 @@ export const verifyRoles = (...allowedRoles:string[]) => {
     return (req:customReq, res:Response, next:NextFunction) => {
 
         if (!req?.role) {
-        throw new CustomError("autorizacion", "no se han asignado roles de autorizacion", "", 401);
+        throw new CustomError("no se han asignado roles de autorizacion", "", 401);
     }
 
 
@@ -22,7 +22,7 @@ export const verifyRoles = (...allowedRoles:string[]) => {
         if(rolesArray.includes(req.role)){
             next();
         }else{
-            throw new CustomError("autorizacion", "el rol de autorizacion no permite el acceso a estos recursos", "", 401);
+            throw new CustomError("el rol de autorizacion no permite el acceso a estos recursos", "", 401);
         }
     };
 };

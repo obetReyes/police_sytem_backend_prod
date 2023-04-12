@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { redis, tryCatch, CustomError } from "../../utils";
+import { tryCatch, CustomError } from "../../utils";
 import { getUserService } from "../../users";
 import { getManySummariesService, getSummariesService } from "../services/summaries.service";
 
@@ -40,18 +40,14 @@ export const getSummariesController = tryCatch(
         });
         
         if(req.query.dispatcher != undefined &&  isDispatcher?.name == undefined){
-            throw new CustomError("reportes", "no existe el emisario solicitado", "",404);
+            throw new CustomError("no existe el emisario solicitado", "",404);
         }
 
         if(isDispatcher != undefined && summaries!.length >= 0){
         const response = ({
-            
-                        field:"sumarios",
-                        details:summaries,
+                        message:summaries,
                         limit:dbLimit,
-                        starting_after:dispatcher ? dbStarting_after_extract : dbStarting_after_value ? dbStarting_after_value - 1 : 0
-
-               
+                        starting_after: isDispatcher?.name ? dbStarting_after_extract : dbStarting_after_value ? dbStarting_after_value - 1 : 0
         }) ;
         
        

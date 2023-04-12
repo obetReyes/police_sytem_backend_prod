@@ -13,7 +13,7 @@ export const signUpOfficerController = tryCatch(
       const groups = await getGroupsService();
    
       if(groups.length < 1){
-          throw new CustomError("grupos", "no existe ningun grupo al cual el oficial pueda ser asignado por favor crea un grupo primero", "");
+          throw new CustomError("no existe ningun grupo al cual el oficial pueda ser asignado por favor crea un grupo primero", "");
       }
      
       const groupExists =  groups.find((groupsGroup) => groupsGroup.name  == group);
@@ -34,16 +34,11 @@ export const signUpOfficerController = tryCatch(
       res
         .status(201)
         .json({
-          data: [
-            {
-              field: "formulario",
-              details: `nuevo oficial creado ${signUpOfficer.name}`,
-            },
-          ],
+            message: `nuevo oficial creado ${signUpOfficer.name}`,
         });
       }
       if(groupExists == undefined){
-        throw new CustomError("grupos", "el grupo al cual se trata de asignar el oficial no existe", "", 404);
+        throw new CustomError( "el grupo al cual se trata de asignar el oficial no existe", "", 404);
       } 
     }
   );
@@ -63,12 +58,9 @@ export const signUpDispatcherController = tryCatch(
       res
         .status(201)
         .json({
-          data: [
-            {
-              field: "formulario",
-              details: `nuevo operador de emergencia  creado ${signUpOfficer.name}`,
-            },
-          ],
+          
+            message: `nuevo operador de emergencia  creado ${signUpOfficer.name}`,
+      
         });
     }
   );
@@ -87,9 +79,7 @@ export const signUpDispatcherController = tryCatch(
       res
         .status(201)
         .json({
-          
-              field: "formulario",
-              details: `nuevo operador central creado ${signUpOfficer.name}`,
+              message: `nuevo operador central creado ${signUpOfficer.name}`,
             },
             
           );
