@@ -6,11 +6,11 @@ export interface SignInI{
     password:string
 }
 export interface SignInResI{
-    field: string,
-    details: {
+    message:{
         token:string
         role: string
     }
+    field: string,
 }
 
 

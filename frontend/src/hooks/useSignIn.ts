@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { SignInI, SignInResI, signInSchema } from "../helpers";
+import { SignInI, SignInResI} from "../helpers";
 import axios, { AxiosError } from "axios";
 import { axiosPrivate, ErrorsI } from "../helpers";
 import { UserContext } from "../contexts";
@@ -23,12 +23,12 @@ export const useSignInMutation = () => {
     {
       onSuccess: (variables) => {
         setUser(true);
-        setToken(variables.details.token);
-        setRole(variables.details.role);
+        setToken(variables.message.token);
+        setRole(variables.message.role);
       },
       onError: (error) => {
         if (axios.isAxiosError<ErrorsI, Record<string, unknown>>(error)) {
-          error.message = String(error.response?.data.error);
+          error.message = String(error.response?.data.message);
           // Do something with this error...
         }
         if (error.code == "ERR_NETWORK") {

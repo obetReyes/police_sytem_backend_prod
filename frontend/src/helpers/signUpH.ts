@@ -1,14 +1,11 @@
 import * as yup from "yup";
 
 
-export interface SignInI{
+export interface SignUpI{
     username:string
+    email?:string
     password:string
-}
-export interface SignInResI{
-    field: string,
-    details: {
-        token:string
-        role: string
-    }
+    password2?:string
+    cuip:string
+    group?:string
 }

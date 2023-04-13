@@ -1,6 +1,10 @@
 
 export interface ErrorsI{
-    field: string
-    error:string
+    errorCode: string
+    message:string
     href:string  
 }
+export interface GlobalResI{
+    message:string
+}
+

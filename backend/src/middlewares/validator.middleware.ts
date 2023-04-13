@@ -14,8 +14,8 @@ export const validator =
     } catch (err) {
       if (err instanceof ZodError) {
         const errors = err.issues.map((issue) => ({
-          field: issue.path[1],
-          error:
+          errorCode:400,
+          message:
             issue.message == "Required"
               ? "el campo es requerido"
               : issue.message,
