@@ -1,8 +1,12 @@
 import { useContext, useEffect, useReducer } from "react"
 import { AnySourceData, LngLatBounds, Map, Marker, Popup } from "mapbox-gl"
 import { MapContext } from "./MapContext"
+import { PlacesContext } from "../places/PlacesContext"
 import { MapReducer } from "./MapReducer"
-import { directionsApi, DirectionsResponse } from "../../helpers"
+
+import { DirectionsResponse, directionsApi } from "../../helpers"
+
+
 
 interface PROPS{
     children: JSX.Element | JSX.Element[]
@@ -21,7 +25,8 @@ const INITIAL_STATE:MAP_STATE = {
 }
 export const MapProvider = ({children}:PROPS) => {
 
-    const [state, dispatch] = useReducer(MapReducer, INITIAL_STATE)  
+    const [state, dispatch] = useReducer(MapReducer, INITIAL_STATE)
+    const {places} = useContext(PlacesContext)    
 
     useEffect(() => {
         state.markers.forEach(marker => marker.remove())
@@ -82,6 +87,9 @@ export const MapProvider = ({children}:PROPS) => {
             bounds.extend(newCoord);
         }
 
+        state.map?.fitBounds(bounds,{
+            padding:200
+        });
 
         //polyline
         const sourceData:AnySourceData ={
@@ -101,7 +109,26 @@ export const MapProvider = ({children}:PROPS) => {
             }
         }
         
-    
+        //remove polyline
+
+        if(state.map?.getLayer('RouteString')){
+            state.map.removeLayer('RouteString');
+            state.map.removeSource('RouteString');
+        }
+        state.map?.addSource('RouteString', sourceData);
+        state.map?.addLayer({
+            id:'RouteString',
+            type:"line",
+            source:"RouteString",
+            layout:{
+                'line-cap':"round",
+                'line-join':"round"
+            },
+            paint:{
+                'line-color':"black",
+                "line-width":3
+            }
+        })
         
 
     }

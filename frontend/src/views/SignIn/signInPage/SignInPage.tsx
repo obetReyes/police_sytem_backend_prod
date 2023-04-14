@@ -1,8 +1,8 @@
 
-/* login form using yup validator and react hook form if 
+/* login page, the  form is using yup validator and react hook form if 
 the user has a valid credentials he can access other screens otherwise
 he is not allowed (react hook form does the validation job and yup is used as resolver for more info see the react hook form
-docs the styles are inherented from the auth module css and the auth context is used to trigger authorization states across the app
+docs, the auth context is used to trigger authorization states across the app
 )
 */
 
@@ -31,6 +31,7 @@ export const SignInPage = () => {
     mutate(data,
       {
         onSettled:() => {
+          
           data.username = ""
           data.password = ""
           
@@ -91,9 +92,7 @@ export const SignInPage = () => {
           type="submit"
           className="inline-block rounded-lg bg-base-200 hover:bg-base-300 px-5 py-3 text-sm font-medium"
         >
-            
           iniciar Sesion
-          
         </button>
   }
       </div>

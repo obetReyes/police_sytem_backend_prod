@@ -26,7 +26,6 @@ export const ReportsTable = () => {
             </tr>
           ))}
           </thead>
-
       </table>
       </div>
     </div>

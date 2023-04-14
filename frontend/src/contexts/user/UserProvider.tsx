@@ -12,8 +12,8 @@ export interface USER_STATE{
     persist:boolean
 } 
 const INITIAL_STATE:USER_STATE = {
-  user:false,
-  role:"",
+  user:true,
+  role:"OPERATOR",
   token:"",
   persist:false
 }
