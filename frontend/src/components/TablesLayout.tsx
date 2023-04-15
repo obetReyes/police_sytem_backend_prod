@@ -27,7 +27,6 @@ export const TablesLayout = ({children, roles}:Props) => {
     
     roles.includes(role) ?   
     <div className='w-full h-screen p-4  overflow-y-hidden flex flex-col items-center  '>
-      <h1 className='fixed left-6 font-semibold text-2xl text-warning top-4'>reportes</h1>
       {role == "OFFICER" && <OfficerNavbar/>  }
     {role == "OPERATOR" && <OperatorNavbar/>  }
     {role == "DISPATCHER" && <DispatcherNavbar/>  }
