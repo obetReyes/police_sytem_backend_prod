@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { Navbar } from './Navbar'
+import { OfficerNavbar,  DispatcherNavbar, OperatorNavbar} from './Navbars/'
 import { UserContext } from '../contexts'
 import { NotFoundPage } from '../views'
 
@@ -23,7 +23,9 @@ export const ProtectedLayout = ({children, roles}:Props) => {
     {isLoading ? <span className='loader'></span> : 
      roles.includes(role) ?
      <div>
-          <Navbar/>  
+      {role == "OFFICER" && <OfficerNavbar/>  }
+      {role == "OPERATOR" && <OperatorNavbar/>  }
+      {role == "DISPATCHER" && <DispatcherNavbar/>  }
           {children}
      </div>
      :

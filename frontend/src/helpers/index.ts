@@ -1,6 +1,6 @@
 export  type { SignUpI } from "./signUpH";
 export type { ErrorsI, GlobalResI } from "./globalH";
-export type { SignInI, SignInResI } from "./signInH";
+export type { SignInI, SignInResI, DecodedI } from "./signInH";
 export { signInSchema } from "./signInH";
 export { signUpSchema } from "./signUpH";
 export {axiosPrivate} from "./axios";

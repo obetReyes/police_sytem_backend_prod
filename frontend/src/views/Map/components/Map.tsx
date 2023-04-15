@@ -2,6 +2,7 @@ import React, { useRef , useLayoutEffect, useState, useEffect} from 'react'
 import { useContext } from 'react'
 import { PlacesContext, MapContext } from '../../../contexts'
 import { Map } from 'mapbox-gl'
+import { BtnMyLocation } from './LocationBtn'
 
 
 
@@ -9,7 +10,7 @@ export const MapView = () => {
  
   const styles = {
     satellite:"mapbox://styles/mapbox/satellite-streets-v12",
-    street:"mapbox://styles/mapbox/navigation-night-v1",
+    street:"mapbox://styles/mapbox/dark-v11",
   }
 
     const {isloading, userLocation} = useContext(PlacesContext)
@@ -39,7 +40,7 @@ export const MapView = () => {
         if(!isloading){
             const map = new Map({
                 container: mapDiv.current!, // container ID
-                style: currentStyle, // style URL
+                style:currentStyle, // style URL
                 center:  userLocation, // starting position [lng, lat]
                 zoom: 13, // starting zoom
                

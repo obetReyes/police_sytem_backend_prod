@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { UserContext } from "../contexts";
 import { Routes, Route } from "react-router-dom";
-import { MapPage, NotFoundPage, AllReportsPage, SignInPage, SingUpPage } from "../views";
+import { MapPage, NotFoundPage, AllReportsPage, SignInPage, SingUpPage,ReportPage, AllSummariesPage, SummariePage, AllUsersPage, UserPage, AllGroupsPage, GroupPage } from "../views";
 export const AppRouter = () => {
   const {user, role} = useContext(UserContext);
   return (
@@ -9,8 +9,14 @@ export const AppRouter = () => {
     {user  ? 
     <>
       <Route path="/" element={<MapPage/>} />
-       <Route path="/reportes" element={  <AllReportsPage />} />
-       
+      <Route path="/reportes" element={  <AllReportsPage />} />
+      <Route path="/reportes/:reporte" element={  <ReportPage />} />
+      <Route path="/sumarios" element={<AllSummariesPage/>} />
+      <Route path="/sumarios/:sumario" element={<SummariePage/>} />
+      <Route path="/grupos" element={<AllGroupsPage/>} />
+      <Route path="/grupos/:grupo" element={<GroupPage/>} />
+      <Route path="/agentes" element={<AllUsersPage/>} />
+      <Route path="/agentes/:agente" element={<UserPage/>} />
     </>
       :
       <>
