@@ -25,7 +25,6 @@ export const tokenController = tryCatch(async(req:customReq, res:Response) => {
     {throw new CustomError("el token de autorizacion no es valido","", 401);}
     const token = cookies.jwt;
     const decodeToken = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET as string) as JwtPayload;
-    console.log(decodeToken);
     const foundUser = await getUserService({
             name:decodeToken.info.username
     });

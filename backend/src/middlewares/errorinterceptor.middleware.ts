@@ -11,7 +11,7 @@ export const errorInterceptor = async(error:Error, req:Request, res:Response,nex
         return res.status(error.statusCode ?? 400).json(
                 {
                 errorCode:error.statusCode ?? 400,
-                message:error.message || "error desconocido",
+                message: error.message || "error desconocido",
                 href:error.href
                 }
             
@@ -29,7 +29,7 @@ export const errorInterceptor = async(error:Error, req:Request, res:Response,nex
 
         if(error.code === "P2025"){
             return res.status(404).json({
-                    errorCode:409,
+                    errorCode:404,
                     message:"los datos no fueron encontrados",
                     href:"https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404"
         });

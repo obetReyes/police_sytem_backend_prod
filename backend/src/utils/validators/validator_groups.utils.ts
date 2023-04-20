@@ -27,10 +27,3 @@ export const groupValidator = z.object({
         area:areaContraint
     }).strict("los unicos campos disponibles son name y area")
 });
-
-export const userGroupValidator = z.object({
-    body:z.object({
-        name:nameContraint,
-        username:usernameContraint
-    }).strict("los unicos campos disponibles son: name y username")
-});

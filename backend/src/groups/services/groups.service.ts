@@ -23,13 +23,38 @@ export const updateGroupService = async(params:{
 export const getGroupService = async(GroupWhereInput:Prisma.GroupWhereUniqueInput) => {
     return prisma.group.findUnique({
         where:GroupWhereInput,
-        
+        select:{
+            area:true,
+            createdAt:true,
+            id:true,
+            name:true,
+            updatedAt:true,
+            users:{
+                select:{
+                    name:true,
+                    location:true,
+                    _count:{
+                        select:{
+                            reports:true
+                        }
+                    }
+                }
+            }
+        }
     });
 };
 
 
 export const getGroupsService = async() => {
-    return prisma.group.findMany();
+    return prisma.group.findMany({
+        select:{
+            id:true,
+            area:true,
+            name:true,
+            createdAt:true,
+            _count:true
+        }
+    });
 };
 
 export const deleteGroupService = async(GroupWhereUniqueInput:Prisma.GroupWhereUniqueInput) => {

@@ -22,10 +22,15 @@ export const getUserService = async (
             location: true,
             name: true,
             password: true,
-            token: true,
             role: true,
             updatedAt: true,
-
+            token:true,
+            _count:{
+                select:{
+                    reports:true,
+                    summaries:true
+                }
+            }
         }
     });
 };
@@ -50,10 +55,17 @@ export const getManyUsersService = async (usersWhereInput: Prisma.UserWhereInput
 export const getAllUsersService = async () => {
     return prisma.user.findMany({
         select: {
+            id:true,
             name: true,
             role: true,
             updatedAt: true,
-            createdAt: true
+            createdAt: true,
+            _count:{
+                select:{
+                    reports:true,
+                    summaries:true
+                }
+            }
         }
     });
 };

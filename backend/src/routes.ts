@@ -4,6 +4,7 @@ import { usersRoutes } from "./users";
 import { groupsRoutes } from "./groups";
 import { reportsRoutes } from "./reports";
 import { errorInterceptor, notFound } from "./middlewares";
+import { summariesRoutes } from "./summaries";
 
 
 //rest apí routes
@@ -14,6 +15,7 @@ export function routes(app:Express) {
     app.use("/users", usersRoutes);
     app.use("/groups", groupsRoutes);
     app.use("/reports", reportsRoutes);
+    app.use("/summaries", summariesRoutes);
     // get the current session
     app.use(errorInterceptor);
     app.use(notFound);

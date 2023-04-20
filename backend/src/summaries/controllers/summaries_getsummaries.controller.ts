@@ -19,13 +19,13 @@ export const getSummariesController = tryCatch(
             name:String(dispatcher)
         }) : null;
 
-        const summaries = dispatcher ? await getManySummariesService(
+        const summaries = isDispatcher ? await getManySummariesService(
             {
                 skip:dbStarting_after_extract,
                 take:dbLimit,
                 where:{
                     user:{
-                        name:String(dispatcher)
+                        name:isDispatcher.name
                     }
                 }
                 
@@ -39,19 +39,18 @@ export const getSummariesController = tryCatch(
             
         });
         
-        if(req.query.dispatcher != undefined &&  isDispatcher?.name == undefined){
+        if(dispatcher &&  isDispatcher?.name == undefined){
             throw new CustomError("no existe el emisario solicitado", "",404);
         }
 
-        if(isDispatcher != undefined && summaries!.length >= 0){
-        const response = ({
+        
+        const response = {
                         message:summaries,
                         limit:dbLimit,
                         starting_after: isDispatcher?.name ? dbStarting_after_extract : dbStarting_after_value ? dbStarting_after_value - 1 : 0
-        }) ;
+        };
         
        
         return res.status(200).json(response);
-    }
 }
 );

@@ -3,11 +3,11 @@ const callTimeContraint = z.string().min(7,{message: "la descripcion del tiempo 
 
 const incidentContraint = z.string().min(20, {message:"la descripcion del incidente no puede ser menor a 20 caracteres"}).max(400, {message:"la descripcion del incidente no puede exceder los 400 caracteres"}).trim();
 
-const requestorContraint = z.string().min(10, {
-    message:"el nombre de la persona o las personas que llamaron no puede ser menor a 10 caracteres"
-}).max(100,{message:"el nombre de la persona  o las pernsonas que llamaron no puede excederlos 100 caracteres"}).trim();
+const requestorContraint = z.string().min(7, {
+    message:"el nombre de la persona o las personas que llamaron no puede ser menor a 7 caracteres"
+}).max(100,{message:"el nombre de la persona o personas que llamaron no puede exceder los 100 caracteres"}).trim();
 
-const notesContraint = z.string().min(30, {
+const notesContraint = z.string().min(20, {
     message:"las notas de la llamada no pueden ser menores a 30 caracteres"
 }).max(400,{message:"las notas de llamada no pueden exceder los 400 caracteres"}).trim();
 
@@ -15,7 +15,7 @@ const locationContraint = z.string().min(10, {
     message:"la ubicacion del incidente no puede ser menor a 10 caracteres"
 }).max(250,{message:"la ubicacion de la incidente no puede ser mayor a 250 caracteres"}).trim();
 
-const phoneContraint = z.string().min(10,{message: "el numero de telefono no puede ser inferior a 10 numeros"}).max(120, {message:"el numero de telefono no puede ser mayor a 20 numeros"}).regex(new RegExp("^[0-9]+$"),{message:"el numero no puede incluir letras o caracteres especiales"});
+const phoneContraint = z.string().min(10,{message: "el numero de telefono no puede ser inferior a 10 numeros"}).max(20, {message:"el numero de telefono no puede ser mayor a 20 numeros"}).regex(new RegExp("^[0-9]+$"),{message:"el numero no puede incluir letras o caracteres especiales"});
 
 export const summaryValidator = z.object({
     body:z.object({

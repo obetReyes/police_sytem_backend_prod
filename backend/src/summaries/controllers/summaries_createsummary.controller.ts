@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import { tryCatch, CustomReq } from "../../utils";
 import { createSummaryService } from "../services/summaries.service";
 

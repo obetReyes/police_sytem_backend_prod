@@ -16,9 +16,9 @@ export const validator =
         const errors = err.issues.map((issue) => ({
           errorCode:400,
           message:
-            issue.message == "Required"
-              ? "el campo es requerido"
-              : issue.message,
+            issue.message 
+              ? `${issue.path} ${issue.message}`
+              : "el campo es requerido",
           href: "",
         }));
         const formattedErrRes: Array<object> = [];
