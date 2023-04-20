@@ -1,33 +1,27 @@
-import { useState, useMemo } from 'react';
-import { useReactTable, getCoreRowModel, flexRender } from '@tanstack/react-table';
-import { ReportColumns } from './ReportsColumns';
+import { useEffect } from "react";
+import { ReportI, ReportResI, ReportsResI } from "../../../helpers";
+import { ReportsColumns } from "./ReportsColumns";
 
-export const ReportsTable = () => {
-    const [data, setData] = useState([]);
-    const columns = useMemo(() => ReportColumns, []);
-    const tableInstance = useReactTable({columns, data, getCoreRowModel: getCoreRowModel() });
+interface Props{
+  data:ReportsResI | undefined
+}
+
+export const ReportsTable = ({data}:Props) => {
   return (
-    <div className='div className=" h-[48rem] w-full mx-auto rounded-lg shadow-xl"'>
-       <div className="overflow-x-auto">
-      <table className="table table-zebra w-full">
-        <thead>
-          {tableInstance.getHeaderGroups().map(headerGroup => (
-            <tr key={headerGroup.id}>
-{headerGroup.headers.map(header => (
-                <th key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                </th>
-              ))}
+    <table>
+      <ReportsColumns/>
+      <tbody>
+      { 
+        data?.message.map((report) => {
+            return <tr key={report.id}>
+              <td>{report.createdAt}</td>
+              <td>{report.createdAt}</td>
+              <td>{report.event}</td>
+              <td>{report.userName}</td>
             </tr>
-          ))}
-          </thead>
-      </table>
-      </div>
-    </div>
+        })
+      }
+      </tbody>
+    </table>
   )
 }

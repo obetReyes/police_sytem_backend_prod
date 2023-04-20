@@ -1,10 +1,10 @@
 import React from "react";
 import { BtnMyLocation } from "../BtnLocation";
 import { Link } from "react-router-dom";
+import { NavbarLayout } from "./NavbarLayout";
 export const DispatcherNavbar = () => {
   return (
-    <div className="w-full fixed bottom-4 z-50">
-      <div className="navbar  bg-base-300 font-medium   md:w-10/12 lg:w-8/12 mx-auto  rounded-xl shadow-lg">
+      <NavbarLayout>
         <div className="navbar-start gap-3">
           
           <a className="btn  text-warning">crear sumario</a>
@@ -38,10 +38,6 @@ export const DispatcherNavbar = () => {
             </li>
           </ul>
         </div>
-        <div className="navbar-end">
-          <a className="btn">salir</a>
-        </div>
-      </div>
-    </div>
+        </NavbarLayout>
   );
 };

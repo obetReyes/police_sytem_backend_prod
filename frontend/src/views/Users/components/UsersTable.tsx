@@ -1,10 +1,9 @@
 import { useState, useMemo } from 'react';
-//import { SummariesColumns } from './SummariesColumns';
-
+//import { UsersColumns } from './UsersColumn';
 /*
-export const SummariesTable = () => {
+export const UsersTable = () => {
     const [data, setData] = useState([]);
-    const columns = useMemo(() => SummariesColumns, []);
+    const columns = useMemo(() => UsersColumns, []);
     const tableInstance = useReactTable({columns, data, getCoreRowModel: getCoreRowModel() });
   return (
     <div className='div className=" h-[48rem] w-full mx-auto rounded-lg shadow-xl"'>
@@ -31,5 +30,4 @@ export const SummariesTable = () => {
     </div>
   )
 }
-
 */

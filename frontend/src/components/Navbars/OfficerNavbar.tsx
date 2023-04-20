@@ -2,12 +2,13 @@
 import { BtnMyLocation } from "../BtnLocation";
 import { Link } from "react-router-dom";
 import { NavbarLayout } from "./NavbarLayout";
+import { ReportModal } from "../../views/Reports/components/ReportModal";
 
 export const OfficerNavbar = () => {
   return (
     <NavbarLayout>
         <div className="navbar-start gap-3">
-          <a className="btn  text-warning">crear reporte</a>
+          <ReportModal/>
           <BtnMyLocation/>
         </div>
         <div className="navbar-center flex">
