@@ -66,12 +66,12 @@ export const useSearchReport = () => {
   };
 };
 //query when click in a sepecific report
-export const useReport = (id:number) => {
+export const useReport = (reportId:number) => {
   const axiosPrivate = useAxiosPrivate();
-  const reportQuery = useQuery(["report", id], async()
+  const reportQuery = useQuery(["report", reportId], async()
   :Promise<ReportResI> => {
-      console.log(id)
-      const {data} = await axiosPrivate.get<ReportResI>(`/reports/${id}`);
+      console.log(reportId)
+      const {data} = await axiosPrivate.get<ReportResI>(`/reports/${reportId}`);
       //tengo que cheacar como llega la respuesta del id para ebvuarka
       console.log(data)
       return data

@@ -42,7 +42,7 @@ export const ReportModal = () => {
     <h3 className="font-bold text-lg">Nuevo Reporte</h3>
     <form  onSubmit={onSubmit}>
   <label htmlFor="eventInput" className="sr-only">Suceso</label>
-  <div className="my-4">
+  <div className="my-6">
   <div className="relative">
     <input
     id="eventInput"
@@ -57,7 +57,7 @@ export const ReportModal = () => {
   {errors.event ? <p className={errorStyles}>{errors.event?.message}</p> : null}
   </div>
 
-  <div className="pb-4">
+  <div className="pb-6">
   <label htmlFor="actionsInput" className="sr-only">Acciones Tomadas</label>
   
   <div className="relative">
@@ -75,7 +75,7 @@ export const ReportModal = () => {
     {errors.actions ? <p className={errorStyles}>{errors.actions?.message}</p> : null}
     </div>
     
-    <div className='pb-4'>
+    <div className='pb-6'>
     <label htmlFor="sucessSumaryInput" className="sr-only">Resumen Del Suceso</label>
   
   <div className="relative">

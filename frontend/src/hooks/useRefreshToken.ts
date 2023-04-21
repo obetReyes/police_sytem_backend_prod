@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { UserContext } from "../contexts";
 import { GlobalResI } from "../helpers";
 
-const REFRESH_URL = "auth/refreshToken"
+const REFRESH_URL = "auth/update-token"
 export const useRefreshToken  = () => {
     const {setToken, token} = useContext(UserContext)
 
