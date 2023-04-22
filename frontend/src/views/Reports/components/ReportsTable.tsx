@@ -13,7 +13,6 @@ export const ReportsTable = ({data}:Props) => {
       <tbody>
       { 
         data?.message.map((report) => {
-          console.log(report.id)
           const eventSummary = report.event.substring(0,40);
             return <tr key={report.id}>
               <td>{customDate(report.createdAt)}</td>

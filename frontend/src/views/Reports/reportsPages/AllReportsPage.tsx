@@ -4,23 +4,18 @@ import { ReportModal } from "../components/ReportModal";
 import { ReportsTable } from "../components/ReportsTable";
 import { useContext } from "react";
 import { UserContext } from "../../../contexts";
-import { useReports, useSearchReport } from "../../../hooks";
+import { useReports, useSearchReport, useOfficerReports } from "../../../hooks";
 import { DecodedI } from "../../../helpers";
 import jwt_decode from "jwt-decode";
 
 export const AllReportsPage = () => {
   const { role, token } = useContext(UserContext);
   const reportsQuery = useReports();
-  const { setOfficer, officerReportsQuery } = useSearchReport();
+  const officerReportsQuery = useOfficerReports();
+  const { setSearchOfficer, searchOfficerReportsQuery } = useSearchReport();
   const decoded: DecodedI = jwt_decode(token);
 
-  {
-    role == "OFFICER" &&
-      useEffect(() => {
-        setOfficer(decoded.info.username);
-        console.log(reportsQuery.data);
-      }, []);
-  }
+
 
   return (
     <TablesLayout roles={["OPERATOR", "DISPATCHER", "OFFICER"]}>
@@ -43,7 +38,10 @@ export const AllReportsPage = () => {
         {role == "OPERATOR" || role == "DISPATCHER" ? (
           reportsQuery.isError ? (
             <p>{`${reportsQuery.error}`}</p>
-          ) : (
+          ) : ( 
+            reportsQuery.isLoading ? <div className="loader">
+            </div>
+            :
             <div className="overflow-x-auto h-[44rem] w-full mx-auto rounded-lg shadow-xl">
               <ReportsTable data={reportsQuery.data} />
             </div>
@@ -51,6 +49,8 @@ export const AllReportsPage = () => {
         ) : officerReportsQuery.isError ? (
           <p>{`${officerReportsQuery.error}`}</p>
         ) : (
+          officerReportsQuery.isLoading ? <div className="loader">
+            </div> :
           <div className="overflow-x-auto h-[44rem] w-full mx-auto rounded-lg shadow-xl">
           <ReportsTable data={officerReportsQuery.data} />
           </div>

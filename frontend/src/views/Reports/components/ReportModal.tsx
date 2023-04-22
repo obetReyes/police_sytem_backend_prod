@@ -2,11 +2,13 @@ import { useReportMutation } from "../../../hooks";
 import { CreateReportI, createReportSchema } from "../../../helpers";
 import {useForm} from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useState } from "react";
+
 
 
 export const ReportModal = () => {
   const {mutate, error, isError, isLoading} = useReportMutation();
-
+  const [isModal, setIsModal] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
@@ -25,6 +27,7 @@ export const ReportModal = () => {
         e?.target.reset()
       }
     })
+    setIsModal(false)
   })
   
    // common styles 
@@ -33,14 +36,17 @@ export const ReportModal = () => {
 
   return (
     <>
-<label htmlFor="myModalReport" className="btn">crear reporte</label>
+<label htmlFor="myModalReport" className="btn" onClick={() => setIsModal(true)}>crear reporte</label>
+{isModal &&
+<>
 
 <input type="checkbox" id="myModalReport" className="modal-toggle" />
 <div className="modal modal-bottom sm:modal-middle">
   <div className="modal-box relative">
-  <label htmlFor="myModalReport" className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+  <label htmlFor="myModalReport" className="btn btn-sm btn-circle absolute right-2 top-2" onClick={() => setIsModal(false)}>✕</label>
     <h3 className="font-bold text-lg">Nuevo Reporte</h3>
-    <form  onSubmit={onSubmit}>
+    <div className="modal-action">
+    <form onSubmit={onSubmit}>
   <label htmlFor="eventInput" className="sr-only">Suceso</label>
   <div className="my-6">
   <div className="relative">
@@ -93,11 +99,18 @@ export const ReportModal = () => {
     {errors.summary ? <p className={errorStyles}>{errors.summary?.message}</p> : null}
     </div>
     {isLoading ? <span className="loader"></span> :
-    <input type='submit' className='btn float-right' value="crear reporte"></input>}
+  
+      <input  className=" btn float-right" type='submit'value="crear reporte"></input>
+    }
     </form>
+    </div>
+  
+
     {isError ? <p className={`${errorStyles} pt-4`}>{`${error?.message}`}</p> : null}
   </div>
 </div>
+</>
+}
 </>
   )
 }

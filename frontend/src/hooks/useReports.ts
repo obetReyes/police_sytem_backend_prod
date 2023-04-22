@@ -28,27 +28,41 @@ export const useReports = () => {
   return reportsQuery;
 };
 
+export const useOfficerReports = () => {
+    const axiosPrivate = useAxiosPrivate();
+    const {token} = useContext(UserContext);
+    const decoded: DecodedI = jwt_decode(token);
+    const officerReportsQuery = useQuery(["officerReports", decoded.info.username], async():Promise<ReportsResI> => {
+      const {data} = await axiosPrivate.get<ReportsResI>(`/reports/`,{
+        params:{
+          officer:decoded.info.username
+        }
+      })
+      return data;
+    })
+    return officerReportsQuery;
+}
 
 //query to get reports if the are searched through the searchbar
 export const useSearchReport = () => {
-  const [officer, setOfficer] = useState<string | undefined>("");
-  const debouncedFilter = useDebounce(officer!.length > 6, 500);
-
-  const debounceDelay = officer!.length > 5 ? 500 : null;
-  const [debouncedOfficerValue] = useDebounce(officer, debounceDelay!);
+  const [searchOfficer, setSearchOfficer] = useState<string | undefined>("");
+  // debounce delay if the length of searchOfficer state is more than 6 give 500ms
+  const debounceDelay = searchOfficer!.length > 6 ? 500 : null;
+  const [debouncedOfficerValue] = useDebounce(searchOfficer, debounceDelay!);
   const axiosPrivate = useAxiosPrivate();
-  const officerReportsQuery = useQuery(
-    ["officerReports", debouncedOfficerValue],
+  const searchOfficerReportsQuery = useQuery(
+    ["SearchofficerReports", debouncedOfficerValue],
     async (): Promise<ReportsResI> => {
       const { data } = await axiosPrivate.get<ReportsResI>(`/reports/`, {
         params: {
-          officer: officer,
+          officer: searchOfficer,
         },
       });
       console.log(data);
       return data;
     },
     {
+      //refetchOnWindowFocus option is set to false to prevent the query from refetching 
       refetchOnWindowFocus: false,
       retry: 1,
       onError(error) {
@@ -60,9 +74,9 @@ export const useSearchReport = () => {
     }
   );
   return {
-    officerReportsQuery,
-    officer,
-    setOfficer,
+    searchOfficerReportsQuery,
+    searchOfficer,
+    setSearchOfficer,
   };
 };
 //query when click in a sepecific report
@@ -97,6 +111,7 @@ export const useReportMutation = () => {
     const {mutate, error, isError, isLoading, isSuccess} = useMutation<ReportResI, AxiosError , CreateReportI>(createReport,{
         onSuccess:(data) => {
             reports.refetchQueries({queryKey:["officerReports", decoded.info.username]});
+
         },
         onError:(error) => {
             if (axios.isAxiosError<ErrorsI,Record<string, unknown>>(error)) {
