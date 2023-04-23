@@ -1,4 +1,4 @@
-import { Request, Response, response } from "express";
+import { Request, Response } from "express";
 import { tryCatch, CustomError } from "../../utils";
 import { getUserService } from "../../users";
 import {
@@ -18,7 +18,7 @@ export const getReportsController = tryCatch(
     const limit = req.query.limit;
     const starting_after = req.query.starting_after;
 
-    const dbLimit = limit ? Number(limit) : 100;
+    const dbLimit = limit ? Number(limit) : 20;
     const dbStarting_after_extract = starting_after
       ? Number(starting_after)
       : 0;

@@ -1,7 +1,6 @@
 import { Response } from "express";
 import { tryCatch, CustomReq, CustomError, redis } from "../../utils";
 import { getReportService } from "../services/reports.service";
-import { json } from "stream/consumers";
 
 export const getReportController = tryCatch(
   async (req: CustomReq, res: Response) => {
