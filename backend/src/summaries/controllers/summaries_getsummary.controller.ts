@@ -19,7 +19,7 @@ export const getSummaryController = tryCatch(
 
         await redis.set(`report:${summaryId}`, JSON.stringify(getSummary), "EX", 300); //cached for 5 minutes
 
-    
+
         const response = ({
             message:getSummary
         });

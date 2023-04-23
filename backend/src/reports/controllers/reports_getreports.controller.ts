@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { tryCatch, CustomError } from "../../utils";
+import { tryCatch, CustomError, prisma } from "../../utils";
 import { getUserService } from "../../users";
 import {
   getManyReportsService,
@@ -30,14 +30,14 @@ export const getReportsController = tryCatch(
   
         
     const isOfficer =
-    officer !== undefined
+    officer !== undefined && req.role != "OFFICER"
       ? await getUserService({
           name: String(officer),
         })
       : null;
 
     if (req.role == "OFFICER") {
-      reports = getManyReportsService({
+      reports = await getManyReportsService({
         skip: dbStarting_after_extract,
         take: dbLimit,
         where: {
@@ -74,8 +74,17 @@ export const getReportsController = tryCatch(
   }
     /* if  the officer name is found in the db we will send the response or if an officer name wasn't given all the reports will be sent ) */
     const response = {
-      message:await reports,
+      message:reports,
       limit: dbLimit,
+      records: req.role == "OFFICER" ?  await prisma.report.count({
+        where:{
+          userName:String(req.user)
+        }
+      }) : isOfficer?.name  ? await prisma.report.count({
+        where:{
+          userName:isOfficer.name
+        }
+      }) : await prisma.report.count(),
       starting_after: isOfficer?.name
         ? dbStarting_after_extract
         : dbStarting_after_value

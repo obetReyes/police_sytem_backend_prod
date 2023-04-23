@@ -32,7 +32,7 @@ export const summaryValidator = z.object({
 export const summaryParamsValidator = z.object({
    params:z.object({
         // eslint-disable-next-line no-useless-escape
-        summaryId:z.string().min(1,{message:"el numero no puede ser negativo"}).regex(new RegExp("^[1-9]\d*$"),{message:"el numero no puede incluir letras,caracteres especiales ni tampoco puede incluir numeros negativos"})
+        summaryId:z.string().min(1,{message:"el numero no puede ser negativo"}).regex(/^(0|[1-9]\d*)$/,{message:"el numero no puede incluir letras,caracteres especiales ni tampoco puede incluir numeros negativos"})
    }).strict("el unico parametro disponible es: el id del sumario") 
 });
 
