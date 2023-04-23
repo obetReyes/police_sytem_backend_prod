@@ -8,7 +8,7 @@ interface Props{
 
 export const ReportsTable = ({data}:Props) => {
   return (
-    <table className="table table-zebra w-full">
+    <table className="table  table-zebra w-full">
       <ReportsColumns/>
       <tbody>
       { 

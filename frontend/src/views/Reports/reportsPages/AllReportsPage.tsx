@@ -10,11 +10,10 @@ import jwt_decode from "jwt-decode";
 
 export const AllReportsPage = () => {
   const { role, token } = useContext(UserContext);
-  const reportsQuery = useReports();
-  const {officerReportsQuery, currentPage, setCurrentPage} = useOfficerReports();
+  const {currentReports, setCurrentReports, reportsQuery} = useReports();
+  const {officerReportsQuery, currentOfReports, setCurrentOfReports} = useOfficerReports();
   const { setSearchOfficer, searchOfficerReportsQuery } = useSearchReport();
   const decoded: DecodedI = jwt_decode(token);
-
 
   return (
     <TablesLayout roles={["OPERATOR", "DISPATCHER", "OFFICER"]}>
@@ -42,10 +41,12 @@ export const AllReportsPage = () => {
             </div>
             :
             <>
-             <div className="overflow-x-auto h-[44rem] w-full mx-auto rounded-lg shadow-xl">
+             <div className="overflow-x-auto h-3/5 w-full mx-auto rounded-lg shadow-xl">
               <ReportsTable data={reportsQuery.data} />
             </div>
-            <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage}/>
+            <Pagination currentPage={currentReports} setCurrentPage={setCurrentReports}
+            query={reportsQuery}
+            />
             </>
           )
         ) : officerReportsQuery.isError ? (
@@ -54,10 +55,10 @@ export const AllReportsPage = () => {
           officerReportsQuery.isLoading ? <div className="loader">
             </div> :
             <> 
-              <div className="overflow-x-auto h-[40rem] w-full mx-auto rounded-lg shadow-xl">
+              <div className="overflow-x-auto h-3/5 w-full mx-auto rounded-lg shadow-xl">
           <ReportsTable data={officerReportsQuery.data} />
           </div>        
-          <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage}/>   
+          <Pagination currentPage={currentOfReports} setCurrentPage={setCurrentOfReports}  query={officerReportsQuery}/>   
             </>
         )}
       </div>

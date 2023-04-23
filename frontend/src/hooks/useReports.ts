@@ -21,34 +21,48 @@ import jwt_decode from "jwt-decode";
 // to get all the reports
 export const useReports = () => {
   const axiosPrivate = useAxiosPrivate();
+  const [currentReports, setCurrentReports] = useState<number>(10)
   const reportsQuery = useQuery(["reports"], async (): Promise<ReportsResI> => {
-    const { data } = await axiosPrivate.get<ReportsResI>("/reports/");
+    const { data } = await axiosPrivate.get<ReportsResI>("/reports/",{
+      params:{
+        limit:10,
+        starting_after:currentReports,
+      }
+    });
     return data;
+  },{
+    keepPreviousData:true
   });
-  return reportsQuery;
+  return {
+    currentReports,
+    setCurrentReports,
+    reportsQuery
+  };
 };
 
 export const useOfficerReports = () => {
     const axiosPrivate = useAxiosPrivate();
-    const [currentPage, setCurrentPage] = useState<number>(10)
+    const [currentOfReports, setCurrentOfReports] = useState<number>(10)
 
     const {token} = useContext(UserContext);
     const decoded: DecodedI = jwt_decode(token);
-    const officerReportsQuery = useQuery(["officerReports", decoded.info.username], async():Promise<ReportsResI> => {
+    const officerReportsQuery = useQuery(["officerReports", decoded.info.username, currentOfReports], async():Promise<ReportsResI> => {
       const {data} = await axiosPrivate.get<ReportsResI>(`/reports/`,{
         params:{
-          limit:currentPage,
-          starting_after:currentPage,
+          limit:10,
+          starting_after:currentOfReports,
           officer:decoded.info.username
-        }
+        },
       })
       console.log(data)
       return data;
+    },{
+      keepPreviousData:true
     })
     return {
       officerReportsQuery,
-      currentPage,
-      setCurrentPage
+      currentOfReports,
+      setCurrentOfReports
     }
 }
 
