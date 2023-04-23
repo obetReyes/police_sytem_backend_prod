@@ -5,7 +5,9 @@ import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import {Server, createServer, routes} from "./server.utils";
 import { locationGateway } from "./sockets";
-
+import { seed } from "./utils/seed";
+import * as dotenv from "dotenv"; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+dotenv.config();
 export const app = express();
 export const server = createServer(app);
 
@@ -42,6 +44,9 @@ function main(){
   });
   routes(app);
   locationGateway({io});
+  if (process.env.NODE_ENV === "development") {
+   // use this only when is your frist time running the server seed();
+  }  
 }
 main();
 
