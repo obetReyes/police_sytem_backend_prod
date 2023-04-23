@@ -2,7 +2,6 @@ import {useParams, useNavigate } from 'react-router-dom'
 import { useReport } from '../../../hooks'
 import { ProtectedLayout } from '../../../components'
 import { customDate, customHour } from '../../../helpers'
-import { useEffect } from 'react'
 
 export const ReportPage = () => {
   const {reporteId} = useParams()

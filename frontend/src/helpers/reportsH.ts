@@ -22,6 +22,9 @@ export interface ReportResI {
 }
 export interface ReportsResI{
     message: ReportI[]
+    limit: number,
+    records: number,
+    starting_after: number
 }
 
 export const createReportSchema = yup.object({

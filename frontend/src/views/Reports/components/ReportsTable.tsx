@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { customDate, customHour, ReportsResI, ReportResI } from "../../../helpers";
+import { customDate, customHour, ReportsResI} from "../../../helpers";
 import { ReportsColumns } from "./ReportsColumns";
 import { Link } from "react-router-dom";
 interface Props{

@@ -25,6 +25,9 @@ export interface SummaryResI{
 }
 export interface SummariesResI{
     message:SummaryI[]
+    limit:number,
+    records:number,
+    starting_after:number
 }
 
 export const createSummarySchema = yup.object({

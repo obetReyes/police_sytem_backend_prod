@@ -17,27 +17,35 @@ import { UserContext } from "../contexts";
 import axios, { AxiosError } from "axios";
 import jwt_decode from "jwt-decode";
 
+
 export  const useSummaries = () => {
     const axiosPrivate = useAxiosPrivate();
-    const summariesQuery = useQuery(["reports"], async (): Promise<SummariesResI> => {
-      const { data } = await axiosPrivate.get<SummariesResI>("/reports/");
+    const [currentSummaries, setCurrentSummaries] = useState<number>(25)
+    const summariesQuery = useQuery(["summaries", currentSummaries], async (): Promise<SummariesResI> => {
+      const { data } = await axiosPrivate.get<SummariesResI>("/summaries/",{
+        params:{
+          starting_after:currentSummaries
+        }
+      });
       return data;
+    },{
+      keepPreviousData:true
     });
-    return summariesQuery;
+    return {currentSummaries, setCurrentSummaries, summariesQuery};
 }
 export const useSearchSummary = () => {
-    const [dispatcher, setDispatcher] = useState<string | undefined>("");
-    const debouncedFilter = useDebounce(dispatcher!.length > 6, 500);
+    const [searchDispatcher, setSearchDispatcher] = useState<string | undefined>("");
+    const debouncedFilter = useDebounce(searchDispatcher!.length > 6, 500);
   
-    const debounceDelay = dispatcher!.length > 5 ? 500 : null;
-    const [debouncedDispatcherValue] = useDebounce(dispatcher, debounceDelay!);
+    const debounceDelay = searchDispatcher!.length > 5 ? 500 : null;
+    const [debouncedDispatcherValue] = useDebounce(searchDispatcher, debounceDelay!);
     const axiosPrivate = useAxiosPrivate();
     const dispatcherSummariesQuery = useQuery(
       ["dispatcherSummaries", debouncedDispatcherValue],
       async (): Promise<SummariesResI> => {
         const { data } = await axiosPrivate.get<SummariesResI>(`/summaries/`, {
           params: {
-            dispatcher: dispatcher,
+            dispatcher: searchDispatcher,
           },
         });
         console.log(data);
@@ -56,8 +64,8 @@ export const useSearchSummary = () => {
     );
     return {
     dispatcherSummariesQuery,
-    dispatcher,
-    setDispatcher
+    searchDispatcher,
+    setSearchDispatcher
     };
 }
 export const useSummary = (id:number) => {
@@ -66,7 +74,6 @@ export const useSummary = (id:number) => {
     :Promise<SummaryResI> => {
         console.log(id)
         const {data} = await axiosPrivate.get<SummaryResI>(`/summaries/${id}`);
-        //tengo que cheacar como llega la respuesta del id para ebvuarka
         console.log(data)
         return data
     },{

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Pagination, TablesLayout } from "../../../components";
 import { ReportModal } from "../components/ReportModal";
 import { ReportsTable } from "../components/ReportsTable";
@@ -41,7 +40,7 @@ export const AllReportsPage = () => {
             </div>
             :
             <>
-             <div className="overflow-x-auto h-3/5 w-full mx-auto rounded-lg shadow-xl">
+             <div className="overflow-x-auto h-[40rem] w-full mx-auto rounded-lg shadow-xl">
               <ReportsTable data={reportsQuery.data} />
             </div>
             <Pagination currentPage={currentReports} setCurrentPage={setCurrentReports}
@@ -55,7 +54,7 @@ export const AllReportsPage = () => {
           officerReportsQuery.isLoading ? <div className="loader">
             </div> :
             <> 
-              <div className="overflow-x-auto h-3/5 w-full mx-auto rounded-lg shadow-xl">
+              <div className="overflow-x-auto h-[40rem] w-full mx-auto rounded-lg shadow-xl">
           <ReportsTable data={officerReportsQuery.data} />
           </div>        
           <Pagination currentPage={currentOfReports} setCurrentPage={setCurrentOfReports}  query={officerReportsQuery}/>   
