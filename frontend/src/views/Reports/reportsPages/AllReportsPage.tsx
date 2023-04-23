@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { TablesLayout } from "../../../components";
+import { useState } from "react";
+import { Pagination, TablesLayout } from "../../../components";
 import { ReportModal } from "../components/ReportModal";
 import { ReportsTable } from "../components/ReportsTable";
 import { useContext } from "react";
@@ -11,10 +11,9 @@ import jwt_decode from "jwt-decode";
 export const AllReportsPage = () => {
   const { role, token } = useContext(UserContext);
   const reportsQuery = useReports();
-  const officerReportsQuery = useOfficerReports();
+  const {officerReportsQuery, currentPage, setCurrentPage} = useOfficerReports();
   const { setSearchOfficer, searchOfficerReportsQuery } = useSearchReport();
   const decoded: DecodedI = jwt_decode(token);
-
 
 
   return (
@@ -42,18 +41,24 @@ export const AllReportsPage = () => {
             reportsQuery.isLoading ? <div className="loader">
             </div>
             :
-            <div className="overflow-x-auto h-[44rem] w-full mx-auto rounded-lg shadow-xl">
+            <>
+             <div className="overflow-x-auto h-[44rem] w-full mx-auto rounded-lg shadow-xl">
               <ReportsTable data={reportsQuery.data} />
             </div>
+            <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage}/>
+            </>
           )
         ) : officerReportsQuery.isError ? (
           <p>{`${officerReportsQuery.error}`}</p>
         ) : (
           officerReportsQuery.isLoading ? <div className="loader">
             </div> :
-          <div className="overflow-x-auto h-[44rem] w-full mx-auto rounded-lg shadow-xl">
+            <> 
+              <div className="overflow-x-auto h-[40rem] w-full mx-auto rounded-lg shadow-xl">
           <ReportsTable data={officerReportsQuery.data} />
-          </div>
+          </div>        
+          <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage}/>   
+            </>
         )}
       </div>
     </TablesLayout>

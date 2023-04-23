@@ -30,17 +30,26 @@ export const useReports = () => {
 
 export const useOfficerReports = () => {
     const axiosPrivate = useAxiosPrivate();
+    const [currentPage, setCurrentPage] = useState<number>(10)
+
     const {token} = useContext(UserContext);
     const decoded: DecodedI = jwt_decode(token);
     const officerReportsQuery = useQuery(["officerReports", decoded.info.username], async():Promise<ReportsResI> => {
       const {data} = await axiosPrivate.get<ReportsResI>(`/reports/`,{
         params:{
+          limit:currentPage,
+          starting_after:currentPage,
           officer:decoded.info.username
         }
       })
+      console.log(data)
       return data;
     })
-    return officerReportsQuery;
+    return {
+      officerReportsQuery,
+      currentPage,
+      setCurrentPage
+    }
 }
 
 //query to get reports if the are searched through the searchbar
