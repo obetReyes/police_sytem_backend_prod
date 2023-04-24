@@ -44,8 +44,10 @@ export const getReportsController = tryCatch(
           user: {
             name: String(req.user),
           },
+
         },
-      });
+        
+      },);
     }else{
       if(isOfficer){
         reports =  await getManyReportsService({
@@ -76,15 +78,11 @@ export const getReportsController = tryCatch(
     const response = {
       message:reports,
       limit: dbLimit,
-      records: req.role == "OFFICER" ?  await prisma.report.count({
+      number: await  prisma.report.count({
         where:{
-          userName:String(req.user)
+          userName:isOfficer?.name
         }
-      }) : isOfficer?.name  ? await prisma.report.count({
-        where:{
-          userName:isOfficer.name
-        }
-      }) : await prisma.report.count(),
+      }),
       starting_after: isOfficer?.name
         ? dbStarting_after_extract
         : dbStarting_after_value

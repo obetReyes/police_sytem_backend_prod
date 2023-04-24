@@ -5,7 +5,7 @@ export const SummariesColumns = () => {
                 <th>Fecha</th>
                 <th>Hora</th>
                 <th>Incidente</th>
-                <th>Solicitante</th>
+                <th>Emisario</th>
                 <th></th>
             </tr>
         </thead>

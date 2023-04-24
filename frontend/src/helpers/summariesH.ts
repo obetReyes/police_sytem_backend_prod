@@ -18,7 +18,7 @@ export interface SummaryI{
     notes:string,
     location:string,
     phone:string,
-    username:string
+    userName:string
 }
 export interface SummaryResI{
     message:SummaryI

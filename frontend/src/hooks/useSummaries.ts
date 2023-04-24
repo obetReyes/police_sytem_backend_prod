@@ -40,7 +40,7 @@ export const useSearchSummary = () => {
     const debounceDelay = searchDispatcher!.length > 5 ? 500 : null;
     const [debouncedDispatcherValue] = useDebounce(searchDispatcher, debounceDelay!);
     const axiosPrivate = useAxiosPrivate();
-    const dispatcherSummariesQuery = useQuery(
+    const searchDispatcherSummariesQuery = useQuery(
       ["dispatcherSummaries", debouncedDispatcherValue],
       async (): Promise<SummariesResI> => {
         const { data } = await axiosPrivate.get<SummariesResI>(`/summaries/`, {
@@ -63,7 +63,7 @@ export const useSearchSummary = () => {
       }
     );
     return {
-    dispatcherSummariesQuery,
+    searchDispatcherSummariesQuery,
     searchDispatcher,
     setSearchDispatcher
     };

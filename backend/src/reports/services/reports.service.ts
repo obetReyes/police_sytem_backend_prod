@@ -20,7 +20,9 @@ export const getReportsService = async(params:{
     const {take, where} = params;
     return prisma.report.findMany({
         take,
-        where
+        where,
+        
+        
     });
 };
 

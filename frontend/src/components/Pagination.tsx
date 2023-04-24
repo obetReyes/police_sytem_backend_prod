@@ -1,5 +1,5 @@
+import { useEffect } from "react";
 import { UseQueryResult } from "@tanstack/react-query";
-import { ReportsResI } from "../helpers";
 
 interface Props{
     currentPage:number
@@ -8,14 +8,26 @@ interface Props{
 }
 export const Pagination = ({currentPage, setCurrentPage, query}:Props) => {
 
+  useEffect(() => {
+    const storedPage = localStorage.getItem("currentPage");
+    if (storedPage) {
+      setCurrentPage(Number(storedPage));
+    }
+  }, []);
+
 
   const nextPage = () => {
     setCurrentPage(currentPage + 20);
-    console.log(currentPage)
+    localStorage.setItem("currentPage", String(currentPage + 20));
   };
 
   const previousPage = () => {
-    if (currentPage > 0) setCurrentPage(currentPage - 20);
+    if (currentPage > 0) 
+    {
+      setCurrentPage(currentPage - 20)
+      localStorage.setItem("currentPage", String(currentPage - 20));
+    };
+    
   };
   return (
     <div className="flex justify-center gap-4 my-2">
