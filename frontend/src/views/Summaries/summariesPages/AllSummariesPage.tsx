@@ -10,10 +10,8 @@ export const AllSummariesPage = () => {
   const {role, token} = useContext(UserContext);
   const {summariesQuery, currentSummaries, setCurrentSummaries} = useSummaries()
   const { searchDispatcherSummariesQuery, searchDispatcher, setSearchDispatcher} = useSearchSummary()
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchDispatcher(e.target.value);
-  }
-  const filteredSummaries = searchDispatcher!.length > 6 ? searchDispatcherSummariesQuery : summariesQuery
+ 
+  const filteredSummaries = searchDispatcher ? searchDispatcherSummariesQuery : summariesQuery
   return (
     <TablesLayout roles={["OPERATOR", "DISPATCHER"]}>
        <h1 className='fixed left-6 font-semibold text-2xl text-warning top-4'>sumarios</h1>
@@ -23,8 +21,11 @@ export const AllSummariesPage = () => {
           type="text"
           placeholder="buscar sumario...."
           className="input input-bordered"
-          value={searchDispatcher}
-          onChange={handleSearch}
+          onChange={(e) => { if (e.target.value.length > 6) setSearchDispatcher(e.target.value)
+            if(e.target.value.length === 0){
+              setSearchDispatcher(e.target.value)
+            }
+            }}
         />
         {role == "DISPATCHER" && <SummaryModal/>}
 

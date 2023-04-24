@@ -35,13 +35,12 @@ export  const useSummaries = () => {
 }
 export const useSearchSummary = () => {
     const [searchDispatcher, setSearchDispatcher] = useState<string | undefined>("");
-    const debouncedFilter = useDebounce(searchDispatcher!.length > 6, 500);
   
-    const debounceDelay = searchDispatcher!.length > 5 ? 500 : null;
+    const debounceDelay = searchDispatcher!.length > 6 ? 600 : null;
     const [debouncedDispatcherValue] = useDebounce(searchDispatcher, debounceDelay!);
     const axiosPrivate = useAxiosPrivate();
     const searchDispatcherSummariesQuery = useQuery(
-      ["dispatcherSummaries", debouncedDispatcherValue],
+      ["searchDispatcherSummaries", debouncedDispatcherValue],
       async (): Promise<SummariesResI> => {
         const { data } = await axiosPrivate.get<SummariesResI>(`/summaries/`, {
           params: {
@@ -53,7 +52,7 @@ export const useSearchSummary = () => {
       },
       {
         refetchOnWindowFocus: false,
-        retry: 1,
+        retry:1,
         onError(error) {
           if (axios.isAxiosError<ErrorsI, Record<string, unknown>>(error)) {
             error.message = String(error.response?.data.message);
