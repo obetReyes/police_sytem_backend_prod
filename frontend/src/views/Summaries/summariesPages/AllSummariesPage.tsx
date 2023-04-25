@@ -7,7 +7,7 @@ import { useContext } from "react"
 import { UserContext } from "../../../contexts"
 import { useSearchSummary ,useSummaries } from "../../../hooks";
 export const AllSummariesPage = () => {
-  const {role, token} = useContext(UserContext);
+  const {role} = useContext(UserContext);
   const {summariesQuery, currentSummaries, setCurrentSummaries} = useSummaries()
   const { searchDispatcherSummariesQuery, searchDispatcher, setSearchDispatcher} = useSearchSummary()
  

@@ -2,6 +2,8 @@ import { UseQueryResult } from "@tanstack/react-query";
 import { customDate, customHour, SummariesResI } from "../../../helpers";
 import { SummariesColumns } from "./SummariesColumns";
 import { Link } from "react-router-dom";
+import { ErrorsI } from "../../../helpers";
+import { AxiosError } from "axios";
 interface Props{
   query: UseQueryResult<SummariesResI, unknown>
 }
@@ -12,8 +14,7 @@ export const SummariesTable = ({query}:Props) => {
       <tbody>
         {query.isLoading && <div className="loader"></div>}
         {query.isError ?  <tr>
-        
-          <td colSpan={100}>{`${query.error}`}</td>
+          <td colSpan={100}>{`${(query.error as ErrorsI).response.data.message}`}</td>
           </tr>
           :
            query.data?.message.map((summarie) => {

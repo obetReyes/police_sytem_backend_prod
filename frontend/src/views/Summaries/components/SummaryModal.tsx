@@ -1,5 +1,5 @@
 import { useSummaryMutation } from "../../../hooks/useSummaries"
-import { CreateSummaryI, createSummarySchema } from "../../../helpers"
+import { CreateSummaryI, ErrorsI, createSummarySchema } from "../../../helpers"
 import {useForm} from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
@@ -155,7 +155,7 @@ export const SummaryModal = () => {
 }
     </form>
     </div>
-    {isError ? <p className={`${errorStyles} pt-4`}>{`${error?.message}`}</p> : null}
+    {isError ? <p className={`${errorStyles} pt-4`}>{`${(error as ErrorsI).response.data.message}`}</p> : null}
 </div>
 </>}
 

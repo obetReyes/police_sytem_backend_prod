@@ -47,11 +47,6 @@ export const useSearchGroup = () => {
       {
         refetchOnWindowFocus: false,
         retry: 1,
-        onError(error) {
-          if (axios.isAxiosError<ErrorsI, Record<string, unknown>>(error)) {
-            error.message = String(error.response?.data.message);
-          }
-        },
         enabled: !!debouncedGroupValue,
       }
     );
@@ -70,10 +65,7 @@ export const useGroup = (id:number) => {
         const {data} = await axiosPrivate.get<GroupResI>(`/groups/${id}`);
         return data
     },{
-        onError:(error)=> {
-            if (axios.isAxiosError<ErrorsI, Record<string, unknown>>(error))
-            error.message = String(error.response?.data.message)
-        }
+       
     }) 
     return reportQuery
 }
@@ -91,16 +83,7 @@ export const useGroupMutation = () => {
         onSuccess:(data) => {
             reports.refetchQueries({queryKey:["groups", decoded.info.username]});
         },
-        onError:(error) => {
-            if (axios.isAxiosError<ErrorsI,Record<string, unknown>>(error)) {
-                error.message = String(error.response?.data.message)
-                // Do something with this error...
-            } 
-            if(error.code == "ERR_NETWORK"){
-                error.message = "no se puedo establecer conexion con el servidor"
-            }
-            return error.message
-        }, 
+      
     })
     return{
         mutate,
@@ -122,16 +105,6 @@ const {mutate, error, isError, isLoading, isSuccess} = useMutation<GroupActionRe
     onSuccess:(data) => {
         reports.refetchQueries({queryKey:["groups", decoded.info.username]});
     },
-    onError:(error) => {
-        if (axios.isAxiosError<ErrorsI,Record<string, unknown>>(error)) {
-            error.message = String(error.response?.data.message)
-            // Do something with this error...
-        } 
-        if(error.code == "ERR_NETWORK"){
-            error.message = "no se puedo establecer conexion con el servidor"
-        }
-        return error.message
-    }, 
 })
 return{
     mutate,

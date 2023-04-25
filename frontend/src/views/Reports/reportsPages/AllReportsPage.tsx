@@ -4,15 +4,16 @@ import { ReportsTable } from "../components/ReportsTable";
 import { useContext } from "react";
 import { UserContext } from "../../../contexts";
 import { useReports, useSearchReport, useOfficerReports } from "../../../hooks";
-import { DecodedI } from "../../../helpers";
-import jwt_decode from "jwt-decode";
+import { useRecords, useUserRecord } from "../../../hooks/useQueries";
+import { ReportsResI } from "../../../helpers";
+
 
 export const AllReportsPage = () => {
   const { role, token } = useContext(UserContext);
-  const {currentReports, setCurrentReports, reportsQuery} = useReports();
-  const {officerReportsQuery, currentOfReports, setCurrentOfReports} = useOfficerReports();
-  const { setSearchOfficer, searchOfficerReportsQuery } = useSearchReport();
-  const decoded: DecodedI = jwt_decode(token);
+  const {currentPage, setCurrentPage, recordsQuery} = useRecords<ReportsResI>("reports")
+  const {currentPage:currentPage2, setCurrentPage:setCurrentPage2, userRecordQuery} = useUserRecord<ReportsResI>("reports")
+  const { setSearchOfficer,searchOfficer,  searchOfficerReportsQuery } = useSearchReport();
+  const filteredReports = searchOfficer ? searchOfficerReportsQuery :recordsQuery
 
   return (
     <TablesLayout roles={["OPERATOR", "DISPATCHER", "OFFICER"]}>
@@ -26,38 +27,42 @@ export const AllReportsPage = () => {
             type="text"
             placeholder="buscar reportes por oficial...."
             className="input input-bordered w-4/12 mx-auto"
-
+            onChange={(e) => { if (e.target.value.length > 6) setSearchOfficer(e.target.value)
+              if(e.target.value.length === 0){
+                setSearchOfficer(e.target.value)
+              }
+              }}
           />
         )}
         {role == "OFFICER" && <ReportModal />}
       </div>
       <div className="md:w-10/12 lg:w-8/12">
         {role == "OPERATOR" || role == "DISPATCHER" ? (
-          reportsQuery.isError ? (
-            <p>{`${reportsQuery.error}`}</p>
+          recordsQuery.isError ? (
+            <p>{`${recordsQuery.error}`}</p>
           ) : ( 
-            reportsQuery.isLoading ? <div className="loader">
+            recordsQuery.isLoading ? <div className="loader">
             </div>
             :
             <>
              <div className="overflow-x-auto h-[40rem] w-full mx-auto rounded-lg shadow-xl">
-              <ReportsTable data={reportsQuery.data} />
+              <ReportsTable query={filteredReports} />
             </div>
-            <Pagination currentPage={currentReports} setCurrentPage={setCurrentReports}
-            query={reportsQuery}
+            <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage}
+            query={recordsQuery}
             />
             </>
           )
-        ) : officerReportsQuery.isError ? (
-          <p>{`${officerReportsQuery.error}`}</p>
+        ) : userRecordQuery.isError ? (
+          <p>{`${userRecordQuery.error}`}</p>
         ) : (
-          officerReportsQuery.isLoading ? <div className="loader">
+          userRecordQuery.isLoading ? <div className="loader">
             </div> :
             <> 
               <div className="overflow-x-auto h-[40rem] w-full mx-auto rounded-lg shadow-xl">
-          <ReportsTable data={officerReportsQuery.data} />
+          <ReportsTable query={userRecordQuery} />
           </div>        
-          <Pagination currentPage={currentOfReports} setCurrentPage={setCurrentOfReports}  query={officerReportsQuery}/>   
+          <Pagination currentPage={currentPage2} setCurrentPage={setCurrentPage2}  query={userRecordQuery}/>   
             </>
         )}
       </div>

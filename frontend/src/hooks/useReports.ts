@@ -16,26 +16,12 @@ import { useAxiosPrivate } from "./useAxiosPrivate";
 import { UserContext } from "../contexts";
 import axios, { AxiosError } from "axios";
 import jwt_decode from "jwt-decode";
+import { useRecords } from "./useQueries";
 
 // to get all the reports
 export const useReports = () => {
-  const axiosPrivate = useAxiosPrivate();
-  const [currentReports, setCurrentReports] = useState<number>(25)
-  const reportsQuery = useQuery(["reports", currentReports], async (): Promise<ReportsResI> => {
-    const { data } = await axiosPrivate.get<ReportsResI>("/reports/",{
-      params:{
-        starting_after:currentReports,
-      }
-    });
-    return data;
-  },{
-    keepPreviousData:true
-  });
-  return {
-    currentReports,
-    setCurrentReports,
-    reportsQuery
-  };
+  const {currentPage, setCurrentPage, recordsQuery} = useRecords<ReportResI>("reports")
+
 };
 
 export const useOfficerReports = () => {
@@ -85,11 +71,6 @@ export const useSearchReport = () => {
       //refetchOnWindowFocus option is set to false to prevent the query from refetching 
       refetchOnWindowFocus: false,
       retry: 1,
-      onError(error) {
-        if (axios.isAxiosError<ErrorsI, Record<string, unknown>>(error)) {
-          error.message = String(error.response?.data.message);
-        }
-      },
       enabled: !!debouncedOfficerValue,
     }
   );
@@ -110,10 +91,6 @@ export const useReport = (reportId:number) => {
       console.log(data)
       return data
   },{
-      onError:(error)=> {
-          if (axios.isAxiosError<ErrorsI, Record<string, unknown>>(error))
-          error.message = String(error.response?.data.message)
-      }
   }) 
   return reportQuery
 }
@@ -133,16 +110,7 @@ export const useReportMutation = () => {
             reports.refetchQueries({queryKey:["officerReports", decoded.info.username]});
 
         },
-        onError:(error) => {
-            if (axios.isAxiosError<ErrorsI,Record<string, unknown>>(error)) {
-                error.message = String(error.response?.data.message)
-                // Do something with this error...
-            } 
-            if(error.code == "ERR_NETWORK"){
-                error.message = "no se puedo establecer conexion con el servidor"
-            }
-            return error.message
-        }, 
+  
     })
     return{
         mutate,
@@ -150,5 +118,6 @@ export const useReportMutation = () => {
         isError,
         isLoading,
         isSuccess,
+        
     }
 };
