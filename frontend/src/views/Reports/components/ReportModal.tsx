@@ -1,5 +1,5 @@
-import { useReportMutation } from "../../../hooks";
-import { CreateReportI, createReportSchema } from "../../../helpers";
+import { useRecordMutation } from "../../../hooks";
+import { CreateReportI, ReportResI, createReportSchema } from "../../../helpers";
 import {useForm} from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from "react";
@@ -8,7 +8,7 @@ import { ErrorsI } from "../../../helpers";
 
 
 export const ReportModal = () => {
-  const {mutate, error, isError, isLoading} = useReportMutation();
+  const {mutate, error, isError, isLoading} = useRecordMutation<ReportResI, CreateReportI>("reports");
   const [isModal, setIsModal] = useState<boolean>(false);
   const {
     register,
@@ -58,7 +58,6 @@ export const ReportModal = () => {
       placeholder="Suceso"
       autoComplete="off"
       {...register("event")}
-     //register goes here
     />
   </div>
   {errors.event ? <p className={errorStyles}>{errors.event?.message}</p> : null}
@@ -76,7 +75,6 @@ export const ReportModal = () => {
       placeholder="Acciones Tomadas"
       autoComplete="off"
       {...register("actions")}
-     //register goes here
     />
     </div>
     {errors.actions ? <p className={errorStyles}>{errors.actions?.message}</p> : null}
@@ -93,7 +91,6 @@ export const ReportModal = () => {
       className={inputStyles}
       placeholder="Resumen Del Suceso"
       autoComplete="off"
-     //register goes here
      {...register("summary")}
     />
     </div>

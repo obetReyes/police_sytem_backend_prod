@@ -28,7 +28,7 @@ export const useSignInMutation = () => {
       },
       onError: (error) => {
         if (axios.isAxiosError<ErrorsI, Record<string, unknown>>(error)) {
-          error.message = String(error.response?.data.message);
+          error.message = String(error.message);
           // Do something with this error...
         }
         if (error.code == "ERR_NETWORK") {

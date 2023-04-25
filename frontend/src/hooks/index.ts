@@ -4,4 +4,4 @@ export { useSignOutMutation } from "./useSignOut";
 export { useReport, useReportMutation, useReports, useSearchReport, useOfficerReports } from "./useReports";
 export { useSummary, useSummaries, useSummaryMutation, useSearchSummary } from "./useSummaries";
 
-export { useRecords, useUserRecord, useRecord, useSearchRecords } from "./useQueries";
+export { useRecords, useUserRecord, useRecord, useSearchRecords, useRecordMutation } from "./useQueries";
