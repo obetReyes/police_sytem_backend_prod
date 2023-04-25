@@ -12,21 +12,18 @@ export const validator =
 
       return next();
     } catch (err) {
+      console.log(err);
       if (err instanceof ZodError) {
-        const errors = err.issues.map((issue) => ({
-          errorCode:400,
-          message:
-            issue.message 
-              ? `${issue.path} ${issue.message}`
-              : "el campo es requerido",
-          href: "",
-        }));
-        const formattedErrRes: Array<object> = [];
-        errors.forEach((value) => {
-          formattedErrRes.push(value);
+        const errors = err.issues.map((issue) => {
+          
+          return {
+            errorCode: 400,
+            message: issue.message || `${issue.path} error desconcido`,
+            href: "",
+          };
         });
 
-        res.status(400).json({ errors: formattedErrRes });
+        res.status(400).json({ errors });
       } else {
         res.status(500).json(err);
       }
