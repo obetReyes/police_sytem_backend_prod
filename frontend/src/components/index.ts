@@ -4,3 +4,4 @@ export { TablesLayout } from "./TablesLayout";
 export { Table } from "./Table";
 export { ProtectedLayout } from "./ProtectedLayout";
 export { Pagination } from "./Pagination";
+export { Topbar } from "./Topbar";
