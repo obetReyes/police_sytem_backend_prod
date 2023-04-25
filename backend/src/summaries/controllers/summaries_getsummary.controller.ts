@@ -8,11 +8,6 @@ export const getSummaryController = tryCatch(
         const getSummary = await getSummaryService({
             id:Number(summaryId)
         });
-        if(req.role !== "OPERATOR" && req.role == "DISPATCHER"){
-            if(getSummary?.userName !== req.user){
-                throw new CustomError("el sumario no se puede obtener debido a que el sumario no le pertence al emisario", "", 401);
-            }
-        }
         if(getSummary == null){
             throw new CustomError("el sumario no existe", "", 404);
         }
