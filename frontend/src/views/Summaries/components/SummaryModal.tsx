@@ -1,11 +1,11 @@
-import { useSummaryMutation } from "../../../hooks/useSummaries"
-import { CreateSummaryI, ErrorsI, createSummarySchema } from "../../../helpers"
+import { useRecordMutation } from "../../../hooks/"
+import { CreateSummaryI, ErrorsI, SummaryResI, createSummarySchema } from "../../../helpers"
 import {useForm} from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
 
 export const SummaryModal = () => {
-  const {mutate, error, isError, isLoading} = useSummaryMutation();
+  const {mutate, error, isError, isLoading} = useRecordMutation<SummaryResI, CreateSummaryI>("reports");
   const [isModal, setIsModal] = useState<boolean>(false);
 
   const {

@@ -3,7 +3,7 @@ import { customDate, customHour, SummariesResI } from "../../../helpers";
 import { SummariesColumns } from "./SummariesColumns";
 import { Link } from "react-router-dom";
 import { ErrorsI } from "../../../helpers";
-import { AxiosError } from "axios";
+
 interface Props{
   query: UseQueryResult<SummariesResI, unknown>
 }

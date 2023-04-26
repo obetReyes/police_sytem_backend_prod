@@ -3,16 +3,11 @@ import { ReportModal } from "../components/ReportModal";
 import { ReportsTable } from "../components/ReportsTable";
 import { useContext } from "react";
 import { UserContext } from "../../../contexts";
-import { useReports, useSearchReport, useOfficerReports } from "../../../hooks";
-import {
-  useRecords,
-  useSearchRecords,
-  useUserRecord,
-} from "../../../hooks/useQueries";
+import { useRecords, useSearchRecords, useUserRecord } from "../../../hooks/";
 import { ReportsResI } from "../../../helpers";
 
 export const AllReportsPage = () => {
-  const { role, token } = useContext(UserContext);
+  const { role } = useContext(UserContext);
   const { currentPage, setCurrentPage, recordsQuery } =
     useRecords<ReportsResI>("reports");
 
@@ -34,38 +29,24 @@ export const AllReportsPage = () => {
       </h1>
       <Topbar
         modal={<ReportModal />}
-        role="OFFICER"
+        allowedRole="OFFICER"
         setSearchRecords={setSearchRecords}
         key={"reportModal"}
       />
 
       <div className="md:w-10/12 lg:w-8/12">
         {role == "OPERATOR" || role == "DISPATCHER" ? (
-          recordsQuery.isError ? (
-            <p>{`${recordsQuery.error}`}</p>
-          ) : recordsQuery.isLoading ? (
-            <div className="loader"></div>
-          ) : (
-            <>
-              <div className="overflow-x-auto h-[40rem] w-full mx-auto rounded-lg shadow-xl">
-                <ReportsTable query={filteredReports} />
-              </div>
-              <Pagination
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-                query={recordsQuery}
-              />
-            </>
-          )
-        ) : userRecordQuery.isError ? (
-          <p>{`${userRecordQuery.error}`}</p>
-        ) : userRecordQuery.isLoading ? (
-          <div className="loader"></div>
+          <>
+            <ReportsTable query={filteredReports} />
+            <Pagination
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              query={recordsQuery}
+            />
+          </>
         ) : (
           <>
-            <div className="overflow-x-auto h-[40rem] w-full mx-auto rounded-lg shadow-xl">
-              <ReportsTable query={userRecordQuery} />
-            </div>
+            <ReportsTable query={userRecordQuery} />
             <Pagination
               currentPage={currentPage2}
               setCurrentPage={setCurrentPage2}

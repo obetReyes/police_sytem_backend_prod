@@ -9,6 +9,7 @@ interface Props{
 export const ReportsTable = ({query}:Props) => {
 
   return (
+     <div className="overflow-x-auto h-[40rem] w-full mx-auto rounded-lg shadow-xl">
     <table className="table  table-zebra w-full">
       <ReportsColumns/>
       <tbody>
@@ -35,5 +36,6 @@ export const ReportsTable = ({query}:Props) => {
       }
       </tbody>
     </table>
+    </div>
   )
 }

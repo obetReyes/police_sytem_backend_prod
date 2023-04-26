@@ -1,41 +1,40 @@
-import { TablesLayout } from "../../../components"
 //import { SummariesTable } from "../components/SummariesTable"
-import { Pagination } from "../../../components"
-import { SummaryModal} from "../components/SummaryModal"
-import { SummariesTable } from "../components/SummariesTable"
-import { useContext } from "react"
-import { UserContext } from "../../../contexts"
-import { useSearchSummary ,useSummaries } from "../../../hooks";
+import { Pagination, TablesLayout, Topbar } from "../../../components";
+import { SummaryModal } from "../components/SummaryModal";
+import { SummariesTable } from "../components/SummariesTable";
+import { useContext } from "react";
+import { UserContext } from "../../../contexts";
+import { useRecords, useSearchRecords, useUserRecord } from "../../../hooks/";
+import { useSearchSummary, useSummaries } from "../../../hooks";
+import { SummariesResI } from "../../../helpers";
 export const AllSummariesPage = () => {
-  const {role} = useContext(UserContext);
-  const {summariesQuery, currentSummaries, setCurrentSummaries} = useSummaries()
-  const { searchDispatcherSummariesQuery, searchDispatcher, setSearchDispatcher} = useSearchSummary()
- 
-  const filteredSummaries = searchDispatcher ? searchDispatcherSummariesQuery : summariesQuery
+  const { role } = useContext(UserContext);
+  const { currentPage, setCurrentPage, recordsQuery } =
+    useRecords<SummariesResI>("summaries");
+  const { searchRecords, setSearchRecords, searchRecordsQuery } =
+    useSearchRecords<SummariesResI>("summaries");
+  const filteredSummaries = searchRecords
+    ? searchRecordsQuery
+    : recordsQuery
   return (
     <TablesLayout roles={["OPERATOR", "DISPATCHER"]}>
-       <h1 className='fixed left-6 font-semibold text-2xl text-warning top-4'>sumarios</h1>
-<div className="h-20 my-6 flex justify-around md:w-10/12 lg:w-8/12 items-center"> 
-        <input
-        autoComplete="off"
-          type="text"
-          placeholder="buscar sumario...."
-          className="input input-bordered"
-          onChange={(e) => { if (e.target.value.length > 6) setSearchDispatcher(e.target.value)
-            if(e.target.value.length === 0){
-              setSearchDispatcher(e.target.value)
-            }
-            }}
-        />
-        {role == "DISPATCHER" && <SummaryModal/>}
-
-      </div>
+      <h1 className="fixed left-6 font-semibold text-2xl text-warning top-4">
+        sumarios
+      </h1>
+      <Topbar
+        modal={<SummaryModal />}
+        allowedRole="DISPATCHER"
+        setSearchRecords={setSearchRecords}
+        key={"summaryModal"}
+      />
       <div className="md:w-10/12 lg:w-8/12">
-      <div className="overflow-x-auto h-2/6 w-full mx-auto rounded-lg shadow-xl">
-        <SummariesTable query={filteredSummaries} />  
-        </div>
-        <Pagination currentPage={currentSummaries} setCurrentPage={setCurrentSummaries}  query={summariesQuery}/>   
+      <SummariesTable query={filteredSummaries} />
+            <Pagination
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              query={recordsQuery}
+            />
       </div>
     </TablesLayout>
-  )
-}
+  );
+};
