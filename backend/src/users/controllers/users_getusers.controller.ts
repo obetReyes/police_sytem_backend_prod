@@ -1,5 +1,5 @@
 import { Request,Response } from "express";
-import { tryCatch } from "../../utils";
+import { prisma, tryCatch } from "../../utils";
 import { getAllUsersService } from "../services/users.service";
 
 
@@ -12,12 +12,19 @@ interface UsersResI{
   reports?: number
   summaries?: number
 }
+
 export const getUsersController = tryCatch(
     async (req: Request, res: Response) => {
-        const getUsers = await getAllUsersService();
+      const limit = req.query.limit ?? 100;
+      const starting_after = req.query.starting_after ?? 0;
+
+        const users = await getAllUsersService({
+          skip:Number(starting_after),
+          take:Number(limit)
+        });
         
-        const response = getUsers.map(user => {
-          const getUsersFilteredData: UsersResI = {
+        const usersFiltered = users.map(user => {
+          const usersFilteredData: UsersResI = {
             id:user.id,
             name:user.name,
             role:user.role,
@@ -26,17 +33,24 @@ export const getUsersController = tryCatch(
           };
 
           if(user.role == "OFFICER"){
-            getUsersFilteredData.reports =  user._count.reports;
+            usersFilteredData.reports =  user._count.reports;
           }
           if(user.role == "DISPATCHER"){
-            getUsersFilteredData.summaries =  user._count.summaries;
+            usersFilteredData.summaries =  user._count.summaries;
             
           }
-          return getUsersFilteredData;
+          return usersFilteredData;
         });
-        return res.status(200).json({
-              message:response
-            }
-          );
-      }
+
+        const records = await prisma.user.count();
+
+        const response ={
+          message: usersFiltered,
+          limit: limit,
+          records:records,
+          starting_after: starting_after
+         };
+  
+         return res.status(200).json(response);
+        }
 );

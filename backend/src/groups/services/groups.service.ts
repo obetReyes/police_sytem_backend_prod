@@ -44,16 +44,29 @@ export const getGroupService = async(GroupWhereInput:Prisma.GroupWhereUniqueInpu
     });
 };
 
-
-export const getGroupsService = async() => {
+export const getManyGroupsService = async( params:{
+    skip:number,
+    take:number,
+    where:Prisma.GroupWhereInput
+}) => {
+    const {skip, take, where} = params;
     return prisma.group.findMany({
-        select:{
-            id:true,
-            area:true,
-            name:true,
-            createdAt:true,
-            _count:true
-        }
+        skip,
+        take,
+        where,
+    });
+};
+
+export const getGroupsService = async(params:{
+    where?:Prisma.GroupWhereInput
+    take?:number 
+    skip?:number
+}) => {
+    const {take, skip, where} = params;
+    return prisma.group.findMany({
+        take,
+        where,
+        skip,
     });
 };
 

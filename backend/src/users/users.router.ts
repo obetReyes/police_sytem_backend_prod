@@ -6,6 +6,7 @@ import {
   deleteUserController,
   getUsersController,
   updateUserController,
+  getManyUsersController,
 } from "./controllers";
 
 export const router = express.Router();
@@ -13,7 +14,7 @@ export const router = express.Router();
 router.get("/", verifyJwt, verifyRoles(roles.OPERATOR), getUsersController);
 
 router.get(
-  "/:username",
+  "user/:username",
   verifyJwt,
   verifyRoles(roles.DISPATCHER, roles.OPERATOR, roles.OFFICER),
   validator(userValidator),
@@ -35,3 +36,4 @@ router.delete(
   validator(userValidator),
   deleteUserController
 );
+router.get("/many/", getManyUsersController);

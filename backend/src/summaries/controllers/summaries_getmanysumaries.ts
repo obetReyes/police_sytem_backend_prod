@@ -6,30 +6,56 @@ import { prisma } from "../../utils";
 
 export const getManySummariesController = tryCatch(
     async(req:Request, res:Response) => {
-    const summarie = req.query.summarie;
-    const limit = req.query.limit;
-    const starting_after = req.query.starting_after;
-    const dbLimit = limit ? Number(limit)  : 20 ;
-    const dbStarting_after_extract = starting_after ? Number(starting_after) : 0;
-    const dbStarting_after_value = dbStarting_after_extract ? dbStarting_after_extract + 1 : 0;    
-    
-    const summaries = await getManySummariesService(
+    const dispatcher = req.query.dispatcher;
+    const incident = req.query.incident;
+    const limit = req.query.limit ?? 100;
+    const starting_after = req.query.starting_after ?? 0;
+
+    if(incident  && dispatcher){
+        throw new CustomError("no se puede hacer una busqueda de sumarios  por emisario y por incidente al mismo tiempo", "", 400);
+    }
+    const summaries = incident ? await getManySummariesService(
         {
             where: {
+                
                 incident: {
-                    contains: String(summarie)
+                    contains: String(incident)
                 }
             },
-            skip: dbStarting_after_extract,
-            take: dbLimit
+            skip: Number(starting_after),
+            take: Number(limit)
+        }
+    ) : await getManySummariesService(
+        {
+            where: {
+                userName: {
+                    contains: String(dispatcher)
+                }
+            },
+            skip: Number(starting_after),
+            take: Number(limit)
         }
     );
+    const records =  incident ? await prisma.summary.count({
+        where:{
+          incident:{
+            contains:String(incident)
+          }
+        }
+      }) : await prisma.summary.count({
+        where:{
+            userName:{
+                contains:String(dispatcher)
+            }
+        }
+      });
 
     const response = {
         message:summaries,
-        limit:dbLimit,
-        starting_after:  dbStarting_after_value ? dbStarting_after_value - 1 : 0
+        limit:limit,
+        records:records,
+        starting_after: starting_after
     };
-
+    return res.status(200).json(response);
 }
 );

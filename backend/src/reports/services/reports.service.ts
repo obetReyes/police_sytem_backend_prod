@@ -14,13 +14,15 @@ export const getReportService = async(reportWhereUniqueInput:Prisma.ReportWhereU
 };
 
 export const getReportsService = async(params:{
-  where:Prisma.ReportWhereInput
+  where?:Prisma.ReportWhereInput
     take:number
+    skip:number
 })  => {
-    const {take, where} = params;
+    const {take,skip, where} = params;
     return prisma.report.findMany({
         take,
         where,
+        skip,
         
     });
 };

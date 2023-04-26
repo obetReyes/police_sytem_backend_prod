@@ -10,7 +10,9 @@ export const signUpOfficerController = tryCatch(
       const { username, password, cuip, group} = req.body;
       const pwdToStore = await bcrypt.hash(password, 10);
       
-      const groups = await getGroupsService();
+      const groups = await getGroupsService({
+        take:1
+      });
    
       if(groups.length < 1){
           throw new CustomError("no existe ningun grupo al cual el oficial pueda ser asignado por favor crea un grupo primero", "");

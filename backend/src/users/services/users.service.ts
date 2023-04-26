@@ -46,13 +46,38 @@ export const updateUserService = async (params: {
     });
 };
 
-export const getManyUsersService = async (usersWhereInput: Prisma.UserWhereInput) => {
+export const getManyUsersService = async (  params:{
+    skip:number,
+    take:number,
+    where:Prisma.UserWhereInput
+}) => {
+    const {skip, take, where} = params;
     return prisma.user.findMany({
-        where: usersWhereInput,
+        skip,
+        take,
+        where,
+       select:{
+        id:true,
+            name: true,
+            role: true,
+            updatedAt: true,
+            createdAt: true,
+        _count:{
+            select:{
+                reports:true,
+                summaries:true
+            }
+        }
+       }
     });
 };
 
-export const getAllUsersService = async () => {
+export const getAllUsersService = async (params:{
+    where?:Prisma.ReportWhereInput
+      take:number
+      skip:number
+  }) => {
+    const {take,skip, where} = params;
     return prisma.user.findMany({
         select: {
             id:true,

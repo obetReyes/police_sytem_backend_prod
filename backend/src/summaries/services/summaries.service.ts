@@ -15,14 +15,14 @@ export const getSummaryService = async(summaryWhereUniqueInput:Prisma.SummaryWhe
 
 export const getSummariesService = async(
     params:{
+        skip:number
         take:number,
-        where:Prisma.SummaryWhereInput
     }
 ):Promise<Summary[] | null > => {
-    const {take,  where} = params;
+    const {take,  skip} = params;
     return prisma.summary.findMany({
         take,
-        where
+        skip
     });
 };
 
