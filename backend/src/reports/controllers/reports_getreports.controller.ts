@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { tryCatch, CustomError, prisma, getManyRecords } from "../../utils";
+import { tryCatch, CustomError, prisma } from "../../utils";
 import { getUserService } from "../../users";
 import {
   getManyReportsService,
@@ -11,78 +11,8 @@ interface customReq extends Request {
   role?: string;
 }
 
-export const getReports = getManyRecords(
-  async(req:customReq, res:Response, recordsLimit, currentRecords, skippedRecords) => {
-
-    let reports;
-    const isOfficer =
-    req.query.entry !== undefined && req.role != "OFFICER"
-      ? await getUserService({
-          name: String(req.query.entry),
-        })
-      : null;
-
-      if (req.role == "OFFICER") {
-        reports = await getManyReportsService({
-          skip: skippedRecords,
-          take:recordsLimit,
-          where: {
-            user: {
-              name: String(req.user),
-            },
-  
-          },
-          
-        },);
-      }else{
-        if(isOfficer){
-          reports =  await getManyReportsService({
-            skip: skippedRecords,
-            take:recordsLimit,
-            where: {
-              user: {
-                name:isOfficer?.name,
-              },
-            },
-            
-          });
-        }else{
-          reports = await getReportsService({
-            take:recordsLimit,
-            where: {
-              id: {
-                gte: currentRecords,
-              },
-            },
-          });
-          
-      }
-      if (req.query.officer != undefined && isOfficer?.name == undefined) {
-        throw new CustomError("no existe el oficial solicitado", "", 404);
-      }
-    }
-    /* if  the officer name is found in the db we will send the response or if an officer name wasn't given all the reports will be sent ) */
-    const response = {
-      message:reports,
-      limit: recordsLimit,
-      records: await  prisma.report.count({
-        where:{
-          userName:isOfficer?.name
-        }
-      }),
-
-      // 
-      skippedRecords: req.query.skip
-        ? Number(req.query.skip) 
-        : 0,
-    };
-    // if it does not work later change to send instead of json
-    return res.status(200).json(response);
-  }
-);
-
-
 // cambiar aqui en vez de pedir el officer pedir la cookie si la cookie es distinta a operator no poder pedir officer y bucar solo los datos del username del officer
+
 
 export const getReportsController = tryCatch(
   async (req: customReq, res: Response) => {
@@ -98,7 +28,6 @@ export const getReportsController = tryCatch(
       ? dbStarting_after_extract + 1
       : 0;
 
-    let reports;
   
         
     const isOfficer =
@@ -108,8 +37,8 @@ export const getReportsController = tryCatch(
         })
       : null;
 
-    if (req.role == "OFFICER") {
-      reports = await getManyReportsService({
+    const reports =  req.role == "OFFICER"  
+      ? await getManyReportsService({
         skip: dbStarting_after_extract,
         take: dbLimit,
         where: {
@@ -119,21 +48,19 @@ export const getReportsController = tryCatch(
 
         },
         
-      },);
-    }else{
-      if(isOfficer){
-        reports =  await getManyReportsService({
+      },)
+   :
+       isOfficer ? 
+          await getManyReportsService({
           skip: dbStarting_after_extract,
           take: dbLimit,
           where: {
             user: {
-              name:isOfficer?.name,
+              name:isOfficer.name,
             },
           },
-          
-        });
-      }else{
-        reports = await getReportsService({
+        }) :
+         await getReportsService({
           take: dbLimit,
           where: {
             id: {
@@ -142,20 +69,23 @@ export const getReportsController = tryCatch(
           },
         });
         
-    }
-    if (req.query.officer != undefined && isOfficer?.name == undefined) {
+    
+
+
+    if (officer != undefined && isOfficer?.name == undefined) {
       throw new CustomError("no existe el oficial solicitado", "", 404);
     }
-  }
+  
     /* if  the officer name is found in the db we will send the response or if an officer name wasn't given all the reports will be sent ) */
+
     const response = {
       message:reports,
       limit: dbLimit,
-      number: await  prisma.report.count({
+      number: isOfficer?.name ?  await  prisma.report.count({
         where:{
-          userName:isOfficer?.name
+          userName:isOfficer.name
         }
-      }),
+      }) : await prisma.report.count(),
       starting_after: isOfficer?.name
         ? dbStarting_after_extract
         : dbStarting_after_value

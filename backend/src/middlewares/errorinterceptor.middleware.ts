@@ -46,6 +46,13 @@ export const errorInterceptor = async(error:Error, req:Request, res:Response,nex
         );
     }
 }
+    if(error instanceof Prisma.PrismaClientUnknownRequestError){
+        return res.status(400).json({
+            errorCode:400,
+            message:"error desconocido al trata de insertar invalidos en la base de datos",
+            href:""
+        });
+    }
     if(error instanceof SyntaxError || error instanceof TypeError){
         return res.status(400).json(
             {

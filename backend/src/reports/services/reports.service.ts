@@ -21,9 +21,7 @@ export const getReportsService = async(params:{
     return prisma.report.findMany({
         take,
         where,
-        orderBy:{
-            createdAt:"desc"
-        }
+        
     });
 };
 
@@ -40,8 +38,6 @@ export const getManyReportsService = async(
         skip,
         take,
         where,
-        orderBy:{
-            createdAt:"desc"
-        }
+       
     });
 };
