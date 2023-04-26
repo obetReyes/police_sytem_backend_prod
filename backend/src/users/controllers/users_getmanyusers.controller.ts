@@ -38,26 +38,22 @@ export const getManyUsersController = tryCatch(
               updatedAt:user.updatedAt,
               createdAt:user.createdAt
             };
-  
-            if(user.role == "OFFICER"){
               usersFilteredData.reports =  user._count.reports;
-            }
-            if(user.role == "DISPATCHER"){
               usersFilteredData.summaries =  user._count.summaries;
-            }
+           
             return usersFilteredData;
           });
 
         const records = await prisma.user.count({
             where:{
                 name:{
-                    contains:String(name)
+                    contains:String(user)
                 }
             }
         });
 
         const response = {
-            message:users,
+            message:usersFiltered,
             limit: limit,
             starting_after: starting_after,
             records:records,

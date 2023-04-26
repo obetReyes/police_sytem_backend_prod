@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { tryCatch, CustomError } from "../../utils";
-import { getUserService } from "../../users";
 import { getManyReportsService } from "../services/reports.service";
 import { prisma } from "../../utils";
 
@@ -48,6 +47,8 @@ export const getManyReportsController = tryCatch(
             }
         }
       });
+
+      console.log(reports);
     const response = {
         message:reports,
         limit:limit,
