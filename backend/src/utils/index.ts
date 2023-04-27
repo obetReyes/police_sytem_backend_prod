@@ -4,7 +4,7 @@ export { signUpValidator, signInValidator, signUpOfficerValidator } from "./vali
 export { groupParamsValidator, groupUpdateValidator, groupValidator,  } from "./validators/validator_groups.utils";
 export { reportValidator, reportParamsValidator, reportQueryValidator } from "./validators/validator_reports.utils";
 export { summaryValidator, summaryParamsValidator, summaryQueryValidator, summaryUpdateValidator } from "./validators/validator_summaries.utils";
-export { userValidator, userUpdateValidator } from "./validators/validator_users.utils";
+export { userValidator, userUpdateValidator, useQueryValidator } from "./validators/validator_users.utils";
 export {prisma} from "./prisma.service.utils";
 export { redis } from "./redis.service.utils";
 export {roles} from "./roles.utils";

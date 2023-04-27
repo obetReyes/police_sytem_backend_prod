@@ -105,7 +105,15 @@ export const summaryQueryValidator = z.object({
           message: "el nombre del emisario no puede exceder los 60 caracteres",
         })
         .optional(),
-        incident:incidentContraint.optional(),
+        incident:z
+        .string()
+        .min(5, {
+          message: "la descripcion del incidente no puede ser menor a 5 caracteres",
+        })
+        .max(300, {
+          message: "la descripcion del incidente no puede exceder los 300 caracteres",
+        })
+        .trim().optional(),
         limit:z.coerce.number().min(1,{message:"el numero no puede ser negativo"}).nonnegative({message:"el numero no puede ser negativo"}).max(100, {message:"el limite de datos requerido excede el limite de peticios de datos, se pueden obtener un maximo de 100 datos por llamada"}).optional().transform(String),
         starting_after:z.coerce.number().nonnegative({message:"no existen datos con un id negativo"}).optional()
     })

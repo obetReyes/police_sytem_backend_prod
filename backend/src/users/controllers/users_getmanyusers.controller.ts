@@ -16,14 +16,14 @@ interface UsersResI{
   
 export const getManyUsersController = tryCatch(
     async(req:Request, res:Response) => {
-        const user = req.query.user;
+        const agents = req.query.agents;
         const limit = req.query.limit ?? 100;
         const starting_after = req.query.starting_after ?? 0;
     
         const users = await getManyUsersService({
            where:{
             name:{
-                contains:String(user)
+                contains:String(agents)
             }
            },
            skip:Number(starting_after),
@@ -47,7 +47,7 @@ export const getManyUsersController = tryCatch(
         const records = await prisma.user.count({
             where:{
                 name:{
-                    contains:String(user)
+                    contains:String(agents)
                 }
             }
         });

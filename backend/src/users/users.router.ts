@@ -1,6 +1,6 @@
 import express from "express";
 import { cache, validator, verifyJwt, verifyRoles } from "../middlewares";
-import { userValidator, roles, userUpdateValidator } from "../utils";
+import { userValidator, roles, userUpdateValidator, useQueryValidator } from "../utils";
 import {
   getUserController,
   deleteUserController,
@@ -36,4 +36,4 @@ router.delete(
   validator(userValidator),
   deleteUserController
 );
-router.get("/many/", getManyUsersController);
+router.get("/many/", verifyJwt, verifyRoles(roles.OPERATOR, roles.DISPATCHER), validator(useQueryValidator), getManyUsersController);
