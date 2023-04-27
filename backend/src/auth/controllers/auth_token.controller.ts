@@ -13,13 +13,10 @@ interface JwtPayload {
         username:string
     }
   }
-  interface customReq  extends Request{
-    user?:string
-    role?:string
-}
+
 
 // you can generate a new access token (which stays for 15 min) if your current refresh token it's still valid the controller also  generates a new refresh token, its mean to use in the app cus obviously the app is intended to be used for more than 15min. remember that in refresh token and acess token strategy the acess token is used to make api calls or to request resources 
-export const tokenController = tryCatch(async(req:customReq, res:Response) => {
+export const tokenController = tryCatch(async(req:Request, res:Response) => {
     const cookies = req.cookies;
     if(!cookies.jwt) 
     {throw new CustomError("el token de autorizacion no es valido","", 401);}

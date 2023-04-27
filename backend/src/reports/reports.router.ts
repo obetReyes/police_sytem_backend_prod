@@ -10,4 +10,4 @@ export const router = express.Router();
 router.get("/report/:reportId", getLimiter, verifyJwt, verifyRoles(roles.OFFICER, roles.DISPATCHER, roles.OPERATOR),validator(reportParamsValidator), cache("reportId"),  getReportController);
 router.post("/", createLimiter, verifyJwt, verifyRoles(roles.OFFICER), validator(reportValidator), createReportController);
 router.get("/", /*getLimiter,*/ verifyJwt, verifyRoles(roles.OFFICER, roles.OPERATOR, roles.DISPATCHER), validator(reportQueryValidator), getReportsController);
-router.get("/many", validator(reportQueryValidator), getManyReportsController);
+router.get("/many",verifyJwt, verifyRoles(roles.DISPATCHER, roles.OFFICER, roles.OPERATOR),  validator(reportQueryValidator), getManyReportsController);

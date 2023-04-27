@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { tryCatch, CustomError } from "../../utils";
-import { getUserService } from "../../users";
 import { getManySummariesService} from "../services/summaries.service";
 import { prisma } from "../../utils";
 
@@ -58,9 +57,7 @@ export const getManySummariesController = tryCatch(
         }
       }):  0;
 
-      if(Number(starting_after) > records){
-        throw new CustomError("el parametro starting_after no puede ser mayor a la cantidad de records","",400);
-      }
+      
     
       
     const response = {
