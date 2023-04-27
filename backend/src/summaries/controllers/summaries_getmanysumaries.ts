@@ -14,6 +14,7 @@ export const getManySummariesController = tryCatch(
     if(incident  && dispatcher){
         throw new CustomError("no se puede hacer una busqueda de sumarios  por emisario y por incidente al mismo tiempo", "", 400);
     }
+
     const summaries = incident ? await getManySummariesService(
         {
             where: {
@@ -25,7 +26,7 @@ export const getManySummariesController = tryCatch(
             skip: Number(starting_after),
             take: Number(limit)
         }
-    ) : await getManySummariesService(
+    ) : dispatcher ? await getManySummariesService(
         {
             where: {
                 userName: {
@@ -35,21 +36,33 @@ export const getManySummariesController = tryCatch(
             skip: Number(starting_after),
             take: Number(limit)
         }
-    );
+    ) :(() => {
+        throw new CustomError(
+          "no fue proveido nigun parametro de busqueda por favor agrega el parametro dispatcher o inicident",
+          "",
+          400
+        );
+      })();
+
     const records =  incident ? await prisma.summary.count({
         where:{
           incident:{
             contains:String(incident)
           }
         }
-      }) : await prisma.summary.count({
+      }) : dispatcher ? await prisma.summary.count({
         where:{
             userName:{
                 contains:String(dispatcher)
             }
         }
-      });
+      }):  0;
 
+      if(Number(starting_after) > records){
+        throw new CustomError("el parametro starting_after no puede ser mayor a la cantidad de records","",400);
+      }
+    
+      
     const response = {
         message:summaries,
         limit:limit,

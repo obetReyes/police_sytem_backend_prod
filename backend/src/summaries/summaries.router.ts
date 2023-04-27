@@ -8,5 +8,5 @@ export const router = express.Router();
 router.post("/", createLimiter, verifyJwt, verifyRoles(roles.DISPATCHER), validator(summaryValidator), createSummaryController);
 router.get("/summary/:summaryId", getLimiter, verifyJwt, verifyRoles(roles.OPERATOR, roles.DISPATCHER), validator(summaryParamsValidator), cache("summaryId"), getSummaryController);
 router.get("/", getLimiter, verifyJwt, verifyRoles(roles.OPERATOR, roles.DISPATCHER), validator(summaryQueryValidator), getSummariesController);
-router.get("/many", getManySummariesController);
+router.get("/many", validator(summaryQueryValidator), getManySummariesController);
 
