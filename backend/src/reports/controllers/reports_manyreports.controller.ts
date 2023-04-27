@@ -8,12 +8,13 @@ export const getManyReportsController = tryCatch(
     async(req:Request, res:Response) => {
     const officer = req.query.officer;
     const event = req.query.event;
-    const limit = req.query.limit;
-    const starting_after = req.query.starting_after;
+    const limit = req.query.limit ?? 100;
+    const starting_after = req.query.starting_after ?? 0;
 
     if(officer && event){
         throw new CustomError("no se puede hacer una busqueda de reportes  por oficial y por evento al mismo tiempo", "", 400);
     }
+    
     const reports =  event ? await getManyReportsService(
         {
             where: {
@@ -24,7 +25,7 @@ export const getManyReportsController = tryCatch(
             skip: Number(starting_after),
             take: Number(limit)
         }
-    ) : await getManyReportsService({
+    ) : officer ? await getManyReportsService({
         where:{
             userName:{
                 contains:String(officer)
@@ -32,7 +33,7 @@ export const getManyReportsController = tryCatch(
         },
         skip:Number(starting_after),
         take:Number(limit)
-    });
+    }) : [];
 
     const records =  event ? await prisma.report.count({
         where:{
@@ -40,15 +41,14 @@ export const getManyReportsController = tryCatch(
             contains:String(event)
           }
         }
-      }) : await prisma.report.count({
+      }) : officer ?  await prisma.report.count({
         where:{
             userName:{
                 contains:String(officer)
             }
         }
-      });
+      }): 0;
 
-      console.log(reports);
     const response = {
         message:reports,
         limit:limit,

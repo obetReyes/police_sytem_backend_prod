@@ -22,6 +22,7 @@ export const reportParamsValidator = z.object({
 export const reportQueryValidator = z.object({
     query:z.object({
         officer:z.string().min(6,{message: "el nombre del oficial no puede tener menos de 6 caracteres"}).max(60, {message:"el nombre del oficial no puede exceder los 60 caracteres"}).optional(),
+        event:z.string().min(5,{message: "la descripcion del  evento no puede tener menos de 5 caracteres"}).max(300, {message:"la descripcion del evento no puede exceder los 300 caracteres"}).optional(),
         limit:z.coerce.number().min(1,{message:"el numero no puede ser negativo"}).nonnegative({message:"el numero no puede ser negativo"}).max(100, {message:"el limite de datos requerido excede el limite de peticios de datos, se pueden obtener un maximo de 100 datos por llamada"}).optional().transform(String),
         starting_after:z.coerce.number().nonnegative({message:"no existen datos con un id negativo"}).optional()
    }).strict("los unicos parametros query: disponibles son: officer, limit y starting_after") 

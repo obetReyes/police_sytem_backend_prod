@@ -2,13 +2,13 @@ import {prisma} from "../../utils";
 import { Prisma, Report } from "@prisma/client";
 
 export const createReportService = async(data:Prisma.ReportCreateInput) => {
-    return prisma.report.create({
+    return await prisma.report.create({
         data
     });
 };
 
 export const getReportService = async(reportWhereUniqueInput:Prisma.ReportWhereUniqueInput): Promise<Report | null> => {
-    return  prisma.report.findUnique({
+    return await  prisma.report.findUnique({
         where:reportWhereUniqueInput
     });
 };
@@ -19,11 +19,10 @@ export const getReportsService = async(params:{
     skip:number
 })  => {
     const {take,skip, where} = params;
-    return prisma.report.findMany({
+    return await prisma.report.findMany({
         take,
         where,
         skip,
-        
     });
 };
 
@@ -36,7 +35,7 @@ export const getManyReportsService = async(
     }
 ) => {
     const {skip, take, where} = params;
-    return prisma.report.findMany({
+    return await prisma.report.findMany({
         skip,
         take,
         where,
