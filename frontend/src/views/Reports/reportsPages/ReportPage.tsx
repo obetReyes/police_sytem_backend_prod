@@ -1,13 +1,13 @@
 import {useParams, useNavigate } from 'react-router-dom'
 import { useReport } from '../../../hooks'
 import { ProtectedLayout } from '../../../components'
-import { customDate, customHour } from '../../../helpers'
-
+import { ReportResI, customDate, customHour } from '../../../helpers'
+import { useRecord } from '../../../hooks'
 export const ReportPage = () => {
   const {reporteId} = useParams()
   const navigate = useNavigate()
-
-  const reportQuery = useReport(Number(reporteId))
+  const reportQuery = useRecord<ReportResI>("reports", Number(reporteId))
+  
   return (
 
     <ProtectedLayout roles={["OPERATOR", "DISPATCHER", "OFFICER"]}>

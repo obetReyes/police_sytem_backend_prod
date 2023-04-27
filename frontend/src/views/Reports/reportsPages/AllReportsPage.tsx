@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { UserContext } from "../../../contexts";
 import { useRecords, useSearchRecords, useUserRecord } from "../../../hooks/";
 import { ReportsResI } from "../../../helpers";
-
+import { ErrorsI } from "../../../helpers";
 export const AllReportsPage = () => {
   const { role } = useContext(UserContext);
   const { currentPage, setCurrentPage, recordsQuery } =
@@ -17,7 +17,7 @@ export const AllReportsPage = () => {
     userRecordQuery,
   } = useUserRecord<ReportsResI>("reports");
 
-  const { searchRecords, setSearchRecords, searchRecordsQuery } =
+  const { searchRecords, setSearchRecords, searchRecordsQuery,  setParam , setSubmit} =
     useSearchRecords<ReportsResI>("reports");
 
   const filteredReports = searchRecords ? searchRecordsQuery : recordsQuery;
@@ -30,10 +30,14 @@ export const AllReportsPage = () => {
       <Topbar
         modal={<ReportModal />}
         allowedRole="OFFICER"
+        setParam={setParam}
+        setSubmit={setSubmit}
         setSearchRecords={setSearchRecords}
         key={"reportModal"}
       />
-
+      <>
+{searchRecordsQuery.isError ? <p className="absolute  text-sm  text-error font-semibold underline">{`${(searchRecordsQuery.error as ErrorsI).response.data.message}`}</p> : null}
+</>
       <div className="md:w-10/12 lg:w-8/12">
         {role == "OPERATOR" || role == "DISPATCHER" ? (
           <>

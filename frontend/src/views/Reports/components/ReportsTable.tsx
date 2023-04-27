@@ -13,7 +13,7 @@ export const ReportsTable = ({query}:Props) => {
     <table className="table  table-zebra w-full">
       <ReportsColumns/>
       <tbody>
-      {query.isLoading && <div className="loader"></div>}
+      {query.isLoading && <tr className="loader"></tr>}
       {query.isError ?  <tr>
         
         <td colSpan={100}>{`${(query.error as ErrorsI).response.data.message}`}</td>
