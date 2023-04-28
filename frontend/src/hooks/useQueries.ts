@@ -58,30 +58,35 @@ export const useUserRecord = <T>(path: string) => {
 };
 
 export const useSearchRecords = <T>(path: string) => {
-  const [searchRecords, setSearchRecords] = useState<string | undefined>("");
-  const [submit, setSubmit] = useState<boolean>(false)
-  const [param, setParam] = useState<{}>("");
+
+
+  const [param, setParam] = useState<{}>({
+    
+  });
+
   // debounce delay if the length of searchOfficer state is more than 6 give 500ms
   const axiosPrivate = useAxiosPrivate();
   const searchRecordsQuery = useQuery(
-    [`${searchRecords + path}`],
+    [`${param + path}`],
     async (): Promise<T> => {
-      const { data } = await axiosPrivate.get<T>(`/${path}/many`, param);
+      const { data } = await axiosPrivate.get<T>(`/${path}/many`, {
+        params:param
+      });
+    
       return data;
     },
     {
       //refetchOnWindowFocus option is set to false to prevent the query from refetching
       refetchOnWindowFocus: false,
       retry: 1,
-      enabled:submit
+      enabled:Object.keys(param).length > 0
     }
   );
   return {
     searchRecordsQuery,
-    searchRecords,
-    setSearchRecords,
+    param,
     setParam,
-    setSubmit
+   
   };
 };
 

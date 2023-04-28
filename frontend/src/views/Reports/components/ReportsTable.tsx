@@ -19,6 +19,7 @@ export const ReportsTable = ({query}:Props) => {
         <td colSpan={100}>{`${(query.error as ErrorsI).response.data.message}`}</td>
         </tr>
       :
+        query.data!.message.length > 1 ? 
         query.data?.message.map((report) => {
           const eventSummary = report.event.substring(0,40);
             return <tr key={report.id}>
@@ -33,6 +34,8 @@ export const ReportsTable = ({query}:Props) => {
                 </td>
             </tr>
         })
+        :
+        <tr>no existe ningun reporte  de momento</tr>
       }
       </tbody>
     </table>
