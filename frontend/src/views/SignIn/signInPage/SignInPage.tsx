@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SignInI, signInSchema } from "../../../helpers";
 import { useSignInMutation } from "../../../hooks";
-
+import { ErrorsI } from "../../../helpers";
 
 export const SignInPage = () => {
   const {mutate, error, isError, isLoading} =  useSignInMutation()
@@ -97,7 +97,7 @@ export const SignInPage = () => {
   }
       </div>
        
-      {isError ? <p  className={`${errorStyles} pt-4`}>{`${error?.message}`}</p> : null}
+      {isError ? <p  className={`${errorStyles} pt-4`}>{`${(error as ErrorsI).response.data.message}`}</p> : null}
     </form>
     
 

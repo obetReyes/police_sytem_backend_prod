@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { UserContext } from "../contexts";
@@ -13,12 +13,10 @@ export const Topbar = ({ allowedRole, modal, setParam, param }: Props) => {
   const { register, handleSubmit, reset } = useForm({
     mode: "onSubmit",
   });
+
+  
   const onSubmit = handleSubmit(async (data, e) => {
-    setParam({ [data.param]: data.searchRecords });
-    /*
-    setSubmit(true)
-    */
-    console.log(data);
+      setParam({ [data.param]: data.searchRecords });
   });
   const { role } = useContext(UserContext);
   return (
@@ -30,17 +28,18 @@ export const Topbar = ({ allowedRole, modal, setParam, param }: Props) => {
           placeholder="barra de busqueda"
           className="input  input-bordered mx-auto w-[25rem]"
           {...register("searchRecords")}
+          required
+          minLength={6}
         />
         <select
           id="param"
           {...register("param")}
+
           className="select select-bordered "
           name="param"
+          required
+      
         >
-          <option disabled selected>
-            {" "}
-            elige una opcion de busqueda
-          </option>
           <option value="officer">oficial</option>
           <option value="event">suceso</option>
         </select>
