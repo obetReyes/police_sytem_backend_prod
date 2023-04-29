@@ -26,7 +26,7 @@ export const Topbar = ({ allowedRole, modal, setParam, param }: Props) => {
           autoComplete="off"
           type="text"
           placeholder="barra de busqueda"
-          className="input  input-bordered mx-auto w-[25rem]"
+          className="input  text-yellow-400 font-semibold input-bordered mx-auto w-[25rem]"
           {...register("searchRecords")}
           required
           minLength={6}

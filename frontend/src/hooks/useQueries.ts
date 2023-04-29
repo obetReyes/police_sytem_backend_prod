@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useAxiosPrivate } from "./useAxiosPrivate";
 import { UserContext } from "../contexts";
 import { DecodedI } from "../helpers";
@@ -7,14 +7,14 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const useRecords = <T>(path: string) => {
   const axiosPrivate = useAxiosPrivate();
-  const [currentPage, setCurrentPage] = useState<number>(25);
+  const [currentPage, setCurrentPage] = useState<number>(0);
   const recordsQuery = useQuery(
     [path, currentPage],
     async (): Promise<T> => {
       const { data } = await axiosPrivate.get<T>(`/${path}/`, {
         params: {
           limit:25,
-          starting_after: currentPage,
+          starting_after:currentPage
         },
       });
       return data;
@@ -30,59 +30,40 @@ export const useRecords = <T>(path: string) => {
   };
 };
 
-export const useUserRecord = <T>(path: string) => {
+
+export const useSearchRecords = <T>(path: string) => {
+
+  const [param, setParam] = useState<{}>({});
+
+
   const axiosPrivate = useAxiosPrivate();
-  const [currentPage, setCurrentPage] = useState<number>(25);
-  const { token } = useContext(UserContext);
-  const decoded: DecodedI = jwt_decode(token);
-  const userRecordQuery = useQuery(
-    [`user/${path.slice(0, -1)}/${path}`, decoded.info.username, currentPage],
+  const [currentPage, setCurrentPage] = useState<number>(0);
+
+  const searchRecordsQuery = useQuery(
+    [`${param + path + currentPage}`],
     async (): Promise<T> => {
-      const { data } = await axiosPrivate.get<T>(`/${path}/`, {
-        params: {
-          starting_after: currentPage,
-          officer: decoded.info.username,
-        },
+      const { data } = await axiosPrivate.get<T>(`/${path}/many`, {
+        params:{  
+          limit:25,
+          starting_after:currentPage,
+          ...param}
       });
+      console.log(data)
       return data;
+      
     },
     {
-      keepPreviousData: true,
+      //refetchOnWindowFocus option is set to false to prevent the query from refetching
+      keepPreviousData:true,
+      refetchOnWindowFocus: false,
+      retry: 1,
+      enabled:Object.keys(param).length > 0, // use enabled flag
+      /*enabled:Object.keys(param).length > 0 || currentPage > 0*/
     }
   );
   return {
     currentPage,
     setCurrentPage,
-    userRecordQuery,
-  };
-};
-
-export const useSearchRecords = <T>(path: string) => {
-
-
-  const [param, setParam] = useState<{}>({
-    
-  });
-
-  // debounce delay if the length of searchOfficer state is more than 6 give 500ms
-  const axiosPrivate = useAxiosPrivate();
-  const searchRecordsQuery = useQuery(
-    [`${param + path}`],
-    async (): Promise<T> => {
-      const { data } = await axiosPrivate.get<T>(`/${path}/many`, {
-        params:param
-      });
-    
-      return data;
-    },
-    {
-      //refetchOnWindowFocus option is set to false to prevent the query from refetching
-      refetchOnWindowFocus: false,
-      retry: 1,
-      enabled:Object.keys(param).length > 0
-    }
-  );
-  return {
     searchRecordsQuery,
     param,
     setParam,

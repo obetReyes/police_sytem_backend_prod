@@ -28,7 +28,15 @@ export const getManyReportsController = tryCatch(
           take:Number(limit)
         });
       }
-
+      if(req.role == "OFFICER" && officer){
+        return await getManyReportsService({
+          where:{
+            userName:req.user
+          },
+          skip:Number(starting_after),
+          take:Number(limit)
+        });
+      }
       if(event && req.role !== "OFFICER"){
         return  await getManyReportsService({
           where: {
@@ -67,10 +75,8 @@ export const getManyReportsController = tryCatch(
         400
       );
     }
-    if(req.role == "OFFICER" && officer){
-      throw new CustomError("solo puedes buscar dentro de tus reportes","",400);
-    }
     
+
     const records = event && req.role !== "OFFICER"
       ? await prisma.report.count({
           where: {

@@ -1,25 +1,33 @@
 import { Pagination, TablesLayout, Topbar } from "../../../components";
 import { ReportModal } from "../components/ReportModal";
 import { ReportsTable } from "../components/ReportsTable";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { UserContext } from "../../../contexts";
-import { useRecords, useSearchRecords, useUserRecord } from "../../../hooks/";
-import { ReportsResI } from "../../../helpers";
+import { useRecords, useSearchRecords} from "../../../hooks/";
+import { DecodedI, ReportsResI } from "../../../helpers";
+import jwtDecode from "jwt-decode";
 export const AllReportsPage = () => {
-  const { role } = useContext(UserContext);
+  const { role,token } = useContext(UserContext);
+
+
   const { currentPage, setCurrentPage, recordsQuery } =
     useRecords<ReportsResI>("reports");
-
-  const {
-    currentPage: currentPage2,
-    setCurrentPage: setCurrentPage2,
-    userRecordQuery,
-  } = useUserRecord<ReportsResI>("reports");
-
-  const { param, searchRecordsQuery,  setParam } =
+    const decoded:DecodedI = jwtDecode(token);
+  const { param, searchRecordsQuery,  
+    currentPage:crnt3, 
+    setCurrentPage:setcrnt3
+    , setParam } =
     useSearchRecords<ReportsResI>("reports");
 
-  const filteredReports = Object.keys(param).length > 0 ? searchRecordsQuery : recordsQuery;
+    
+
+    const filteredReports = Object.keys(param).length > 0 ? searchRecordsQuery : recordsQuery;
+
+    useEffect(() => {
+      if(role == "OFFICER"){
+        setParam({"officer":decoded.info.username})
+      }
+    },[])
 
   return (
     <TablesLayout roles={["OPERATOR", "DISPATCHER", "OFFICER"]}>
@@ -36,25 +44,14 @@ export const AllReportsPage = () => {
       <>
 </>
       <div className="md:w-10/12 lg:w-8/12">
-        {role == "OPERATOR" || role == "DISPATCHER" ? (
-          <>
-            <ReportsTable query={filteredReports} />
-            <Pagination
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
+  
+    
+        <ReportsTable query={filteredReports} />
+        <Pagination
+              currentPage={currentPage || crnt3}
+              setCurrentPage={setCurrentPage || setcrnt3}
               query={filteredReports}
-            />
-          </>
-        ) : (
-          <>
-            <ReportsTable query={userRecordQuery} />
-            <Pagination
-              currentPage={currentPage2}
-              setCurrentPage={setCurrentPage2}
-              query={userRecordQuery}
-            />
-          </>
-        )}
+        />
       </div>
     </TablesLayout>
   );
