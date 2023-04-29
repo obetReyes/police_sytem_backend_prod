@@ -40,7 +40,7 @@ export const useSearchRecords = <T>(path: string) => {
   const [currentPage, setCurrentPage] = useState<number>(0);
 
   const searchRecordsQuery = useQuery(
-    [`${param + path + currentPage}`],
+    [path, currentPage],
     async (): Promise<T> => {
       const { data } = await axiosPrivate.get<T>(`/${path}/many`, {
         params:{  
@@ -57,7 +57,7 @@ export const useSearchRecords = <T>(path: string) => {
       keepPreviousData:true,
       refetchOnWindowFocus: false,
       retry: 1,
-      enabled:Object.keys(param).length > 0, // use enabled flag
+      enabled:Object.keys(param).length > 0 || currentPage > 0, // use enabled flag
       /*enabled:Object.keys(param).length > 0 || currentPage > 0*/
     }
   );

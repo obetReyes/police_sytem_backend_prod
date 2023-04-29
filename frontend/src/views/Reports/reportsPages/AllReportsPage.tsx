@@ -48,8 +48,8 @@ export const AllReportsPage = () => {
     
         <ReportsTable query={filteredReports} />
         <Pagination
-              currentPage={currentPage || crnt3}
-              setCurrentPage={setCurrentPage || setcrnt3}
+              currentPage={Object.keys(param).length > 0 ? crnt3 : currentPage}
+              setCurrentPage={Object.keys(param).length > 0 ? setcrnt3 : setCurrentPage}
               query={filteredReports}
         />
       </div>
