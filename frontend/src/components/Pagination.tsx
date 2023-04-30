@@ -24,7 +24,7 @@ export const Pagination = ({currentPage, setCurrentPage, query}:Props) => {
 
   return (
     <div className="flex justify-center gap-4 my-2">
-      <button className="btn" onClick={previousPage} disabled={query.isPreviousData || currentPage <= 25}>
+      <button className="btn" onClick={previousPage} disabled={query.isPreviousData || currentPage < 25}>
         Pagina Anterior
       </button>
       <button className="btn" onClick={nextPage} disabled={query.isPreviousData || currentPage + 25  >= query.data?.records! }>

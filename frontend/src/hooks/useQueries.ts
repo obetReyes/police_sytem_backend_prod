@@ -50,6 +50,8 @@ export const useSearchRecords = <T>(path: string) => {
       });
       console.log(data)
       return data;
+
+  
       
     },
     {

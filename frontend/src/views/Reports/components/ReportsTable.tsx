@@ -20,14 +20,14 @@ export const ReportsTable = ({ query }: Props) => {
         <tbody>
           {query.isLoading && <tr className="loader"></tr>}
           {query.isError ? (
-            <tr>
+         
               <tr>
                 <td colSpan={100}>{`${
                   (query.error as ErrorsI).response.data.message
                 }`}</td>
               </tr>
-            </tr>
-          ) : query.data?.message ? (
+        
+          ) : query.data?.message &&  query.data.message.length > 0 ? (
             query.data.message.map((report) => {
               const eventSummary = report.event.substring(0, 40);
               return (
@@ -48,7 +48,8 @@ export const ReportsTable = ({ query }: Props) => {
               );
             })
           ) : (
-            <td>sin resultados</td>
+            <tr>
+              <td colSpan={100}>Sin resultados</td></tr>
           )}
         </tbody>
       </table>

@@ -9,8 +9,7 @@ export const ReportPage = () => {
   const reportQuery = useRecord<ReportResI>("reports", Number(reporteId))
   
   return (
-
-    <ProtectedLayout roles={["OPERATOR", "DISPATCHER", "OFFICER"]}>
+  <>
     <div className='flex items-center justify-center min-h-screen'>
   <div className=' py-8 w-12/12 prose lg:prose-lg'>
 
@@ -39,7 +38,7 @@ export const ReportPage = () => {
 
 </div>
 </div>
-      </ProtectedLayout>
+      </>
 
   )
 }
