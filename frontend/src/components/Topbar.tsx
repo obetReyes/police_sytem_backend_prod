@@ -7,9 +7,10 @@ interface Props {
   modal: JSX.Element;
   setParam: React.Dispatch<React.SetStateAction<{}>>;
   param: {};
+  setFiltredReports:any
 }
 
-export const Topbar = ({ allowedRole, modal, setParam, param }: Props) => {
+export const Topbar = ({ allowedRole, modal, setParam, param, setFiltredReports }: Props) => {
   const { register, handleSubmit, reset } = useForm({
     mode: "onSubmit",
   });
@@ -43,7 +44,7 @@ export const Topbar = ({ allowedRole, modal, setParam, param }: Props) => {
           <option value="officer">oficial</option>
           <option value="event">suceso</option>
         </select>
-        {Object.keys(param).length == 1 ? (
+        {Object.keys(param).length === 1 ? (
           <button
             className="btn btn-outline"
             onClick={() => {

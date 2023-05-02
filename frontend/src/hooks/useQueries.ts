@@ -9,7 +9,7 @@ export const useRecords = <T>(path: string) => {
   const axiosPrivate = useAxiosPrivate();
   const [currentPage, setCurrentPage] = useState<number>(0);
   const recordsQuery = useQuery(
-    [path, currentPage],
+    ["records", path, currentPage],
     async (): Promise<T> => {
       const { data } = await axiosPrivate.get<T>(`/${path}/`, {
         params: {
@@ -20,6 +20,7 @@ export const useRecords = <T>(path: string) => {
       return data;
     },
     {
+  
       keepPreviousData: true,
     }
   );
@@ -32,34 +33,28 @@ export const useRecords = <T>(path: string) => {
 
 
 export const useSearchRecords = <T>(path: string) => {
-
   const [param, setParam] = useState<{}>({});
-
-
   const axiosPrivate = useAxiosPrivate();
   const [currentPage, setCurrentPage] = useState<number>(0);
 
   const searchRecordsQuery = useQuery(
-    [path, currentPage],
+    ["searchRecords",path, currentPage],
     async (): Promise<T> => {
       const { data } = await axiosPrivate.get<T>(`/${path}/many`, {
         params:{  
           limit:25,
           starting_after:currentPage,
-          ...param}
+          ...param
+        }
       });
-      console.log(data)
       return data;
-
-  
-      
     },
     {
       //refetchOnWindowFocus option is set to false to prevent the query from refetching
-      keepPreviousData:true,
+      
       refetchOnWindowFocus: false,
       retry: 1,
-      enabled:Object.keys(param).length > 0 || currentPage > 0, // use enabled flag
+      enabled:Object.keys(param).length > 0, // use enabled flag
       /*enabled:Object.keys(param).length > 0 || currentPage > 0*/
     }
   );

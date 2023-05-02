@@ -5,13 +5,12 @@ import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../../contexts";
 import { useRecords, useSearchRecords} from "../../../hooks/";
 import { DecodedI, ReportsResI } from "../../../helpers";
+import { useForm } from "react-hook-form";
 import jwtDecode from "jwt-decode";
 import { Outlet } from "react-router-dom"
 
 export const AllReportsPage = () => {
   const { role,token } = useContext(UserContext);
-
-
   const { currentPage:currentPageAll, setCurrentPage:setCurrentPageAll, recordsQuery } =
     useRecords<ReportsResI>("reports");
     const decoded:DecodedI = jwtDecode(token);
@@ -20,22 +19,44 @@ export const AllReportsPage = () => {
     setCurrentPage:setCurrentPageSearch
     , setParam } =
     useSearchRecords<ReportsResI>("reports");
+    
+
+    const { register, handleSubmit, reset } = useForm({
+      mode: "onSubmit",
+    });
+    const [filtered,SetFiltered] = useState(recordsQuery)
+  
+    const onSubmit = handleSubmit(async (data, e) => {
+        setParam({ [data.param]: data.searchRecords });
+      
+    });
+
+  
 
     
 
-    const [filteredReports, setFilteredReports] = useState(recordsQuery);
-
-    useEffect(() => {
-      setFilteredReports(Object.keys(param).length > 0 ? searchRecordsQuery : recordsQuery);
-    }, [filteredReports,param, setParam,  recordsQuery, searchRecordsQuery]);
-
-
-    useEffect(() => {
-      if(role == "OFFICER"){
-        setParam({"officer":decoded.info.username})
+    const clearSearch = () => {
+      reset();
+      setParam({});
+      SetFiltered(recordsQuery);
+      if(searchRecordsQuery.data?.message.length == 0){
+        SetFiltered(recordsQuery)
       }
-    },[])
+    };
     
+    useEffect(() => {
+      if (Object.keys(param).length > 0) {
+        SetFiltered(searchRecordsQuery);
+   
+
+      } else {
+        SetFiltered(recordsQuery);
+      }
+
+    }, [filtered.data, param, setParam, searchRecordsQuery.data,  recordsQuery.data]);
+    
+    
+
 
   return (
     <TablesLayout roles={["OPERATOR", "DISPATCHER", "OFFICER"]}>
@@ -44,23 +65,53 @@ export const AllReportsPage = () => {
       </h1>
        
       <Outlet/>
-      <Topbar
-        modal={<ReportModal />}
-        allowedRole="OFFICER"
-        setParam={setParam}
-        param={param}
-        key={"reportModal"}
-      />
+
+
+      <div className="h-20 my-6 flex justify-around md:w-10/12 lg:w-8/12 items-center">
+      <form className="flex items-center gap-4" onSubmit={onSubmit}>
+        <input
+          autoComplete="off"
+          type="text"
+          placeholder="barra de busqueda"
+          className="input  text-yellow-400 font-semibold input-bordered mx-auto w-[25rem]"
+          {...register("searchRecords")}
+          required
+          minLength={6}
+        />
+        <select
+          id="param"
+          {...register("param")}
+
+          className="select select-bordered "
+          name="param"
+          required
+      
+        >
+          <option value="officer">oficial</option>
+          <option value="event">suceso</option>
+        </select>
+        {Object.keys(param).length == 1 ? (
+          <button
+            className="btn btn-outline"
+            onClick={clearSearch}
+          >eliminar busqueda</button>
+        ) : (
+          <input className="btn btn-outline" type="submit" value="buscar" />
+        )}
+      </form>
+      {role == "OFFICER" && <ReportModal/>}
+    </div>
+
       <>
 </>
       <div className="md:w-10/12 lg:w-8/12">
   
     
-        <ReportsTable query={filteredReports} />
+      <ReportsTable query={filtered}  />
         <Pagination
               currentPage={Object.keys(param).length > 0 ? currentPageSearch : currentPageAll}
               setCurrentPage={Object.keys(param).length > 0 ? setCurrentPageSearch : setCurrentPageAll}
-              query={filteredReports}
+              query={filtered}
         />
       </div>
     </TablesLayout>

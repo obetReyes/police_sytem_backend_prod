@@ -3,16 +3,23 @@ import {
   customDate,
   customHour,
   ErrorsI,
-  ReportI,
   ReportsResI,
 } from "../../../helpers";
 import { ReportsColumns } from "./ReportsColumns";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
+
 interface Props {
   query: UseQueryResult<ReportsResI, unknown>;
+
 }
 
-export const ReportsTable = ({ query }: Props) => {
+export const ReportsTable = ({ query  }: Props) => {
+
+  useEffect(() => {
+  console.log(query.data?.message, "message")
+  }, [query.data])
+  
   return (
     <div className="overflow-x-auto h-[40rem] w-full mx-auto rounded-lg shadow-xl">
       <table className="table  table-zebra w-full">
@@ -26,7 +33,7 @@ export const ReportsTable = ({ query }: Props) => {
                   (query.error as ErrorsI).response.data.message
                 }`}</td>
               </tr>
-        
+            
           ) : query.data?.message &&  query.data.message.length > 0 ? (
             query.data.message.map((report) => {
               const eventSummary = report.event.substring(0, 40);
