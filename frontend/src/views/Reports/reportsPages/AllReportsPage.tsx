@@ -10,13 +10,17 @@ import jwtDecode from "jwt-decode";
 import { Outlet } from "react-router-dom";
 
 export const AllReportsPage = () => {
+
   const { role, token } = useContext(UserContext);
+  
   const {
     currentPage: currentPageAll,
     setCurrentPage: setCurrentPageAll,
     recordsQuery,
   } = useRecords<ReportsResI>("reports");
+
   const decoded: DecodedI = jwtDecode(token);
+  
   const {
     param,
     searchRecordsQuery,
@@ -25,9 +29,11 @@ export const AllReportsPage = () => {
     setParam,
   } = useSearchRecords<ReportsResI>("reports");
 
+
   const { register, handleSubmit, reset } = useForm({
     mode: "onSubmit",
   });
+
   const [filtered, SetFiltered] = useState(recordsQuery);
 
   const onSubmit = handleSubmit(async (data, e) => {
@@ -42,6 +48,16 @@ export const AllReportsPage = () => {
       SetFiltered(recordsQuery);
     }
   };
+
+  const buttonHandle = () => {
+    if (role == "OFFICER" && Object.keys(param).includes("event")) {
+      return true;
+    }
+    if(role !== "OFFICER" && Object.keys(param).length > 0){
+      return true
+    }
+  };
+
   useEffect(() => {
     if (decoded.info.role == "OFFICER") {
       SetFiltered(searchRecordsQuery);
@@ -64,14 +80,6 @@ export const AllReportsPage = () => {
     ReportModal,
   ]);
 
-  const buttonHandle = () => {
-    if(role !== "OFFICER" && Object.keys(param).length == 1 ){
-      return true
-    }
-    if(role == "OFFICER" && Object.keys(param).includes("event")){
-      return true
-    }
-  }
   return (
     <TablesLayout roles={["OPERATOR", "DISPATCHER", "OFFICER"]}>
       <h1 className="fixed left-6 font-semibold text-2xl text-warning top-4">

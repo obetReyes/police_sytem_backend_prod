@@ -37,7 +37,7 @@ export const useSearchRecords = <T>(path: string) => {
   const axiosPrivate = useAxiosPrivate();
   const [currentPage, setCurrentPage] = useState<number>(0);
   const searchRecordsQuery = useQuery(
-    ["searchRecords",path, currentPage],
+    ["searchRecords",path, param, currentPage],
     async (): Promise<T> => {
       const { data } = await axiosPrivate.get<T>(`/${path}/many`, {
         params:{  
