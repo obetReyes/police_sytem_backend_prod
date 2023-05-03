@@ -1,12 +1,14 @@
 import React from "react";
 import { BtnMyLocation } from "../BtnLocation";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { NavbarLayout } from "./NavbarLayout";
 export const OperatorNavbar = () => {
+  const location = useLocation();
+
   return (
     <NavbarLayout>
         <div className="navbar-start gap-3">
-          <BtnMyLocation/>
+        {location.pathname === "/"  &&   <BtnMyLocation/>}
         </div>
         <div className="navbar-center flex">
           <ul className="menu menu-horizontal px-1">

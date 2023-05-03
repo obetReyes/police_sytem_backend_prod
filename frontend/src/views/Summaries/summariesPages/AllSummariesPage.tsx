@@ -1,18 +1,17 @@
 //import { SummariesTable } from "../components/SummariesTable"
-import { Pagination, TablesLayout, Topbar } from "../../../components";
+import { Pagination, TablesLayout } from "../../../components";
 import { SummaryModal } from "../components/SummaryModal";
 import { SummariesTable } from "../components/SummariesTable";
 import { useContext } from "react";
 import { UserContext } from "../../../contexts";
-import { useRecords, useSearchRecords, useUserRecord } from "../../../hooks/";
+import { useRecords, useSearchRecords,} from "../../../hooks/";
 import { useSearchSummary, useSummaries } from "../../../hooks";
 import { SummariesResI } from "../../../helpers";
 export const AllSummariesPage = () => {
+/*
   const { role } = useContext(UserContext);
   const { currentPage, setCurrentPage, recordsQuery } =
     useRecords<SummariesResI>("summaries");
-  const { searchRecords, setSearchRecords, searchRecordsQuery } =
-    useSearchRecords<SummariesResI>("summaries");
   const filteredSummaries = searchRecords
     ? searchRecordsQuery
     : recordsQuery
@@ -27,6 +26,7 @@ export const AllSummariesPage = () => {
         setSearchRecords={setSearchRecords}
         key={"summaryModal"}
       />
+      
       <div className="md:w-10/12 lg:w-8/12">
       <SummariesTable query={filteredSummaries} />
             <Pagination
@@ -36,5 +36,8 @@ export const AllSummariesPage = () => {
             />
       </div>
     </TablesLayout>
-  );
+  );*/
+  return(
+    <div>hopla</div>
+  )
 };

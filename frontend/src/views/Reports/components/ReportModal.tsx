@@ -13,6 +13,7 @@ export const ReportModal = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<CreateReportI>({
     mode: "onSubmit",
@@ -26,6 +27,7 @@ export const ReportModal = () => {
         data.actions = ""
         data.summary = ""
         e?.target.reset()
+        reset()
       }
     })
     setIsModal(false)

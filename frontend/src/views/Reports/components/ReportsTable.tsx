@@ -21,8 +21,8 @@ export const ReportsTable = ({ query  }: Props) => {
   }, [query.data])
   
   return (
-    <div className="overflow-x-auto h-[40rem] w-full mx-auto rounded-lg shadow-xl">
-      <table className="table  table-zebra w-full">
+    <div className="flex flex-col h-[42rem] overflow-auto">
+      <table className="table table-zebra w-full">
         <ReportsColumns />
         <tbody>
           {query.isLoading && <tr className="loader"></tr>}
@@ -39,11 +39,11 @@ export const ReportsTable = ({ query  }: Props) => {
               const eventSummary = report.event.substring(0, 40);
               return (
                 <tr key={report.id}>
-                  <td>{customDate(report.createdAt)}</td>
-                  <td>{customHour(report.createdAt)}</td>
-                  <td>{eventSummary} ...</td>
-                  <td>{report.userName}</td>
-                  <td>
+                  <td className="sm:w-1/6">{customDate(report.createdAt)}</td>
+                  <td className="sm:w-1/6">{customHour(report.createdAt)}</td>
+                  <td className="sm:w-1/6">{eventSummary} ...</td>
+                  <td className="sm:w-1/6">{report.userName}</td>
+                  <td className="sm:w-1/6">
                     <Link
                       className="btn btn-outline btn-sm"
                       to={`/reportes/${report.id}`}

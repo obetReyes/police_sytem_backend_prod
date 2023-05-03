@@ -36,7 +36,6 @@ export const useSearchRecords = <T>(path: string) => {
   const [param, setParam] = useState<{}>({});
   const axiosPrivate = useAxiosPrivate();
   const [currentPage, setCurrentPage] = useState<number>(0);
-
   const searchRecordsQuery = useQuery(
     ["searchRecords",path, currentPage],
     async (): Promise<T> => {
@@ -98,9 +97,9 @@ export const useRecordMutation = <T, U>(path: string) => {
     U
   >(createRecord, {
     onSuccess: (data) => {
-      records.refetchQueries({
-        queryKey: [`user${path}`, decoded.info.username],
-      });
+  
+      // refetch the queries with the updated currentPage and param values
+      records.refetchQueries(["searchRecords"]);
     },
   });
   return {
