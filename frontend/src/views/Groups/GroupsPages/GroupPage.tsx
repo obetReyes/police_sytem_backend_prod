@@ -1,30 +1,64 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { GroupResI, customDate, customHour } from "../../../helpers";
 import { useRecord } from "../../../hooks";
+import { Link } from "react-router-dom";
 export const GroupPage = () => {
-  const { grupo} = useParams();
+  const { grupoId } = useParams();
   const navigate = useNavigate();
-  const groupQuery = useRecord<GroupResI>("groups","group", String(grupo));
 
-  console.log(groupQuery.data, "data")
+  const groupQuery = useRecord<GroupResI>("groups", "group", Number(grupoId));
   return (
     <>
       <div className="flex items-center justify-center min-h-screen">
-        <div className=" py-8 w-12/12 prose lg:prose-lg">
-          <h1>{`${String(grupo)}`}</h1>
+        <div className=" w-12/12 prose lg:prose-lg h-[50rem] overflow-y-auto">
           {groupQuery.isLoading ? <span className="loader"></span> : null}
           {groupQuery.isError ? <h1>{`${groupQuery.error}`}</h1> : null}
 
-      
+          <h1>{groupQuery.data?.message.name}</h1>
           <span className=" underline">
-            creado el {customDate(groupQuery.data?.message.createdAt)}{" "}
+            creado el {customDate(groupQuery.data?.message?.createdAt)}{" "}
             {customHour(groupQuery.data?.message?.createdAt)}
           </span>
-          
-         
-          <p>area del grupo {groupQuery.data?.message?.area}</p>
-          
-          
+
+          <p>
+            el area asignada es {" "}
+            <b className="underline text-yellow-400">
+              {groupQuery.data?.message.area}
+            </b>
+          </p>
+
+          <h2>agentes asignados al grupo:</h2>
+          <div className="flex flex-col h-[25rem] overflow-auto">
+                  <table className="table table-zebra w-full">
+                  <thead>
+                    <tr>
+                      <th>nombre</th>
+                      <th>reportes</th>
+                      <th></th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+            {groupQuery.data?.message.users.map((user) => {
+              return (
+              
+                    <tr key={user.name}>
+                      <td className="sm:w-1/6 underline font-semibold text-warning">
+                    {user.name}
+                      </td>
+                      <td className="sm:w-1/6">
+                    {user.reports}
+                      </td>
+                      <td><Link to="/"  className="btn  btn-sm">ver localizacion</Link></td>
+                      <td><Link to="/"  className="btn  btn-sm">ver reportes</Link></td>
+                    </tr>
+              );
+            })}
+        </tbody>
+                  </table>
+                </div>
+        
+
           <div
             className="fixed flex items-center gap-4 top-8 right-12 hover:text-gray-500 cursor-pointer"
             onClick={() => navigate(-1)}

@@ -22,6 +22,7 @@ export interface GroupsI{
     users: number
 }
 export interface GroupI{
+    length: number;
     id:        number;
     name:      string;
     area:      string;

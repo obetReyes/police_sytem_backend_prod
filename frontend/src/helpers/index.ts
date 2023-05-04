@@ -8,6 +8,7 @@ export  type{ GroupsI,GroupResI,GroupActionResI,UserInfoGroupI,CreateGroupI,Grou
 export type { SummariesResI,CreateSummaryI,SummaryI,SummaryResI, } from "./summariesH";
 export { createReportSchema } from "./reportsH";
 export { createSummarySchema } from "./summariesH";
+export { createGroupSchema, updateGroupSchema } from "./GroupsH";
 
 export {axiosPrivate} from "./axios";
 export type { DirectionsResponse,Admin,Context,Feature,Geometry,Language,Leg,PlacesGeometry,PlacesResponse,Properties,Route,ShortCode,Waypoint,Wikidata } from "./MapH";

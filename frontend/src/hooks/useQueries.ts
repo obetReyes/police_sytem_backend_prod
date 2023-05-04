@@ -16,6 +16,7 @@ export const useRecords = <T>(path: string) => {
           limit:25,
           starting_after:currentPage
         },
+        
       });
       return data;
     },
@@ -66,10 +67,10 @@ export const useSearchRecords = <T>(path: string, cacheKey:string) => {
   };
 };
 
-export const useRecord = <T>(path: string, route:string, id: number | string) => {
+export const useRecord = <T>(path: string, route:string, id: number) => {
   const axiosPrivate = useAxiosPrivate();
   const recordQuery = useQuery(
-    [`${path}`, id],
+    ["record", path, id],
     async (): Promise<T> => {
       const { data } = await axiosPrivate.get<T>(`/${path}/${route}/${id}`);
       //tengo que cheacar como llega la respuesta del id para ebvuarka
@@ -77,12 +78,14 @@ export const useRecord = <T>(path: string, route:string, id: number | string) =>
     
       return data;
     },
-    {}
+    {
+
+    }
   );
   return recordQuery;
 };
 
-export const useRecordMutation = <T, U>(path: string, cacheKey:string) => {
+export const useRecordMutation = <T, U>(path: string, cacheKey:string, id?:number) => {
   const { token } = useContext(UserContext);
   const axiosPrivate = useAxiosPrivate();
   const records = useQueryClient();
@@ -101,7 +104,12 @@ export const useRecordMutation = <T, U>(path: string, cacheKey:string) => {
       // if the user is in filtered records refetch the fiteredOnes
       if(Object.keys(param).length > 0){
         records.refetchQueries([cacheKey]);
-      }else{
+      }
+      if(id){
+        records.refetchQueries(["record", path, id])
+      }
+      else{
+        
         //if the user is in allRecords feretch all the records
         records.refetchQueries(["records", path])
       }

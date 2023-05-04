@@ -40,7 +40,7 @@ export const GroupsTable = ({ query  }: Props) => {
                   <td className="sm:w-1/6">
                     <Link
                       className="btn btn-outline btn-sm"
-                      to={`/grupos/${group.name}`}
+                      to={`/grupos/${group.id}`}
                     >
                       ver grupo
                     </Link>

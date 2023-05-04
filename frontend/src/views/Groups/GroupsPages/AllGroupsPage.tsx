@@ -89,8 +89,7 @@ export const AllGroupsPage = () => {
             name="param"
             required
           >
-            {role !== "OFFICER" && <option value="officer">oficial</option>}
-            <option value="event">suceso</option>
+            <option value="group">grupo</option>
           </select>
           {paramHandler() ? (
             <button className="btn btn-outline" onClick={clearSearch}>

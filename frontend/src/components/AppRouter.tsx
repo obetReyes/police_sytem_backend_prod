@@ -18,7 +18,7 @@ export const AppRouter = () => {
       </Route>
 
       <Route path="grupos" element={<AllGroupsPage/>}>
-      <Route path=":grupo" element={<GroupPage/>} />
+      <Route path=":grupoId" element={<GroupPage/>} />
       </Route>
 
       <Route path="agentes" element={<AllUsersPage/>}>
