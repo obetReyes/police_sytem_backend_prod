@@ -103,7 +103,7 @@ export function seed() {
     }
   };
 
-  officersSeed();
+  officersSeed(); 
   dispatchersSeed();
   reportsSeed();
   summariesSeed();

@@ -10,11 +10,25 @@ export const getManySummariesController = tryCatch(
     const limit = req.query.limit ?? 100;
     const starting_after = req.query.starting_after ?? 0;
 
-    if(incident  && dispatcher){
-        throw new CustomError("no se puede hacer una busqueda de sumarios  por emisario y por incidente al mismo tiempo", "", 400);
-    }
 
-    const summaries = incident ? await getManySummariesService(
+    const summaries = incident && dispatcher ? 
+    await getManySummariesService(
+        {
+            where: {
+                incident: {
+                    contains: String(incident)
+                },
+                AND:{
+                    userName: String(dispatcher)
+                }
+                
+            },
+            skip: Number(starting_after),
+            take: Number(limit)
+        }
+    ):
+    
+    incident ? await getManySummariesService(
         {
             where: {
                 

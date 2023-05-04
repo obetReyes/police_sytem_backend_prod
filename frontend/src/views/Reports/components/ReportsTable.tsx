@@ -7,19 +7,14 @@ import {
 } from "../../../helpers";
 import { ReportsColumns } from "./ReportsColumns";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
 
 interface Props {
   query: UseQueryResult<ReportsResI, unknown>;
-
 }
 
 export const ReportsTable = ({ query  }: Props) => {
 
-  useEffect(() => {
-  console.log(query.data?.message, "message")
-  }, [query.data])
-  
+
   return (
     <div className="flex flex-col h-[42rem] overflow-auto">
       <table className="table table-zebra w-full">

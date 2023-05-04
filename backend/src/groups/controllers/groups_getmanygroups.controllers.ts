@@ -28,6 +28,7 @@ export const getManyGroupsController = tryCatch(
               area: group.area,
               name:group.name,
               createdAt: group.createdAt,
+              updatedAt:group.updatedAt,
               users: users
             };
           }));

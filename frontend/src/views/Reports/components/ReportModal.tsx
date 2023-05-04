@@ -1,14 +1,12 @@
 import { useRecordMutation } from "../../../hooks";
-import { CreateReportI, ReportResI, createReportSchema } from "../../../helpers";
+import { CreateReportI, ReportResI, createReportSchema, ErrorsI } from "../../../helpers";
 import {useForm} from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from "react";
-import { ErrorsI } from "../../../helpers";
-
 
 
 export const ReportModal = () => {
-  const {mutate, error, isError, isLoading} = useRecordMutation<ReportResI, CreateReportI>("reports");
+  const {mutate, error, isError, isLoading} = useRecordMutation<ReportResI, CreateReportI>("reports", "FoundReports");
   const [isModal, setIsModal] = useState<boolean>(false);
   const {
     register,

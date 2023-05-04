@@ -5,12 +5,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
 
 export const SummaryModal = () => {
-  const {mutate, error, isError, isLoading} = useRecordMutation<SummaryResI, CreateSummaryI>("reports");
+  const {mutate, error, isError, isLoading} = useRecordMutation<SummaryResI, CreateSummaryI>("summaries", "FoundSummaries");
   const [isModal, setIsModal] = useState<boolean>(false);
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<CreateSummaryI>({
     mode: "onSubmit",
@@ -26,6 +27,8 @@ export const SummaryModal = () => {
         data.notes = ""
         data.phone = ""
         data.requestor = ""
+        e?.target.reset()
+        reset()
       }
     })
     setIsModal(false)

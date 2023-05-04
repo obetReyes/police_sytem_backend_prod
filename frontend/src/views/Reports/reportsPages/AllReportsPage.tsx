@@ -27,7 +27,7 @@ export const AllReportsPage = () => {
     currentPage: currentPageSearch,
     setCurrentPage: setCurrentPageSearch,
     setParam,
-  } = useSearchRecords<ReportsResI>("reports");
+  } = useSearchRecords<ReportsResI>("reports", "FoundReports");
 
 
   const { register, handleSubmit, reset } = useForm({
@@ -49,7 +49,7 @@ export const AllReportsPage = () => {
     }
   };
 
-  const buttonHandle = () => {
+  const paramHandler = () => {
     if (role == "OFFICER" && Object.keys(param).includes("event")) {
       return true;
     }
@@ -109,7 +109,7 @@ export const AllReportsPage = () => {
             {role !== "OFFICER" && <option value="officer">oficial</option>}
             <option value="event">suceso</option>
           </select>
-          {buttonHandle() ? (
+          {paramHandler() ? (
             <button className="btn btn-outline" onClick={clearSearch}>
               eliminar busqueda
             </button>

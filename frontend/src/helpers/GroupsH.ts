@@ -21,7 +21,14 @@ export interface GroupsI{
     createdAt: string,
     users: number
 }
-
+export interface GroupI{
+    id:        number;
+    name:      string;
+    area:      string;
+    createdAt: string;
+    updatedAt: string;
+    users:     UserInfoGroupI[];
+}
 export interface  GroupActionResI{
     id: number,
     name: string,
@@ -34,14 +41,7 @@ export interface GroupsResI{
     message:GroupsI[]
 }
 export interface GroupResI{
-    message:{
-      id:number
-     name:string
-    area:string
-    createdAt:string
-    updatedAt:string 
-    users:UserInfoGroupI[]
-    }
+    message:GroupI
  }
 
 export const createGroupSchema = yup.object({

@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
-import { tryCatch, CustomError } from "../../utils";
-import { getUserService } from "../../users";
+import { tryCatch } from "../../utils";
 import { getSummariesService } from "../services/summaries.service";
 import { prisma } from "../../utils";
 
@@ -10,7 +9,7 @@ export const getSummariesController = tryCatch(
     const starting_after = req.query.starting_after ?? 0;
 
     const summaries = await getSummariesService({
-      skip: Number(limit),
+      skip: Number(starting_after),
       take: Number(limit),
     });
 

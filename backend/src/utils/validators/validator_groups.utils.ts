@@ -1,5 +1,5 @@
 import {z} from "zod";
-const nameContraint =  z.string().min(6,{message: "el nombre de grupo de no puede tener menos de 6 caracteres"}).max(60, {message:"el nombre de usuario no puede exceder los 60 caracteres"}
+const nameContraint =  z.string().min(3,{message: "el nombre de grupo de no puede tener menos de 6 caracteres"}).max(60, {message:"el nombre de usuario no puede exceder los 60 caracteres"}
 );
 
 const areaContraint = z.string().min(8, {message:"el area asignada no puede ser menor a 8 caracteres"}).max(120,

@@ -20,7 +20,6 @@ export const useRecords = <T>(path: string) => {
       return data;
     },
     {
-  
       keepPreviousData: true,
     }
   );
@@ -32,12 +31,12 @@ export const useRecords = <T>(path: string) => {
 };
 
 
-export const useSearchRecords = <T>(path: string) => {
+export const useSearchRecords = <T>(path: string, cacheKey:string) => {
   const [param, setParam] = useState<{}>({});
   const axiosPrivate = useAxiosPrivate();
   const [currentPage, setCurrentPage] = useState<number>(0);
   const searchRecordsQuery = useQuery(
-    ["searchRecords",path, param, currentPage],
+    [cacheKey,path, param, currentPage],
     async (): Promise<T> => {
       const { data } = await axiosPrivate.get<T>(`/${path}/many`, {
         params:{  
@@ -67,14 +66,15 @@ export const useSearchRecords = <T>(path: string) => {
   };
 };
 
-export const useRecord = <T>(path: string, id: number) => {
+export const useRecord = <T>(path: string, route:string, id: number | string) => {
   const axiosPrivate = useAxiosPrivate();
   const recordQuery = useQuery(
     [`${path}`, id],
     async (): Promise<T> => {
-      const { data } = await axiosPrivate.get<T>(`/${path}/${path.slice(0, -1)}/${id}`);
+      const { data } = await axiosPrivate.get<T>(`/${path}/${route}/${id}`);
       //tengo que cheacar como llega la respuesta del id para ebvuarka
-      console.log(data)
+      console.log(data , "data")
+    
       return data;
     },
     {}
@@ -82,10 +82,11 @@ export const useRecord = <T>(path: string, id: number) => {
   return recordQuery;
 };
 
-export const useRecordMutation = <T, U>(path: string) => {
+export const useRecordMutation = <T, U>(path: string, cacheKey:string) => {
   const { token } = useContext(UserContext);
   const axiosPrivate = useAxiosPrivate();
   const records = useQueryClient();
+  const {param} = useSearchRecords(path, cacheKey)
   const decoded: DecodedI = jwt_decode(token);
   const createRecord = async (body: U): Promise<T> => {
     const { data } = await axiosPrivate.post<T>(`/${path}/`, body);
@@ -97,9 +98,14 @@ export const useRecordMutation = <T, U>(path: string) => {
     U
   >(createRecord, {
     onSuccess: (data) => {
-  
+      // if the user is in filtered records refetch the fiteredOnes
+      if(Object.keys(param).length > 0){
+        records.refetchQueries([cacheKey]);
+      }else{
+        //if the user is in allRecords feretch all the records
+        records.refetchQueries(["records", path])
+      }
       // refetch the queries with the updated currentPage and param values
-      records.refetchQueries(["searchRecords"]);
     },
   });
   return {

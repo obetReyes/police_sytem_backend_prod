@@ -8,15 +8,17 @@ interface Props{
   query: UseQueryResult<SummariesResI, unknown>
 }
 export const SummariesTable = ({query}:Props) => {
+
   return (
-    <table className="table table-zebra w-full">
+ <div className="flex flex-col h-[42rem] overflow-auto">
+      <table className="table table-zebra w-full">
       <SummariesColumns/>
       <tbody>
-        {query.isLoading && <div className="loader"></div>}
+        {query.isLoading && <tr className="loader"></tr>}
         {query.isError ?  <tr>
           <td colSpan={100}>{`${(query.error as ErrorsI).response.data.message}`}</td>
           </tr>
-          :
+          : query.data?.message && query.data.message.length > 0 ? 
            query.data?.message.map((summarie) => {
             const eventSummary = summarie.incident.substring(0,40);
               return <tr key={summarie.id}>
@@ -31,8 +33,10 @@ export const SummariesTable = ({query}:Props) => {
                   </td>
               </tr>
           })
-        }
+        :  <tr>
+        <td colSpan={100}>Sin resultados</td></tr>}
       </tbody>
     </table>
+    </div>
   )
 }
