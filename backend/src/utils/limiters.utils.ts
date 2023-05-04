@@ -38,14 +38,14 @@ export const createLimiter = rateLimit({
 
 export const getLimiter = rateLimit({
   windowMs: 60000, // 1 minute
-  max: 40, // Limit each IP to 100 requests per `window` (here, per 1 minute)
+  max: 60, // Limit each IP to 100 requests per `window` (here, per 1 minute)
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers,
   handler: (req, res) => {
     res.status(429).json({
       errorCode: 429,
       message:
-        "se ha intentado muchas veces obtener un recurso, solo se llamar a los recursos 40 veces por minuto",
+        "se ha intentado muchas veces obtener un recurso, solo se llamar a los recursos 60 veces por minuto",
       href: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
     });
   },
