@@ -6,7 +6,7 @@ import { getLimiter, createLimiter, updateLimiter, deleteLimiter } from "../util
 export const router = express.Router();
 
 router.post("/", createLimiter, verifyJwt, verifyRoles(roles.OPERATOR), validator(groupValidator), createGroupController);
-router.get("/group/:group", verifyJwt, getLimiter, validator(groupParamsValidator),cache("group"), getGroupController);
+router.get("/group/:groupId", verifyJwt, getLimiter,cache("groupId"), getGroupController);
 router.get("/", getLimiter, verifyJwt, getGroupsController);
 router.put("/", updateLimiter, verifyJwt, verifyRoles(roles.OPERATOR), validator(groupUpdateValidator), updateGroupController);
 router.delete("/:group", deleteLimiter, verifyJwt, verifyRoles(roles.OPERATOR), validator(groupParamsValidator), deleteGroupController);

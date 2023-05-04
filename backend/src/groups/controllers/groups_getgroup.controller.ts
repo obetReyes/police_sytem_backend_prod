@@ -6,49 +6,39 @@ import { redis } from "../../utils";
 
 export const getGroupController = tryCatch(
   async (req: Request, res: Response) => {
-    const { group } = req.params;
-    const cachedReport = await redis.get(`group:${group}`);
-    if (cachedReport) {
+    const { groupId } = req.params;
+    const cachedGroup = await redis.get(`group:${groupId}`);
+    if (cachedGroup) {
       const response = {
-        message: JSON.parse(cachedReport),
+        message: JSON.parse(cachedGroup),
       };
       return res.status(200).json(response);
     }
     const getGroup = await getGroupService({
-      name: group,
+     id:Number(groupId)
     });
 
     if (getGroup == undefined) {
       throw new CustomError("el grupo no existe", "", 404);
     }else{
-
-    
-    const users = getGroup.users.map((user) => {
-      return {
-        name: user.name,
-        location: user.location,
-        reports: user._count.reports,
-      };
-    });
-
-const response = {
-      messsage:{ 
-        id: getGroup.id,
-        name:getGroup.name,
-        area: getGroup.area,
-        createdAt: getGroup.createdAt,
-        updatedAt:getGroup.updatedAt,
-        users:users
-      }
-      
-    };
-    // Store report data in cache for future requests
-    await redis.set(`group:${group}`, JSON.stringify(getGroup), "EX", 300); //cached for 5 minutes
   
+      
+      const userValues = getGroup.users.map(user => {
+        return { name: user.name, reports: user._count.reports };
+    });
     
+    const { id, name, area, createdAt, updatedAt } = getGroup;
+
+    const getGroupResponse = { id, name, area, createdAt, updatedAt, users: userValues, };
+    await redis.set(`report:${groupId}`, JSON.stringify(getGroupResponse), "EX", 300); //cached for 5 minutes
+    
+      const response = {
+        message:getGroupResponse,
+      };
+      return res.status(200).json(response);
+    }
+    // Store report data in cache for future requests
 
 
-    return res.status(200).json(response);
   }
-}
 );
