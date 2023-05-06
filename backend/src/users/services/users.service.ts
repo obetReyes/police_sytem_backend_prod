@@ -62,6 +62,7 @@ export const getManyUsersService = async (  params:{
             role: true,
             updatedAt: true,
             createdAt: true,
+            groupName:true,
         _count:{
             select:{
                 reports:true,
@@ -85,6 +86,7 @@ export const getAllUsersService = async (params:{
             role: true,
             updatedAt: true,
             createdAt: true,
+            groupName:true,
             _count:{
                 select:{
                     reports:true,

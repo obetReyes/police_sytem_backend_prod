@@ -9,6 +9,7 @@ interface UsersResI{
   updatedAt: Date
   name: string
   role: string
+  group?:string | null
   reports?: number
   summaries?: number
 }
@@ -28,6 +29,7 @@ export const getUsersController = tryCatch(
             id:user.id,
             name:user.name,
             role:user.role,
+            group:user.groupName,
             updatedAt:user.updatedAt,
             createdAt:user.createdAt
           };

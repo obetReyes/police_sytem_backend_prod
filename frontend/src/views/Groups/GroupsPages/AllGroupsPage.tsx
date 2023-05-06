@@ -6,7 +6,7 @@ import { UserContext } from '../../../contexts'
 import { useRecords, useSearchRecords } from '../../../hooks'
 import { GroupsResI, DecodedI } from '../../../helpers'
 import { useForm } from "react-hook-form";
-import jwtDecode from "jwt-decode";
+
 import { GroupsTable } from '../components/GroupsTable'
 
 export const AllGroupsPage = () => {
@@ -18,8 +18,7 @@ export const AllGroupsPage = () => {
     recordsQuery,
   } = useRecords<GroupsResI>("groups");
 
-  const decoded: DecodedI = jwtDecode(token);
-  
+
   const {
     param,
     searchRecordsQuery,

@@ -1,8 +1,8 @@
-export  type { SignUpI } from "./signUpH";
+export  type { SignUpI, SignUpOfficerI } from "./signUpH";
 export type { ErrorsI, GlobalResI } from "./globalH";
 export type { SignInI, SignInResI, DecodedI } from "./signInH";
 export { signInSchema } from "./signInH";
-export { signUpSchema } from "./signUpH";
+export { signUpSchema, signUpOfficerSchema } from "./signUpH";
 export type { ReportI, ReportResI, ReportsResI, CreateReportI } from "./reportsH";
 export  type{ GroupsI,GroupResI,GroupActionResI,UserInfoGroupI,CreateGroupI,GroupsResI,UpdateGroupI } from "./GroupsH";
 export type { SummariesResI,CreateSummaryI,SummaryI,SummaryResI, } from "./summariesH";

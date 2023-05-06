@@ -85,11 +85,40 @@ export const useRecord = <T>(path: string, route:string, id: number) => {
   return recordQuery;
 };
 
-export const useRecordMutation = <T, U>(path: string, cacheKey:string, id?:number) => {
+
+//nened tocreate use record upaate Muatation to update modals
+export const useRecordUpdateMutation = <T, U>(path:string, id:number) => {
+
+  const axiosPrivate = useAxiosPrivate();
+  const records = useQueryClient();
+ const updateRecord = async(body:U): Promise<T> => {
+  const { data } = await axiosPrivate.put<T>(`/${path}/`, body);
+  console.log(data)
+  return data;
+ };
+ const { mutate, error, isError, isLoading, isSuccess } = useMutation<T,
+  unknown,
+  U
+  >(updateRecord, {
+    onSuccess: (data) => {
+      records.refetchQueries(["record", path, id])
+    }
+  })
+  return{
+    mutate,
+    error,
+    isError,
+    isLoading,
+    isSuccess
+  }
+}
+export const useRecordMutation = <T, U>(path: string, cacheKey:string,id?:string) => {
   const { token } = useContext(UserContext);
   const axiosPrivate = useAxiosPrivate();
   const records = useQueryClient();
-  const {param} = useSearchRecords(path, cacheKey)
+
+  const {currentPage:currentPageRecords} = useRecords(path)
+  const {param, currentPage:currentPageSearch} = useSearchRecords(path, cacheKey)
   const decoded: DecodedI = jwt_decode(token);
   const createRecord = async (body: U): Promise<T> => {
     const { data } = await axiosPrivate.post<T>(`/${path}/`, body);
@@ -103,7 +132,7 @@ export const useRecordMutation = <T, U>(path: string, cacheKey:string, id?:numbe
     onSuccess: (data) => {
       // if the user is in filtered records refetch the fiteredOnes
       if(Object.keys(param).length > 0){
-        records.refetchQueries([cacheKey]);
+        records.refetchQueries([cacheKey, path, param, currentPageSearch]);
       }
       if(id){
         records.refetchQueries(["record", path, id])
@@ -111,7 +140,7 @@ export const useRecordMutation = <T, U>(path: string, cacheKey:string, id?:numbe
       else{
         
         //if the user is in allRecords feretch all the records
-        records.refetchQueries(["records", path])
+        records.refetchQueries(["records", path, currentPageRecords])
       }
       // refetch the queries with the updated currentPage and param values
     },

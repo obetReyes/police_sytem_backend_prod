@@ -2,19 +2,25 @@ import { useParams, useNavigate } from "react-router-dom";
 import { GroupResI, customDate, customHour } from "../../../helpers";
 import { useRecord } from "../../../hooks";
 import { Link } from "react-router-dom";
+import { GroupUpdateModal } from "../components/GroupsUpdateModal";
+import { useContext } from "react";
+import { UserContext } from "../../../contexts";
 export const GroupPage = () => {
+  const {role} = useContext(UserContext)
   const { grupoId } = useParams();
   const navigate = useNavigate();
-
   const groupQuery = useRecord<GroupResI>("groups", "group", Number(grupoId));
+  const groupName = groupQuery.data?.message.name; // Get the groupName from the groupQuery data
   return (
     <>
       <div className="flex items-center justify-center min-h-screen">
+
         <div className=" w-12/12 prose lg:prose-lg h-[50rem] overflow-y-auto">
           {groupQuery.isLoading ? <span className="loader"></span> : null}
           {groupQuery.isError ? <h1>{`${groupQuery.error}`}</h1> : null}
 
           <h1>{groupQuery.data?.message.name}</h1>
+       {role == "OPERATOR" &&  groupName && <GroupUpdateModal groupId={Number(grupoId)} groupName={groupName} />}
           <span className=" underline">
             creado el {customDate(groupQuery.data?.message?.createdAt)}{" "}
             {customHour(groupQuery.data?.message?.createdAt)}

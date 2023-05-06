@@ -5,7 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from "react";
 
 export const GroupsModal = () => {
-  const {mutate, error, isError, isLoading} = useRecordMutation<GroupResI, CreateGroupI>("reports", "FoundReports" );
+  const {mutate, error, isError, isLoading} = useRecordMutation<GroupResI, CreateGroupI>("groups", "FoundGroups");
   const [isModal, setIsModal] = useState<boolean>(false);
 
   const {
@@ -19,6 +19,7 @@ export const GroupsModal = () => {
   });
 
   const onSubmit = handleSubmit(async(data,e) => {
+    
     mutate(data,{
       onSettled:() => {
         data.name = ""
@@ -58,6 +59,7 @@ export const GroupsModal = () => {
               <label htmlFor="groupNameInput" className="sr-only">
                 Nombre Del Grupo
               </label>
+  
 
               <div className="relative">
                 <input
@@ -66,7 +68,7 @@ export const GroupsModal = () => {
                   className={inputStyles}
                   placeholder="Nombre Del Grupo"
                   autoComplete="off"
-                  //register goes here
+                  {...register("name")}
                 />
               </div>
               {errors.name ? <p className={errorStyles}>{errors.name?.message}</p> : null}
@@ -84,7 +86,7 @@ export const GroupsModal = () => {
                   className={inputStyles}
                   placeholder="Area de Operaciones"
                   autoComplete="off"
-                  //register goes here
+                  {...register("area")}
                 />
               </div>
               {errors.area ? <p className={errorStyles}>{errors.area?.message}</p> : null}

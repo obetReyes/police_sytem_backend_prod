@@ -19,6 +19,7 @@ export interface UsersI {
   role: string;
   reports?: number;
   summaries?: number;
+  group?:string | null
 }
 export interface UpdateUserI {
         group?:string,
