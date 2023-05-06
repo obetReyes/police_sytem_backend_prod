@@ -87,7 +87,7 @@ export const useRecord = <T>(path: string, route:string, id: number | string) =>
 
 
 //nened tocreate use record upaate Muatation to update modals
-export const useRecordUpdateMutation = <T, U>(path:string, id:number) => {
+export const useRecordUpdateMutation = <T, U>(path:string, id:number | string) => {
 
   const axiosPrivate = useAxiosPrivate();
   const records = useQueryClient();

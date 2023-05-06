@@ -8,6 +8,7 @@ export  type{ GroupsI,GroupResI,GroupActionResI,UserInfoGroupI,CreateGroupI,Grou
 export type { SummariesResI,CreateSummaryI,SummaryI,SummaryResI, } from "./summariesH";
 export { createReportSchema } from "./reportsH";
 export { createSummarySchema } from "./summariesH";
+export {updateUserSchema} from "./usersH"
 export { createGroupSchema, updateGroupSchema } from "./GroupsH";
 
 export {axiosPrivate} from "./axios";
