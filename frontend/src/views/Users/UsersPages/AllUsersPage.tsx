@@ -31,6 +31,8 @@ export const AllUsersPage = () => {
   const [filtered, SetFiltered] = useState(recordsQuery);
   const onSubmit = handleSubmit(async (data, e) => {
     setParam({ [data.param]: data.searchRecords });
+    console.log(param, "param")
+    console.log(data, "data")
   });
 
   const clearSearch = () => {
@@ -84,7 +86,7 @@ export const AllUsersPage = () => {
             name="param"
             required
           >
-            <option value="agente">agente</option>
+            <option value="agents">agente</option>
           </select>
           {paramHandler() ? (
             <button className="btn btn-outline" onClick={clearSearch}>
@@ -94,7 +96,7 @@ export const AllUsersPage = () => {
             <input className="btn btn-outline" type="submit" value="buscar" />
           )}
         </form>
-       {role == "OPERATOR" && <UsersModal/>}
+      {/* {role == "OPERATOR" && <UsersModal/>}  */}
       </div>
       <div className="md:w-10/12 lg:w-8/12">
       <UsersTable query={filtered} />

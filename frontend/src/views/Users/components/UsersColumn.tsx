@@ -11,6 +11,7 @@ export const UsersColumns = () => {
          <th>grupo</th>
          <th>reportes</th>
         <th>sumarios</th>
+        <th></th>
       </tr>
      </thead>
     )

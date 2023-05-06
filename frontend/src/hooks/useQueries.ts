@@ -67,7 +67,7 @@ export const useSearchRecords = <T>(path: string, cacheKey:string) => {
   };
 };
 
-export const useRecord = <T>(path: string, route:string, id: number) => {
+export const useRecord = <T>(path: string, route:string, id: number | string) => {
   const axiosPrivate = useAxiosPrivate();
   const recordQuery = useQuery(
     ["record", path, id],

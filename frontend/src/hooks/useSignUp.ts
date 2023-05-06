@@ -24,16 +24,6 @@ export const useSignUpMutation = () => {
             replace:true
         });
       },
-      onError: (error) => {
-        if (axios.isAxiosError<ErrorsI, Record<string, unknown>>(error)) {
-          error.message = String(error.response?.data.message);
-          // Do something with this error...
-        }
-        if (error.code == "ERR_NETWORK") {
-          error.message = "no se puedo establecer conexion con el servidor";
-        }
-        return error.message;
-      },
     }
   );
   return {
