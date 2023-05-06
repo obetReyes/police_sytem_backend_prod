@@ -14,6 +14,15 @@ export const groupParamsValidator = z.object({
     }).strict("el unico parametro disponible es: el nombre del grupo")
 });
 
+
+export const groupQueryValidator = z.object({
+    query:z.object({
+        group:nameContraint,
+        limit:z.coerce.number().min(1,{message:"el numero no puede ser negativo"}).nonnegative({message:"el numero no puede ser negativo"}).max(100, {message:"el limite de datos requerido excede el limite de peticios de datos, se pueden obtener un maximo de 100 datos por llamada"}).optional().transform(String),
+        starting_after:z.coerce.number().nonnegative({message:"no existen datos con un id negativo"}).optional()
+    })
+});
+
 export const groupUpdateValidator = z.object({
     body:z.object({
         name:nameContraint,
