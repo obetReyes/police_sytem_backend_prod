@@ -14,11 +14,13 @@ export const validator =
     } catch (err) {
       console.log(err);
       if (err instanceof ZodError) {
-        const issuesMsg = err.issues.map((issue) => issue.message);
-       const response = {
-          errorCode:400,
-          message:issuesMsg,
-          href:""
+        const issuesMsg = err.issues.map((issue) => {
+          return issue.path + " " + issue.message;
+        });
+        const response = {
+          errorCode: 400,
+          message: issuesMsg,
+          href: "",
         };
 
         res.status(400).json(response);
