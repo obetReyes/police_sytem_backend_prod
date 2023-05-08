@@ -9,6 +9,8 @@ export const UserPage = () => {
   const { role } = useContext(UserContext);
   const { agente } = useParams();
   const agentQuery = useRecord<UserResI>("users", "user", String(agente));
+  const userId = agentQuery.data?.message.name;
+  const userRole = agentQuery.data?.message.role;
   return (
     <>
       <div className="flex items-center justify-center min-h-screen">
@@ -17,7 +19,7 @@ export const UserPage = () => {
           {agentQuery.isLoading ? <span className="loader"></span> : null}
           {agentQuery.isError ? <h1>{`${agentQuery.error}`}</h1> : null}
 
-          {role == "OPERATOR" && <UserUpdateModal />}
+          {role == "OPERATOR" && <UserUpdateModal userId={userId!} role={userRole!} />}
 
           <p className=" underline">
             creado el {customDate(agentQuery.data?.message?.createdAt)}{" "}

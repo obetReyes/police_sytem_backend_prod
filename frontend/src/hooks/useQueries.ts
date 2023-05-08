@@ -8,16 +8,18 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 export const useRecords = <T>(path: string) => {
   const axiosPrivate = useAxiosPrivate();
   const [currentPage, setCurrentPage] = useState<number>(0);
+  const [limit, setLimit] = useState<number>(25)
   const recordsQuery = useQuery(
     ["records", path, currentPage],
     async (): Promise<T> => {
       const { data } = await axiosPrivate.get<T>(`/${path}/`, {
         params: {
-          limit:25,
+          limit:limit,
           starting_after:currentPage
         },
         
       });
+      console.log(data)
       return data;
     },
     {
@@ -28,6 +30,8 @@ export const useRecords = <T>(path: string) => {
     currentPage,
     setCurrentPage,
     recordsQuery,
+    limit,
+    setLimit
   };
 };
 
@@ -36,16 +40,18 @@ export const useSearchRecords = <T>(path: string, cacheKey:string) => {
   const [param, setParam] = useState<{}>({});
   const axiosPrivate = useAxiosPrivate();
   const [currentPage, setCurrentPage] = useState<number>(0);
+  const [limit, setLimit] = useState<number>(25)
   const searchRecordsQuery = useQuery(
     [cacheKey,path, param, currentPage],
     async (): Promise<T> => {
       const { data } = await axiosPrivate.get<T>(`/${path}/many`, {
         params:{  
-          limit:25,
+          limit:limit,
           starting_after:currentPage,
           ...param
         }
       });
+      console.log(limit)
       return data;
     },
     {
@@ -63,6 +69,8 @@ export const useSearchRecords = <T>(path: string, cacheKey:string) => {
     searchRecordsQuery,
     param,
     setParam,
+    limit,
+    setLimit
    
   };
 };
@@ -113,13 +121,12 @@ export const useRecordUpdateMutation = <T, U>(path:string, id:number | string) =
   }
 }
 export const useRecordMutation = <T, U>(path: string, cacheKey:string,id?:string) => {
-  const { token } = useContext(UserContext);
   const axiosPrivate = useAxiosPrivate();
   const records = useQueryClient();
 
   const {currentPage:currentPageRecords} = useRecords(path)
   const {param, currentPage:currentPageSearch} = useSearchRecords(path, cacheKey)
-  const decoded: DecodedI = jwt_decode(token);
+
   const createRecord = async (body: U): Promise<T> => {
     const { data } = await axiosPrivate.post<T>(`/${path}/`, body);
     return data;

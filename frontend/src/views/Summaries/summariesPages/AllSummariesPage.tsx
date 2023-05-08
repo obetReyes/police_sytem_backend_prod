@@ -16,6 +16,8 @@ export const AllSummariesPage = () => {
     currentPage: currentPageAll,
     setCurrentPage: setCurrentPageAll,
     recordsQuery,
+    limit:limitRecords,
+    setLimit:setLimitRecords
   } = useRecords<SummariesResI>("summaries");
 
   const {
@@ -24,6 +26,8 @@ export const AllSummariesPage = () => {
     currentPage: currentPageSearch,
     setCurrentPage: setCurrentPageSearch,
     setParam,
+    limit:limitSearch,
+    setLimit:SetLimitSearch
   } = useSearchRecords<SummariesResI>("summaries", "FoundSummaries");
  
   const { register, handleSubmit, reset } = useForm({
@@ -111,6 +115,12 @@ const clearSearch = () => {
               setCurrentPage={Object.keys(param).length > 0
                 ? setCurrentPageSearch
                 : setCurrentPageAll}
+                limit={  Object.keys(param).length > 0
+                  ? limitSearch
+                  : limitRecords
+                }
+                setLimit={Object.keys(param).length > 0
+                ? SetLimitSearch : setLimitRecords}
               query={filtered}
             />
       </div>

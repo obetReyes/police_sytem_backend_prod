@@ -3,24 +3,25 @@ import { tryCatch } from "../../utils";
 import bcrypt from "bcrypt";
 import { CustomError } from "../../utils";
 import { createUserService } from "../../users";
-import { getGroupsService } from "../../groups/services/groups.service";
+import { getGroupService } from "../../groups";
 
 export const signUpOfficerController = tryCatch(
     async (req: Request, res: Response) => {
       const { username, password, cuip, group} = req.body;
       const pwdToStore = await bcrypt.hash(password, 10);
       
-      const groups = await getGroupsService({
-        take:1
+
+
+      const isGroup = await getGroupService({
+       name:group
       });
    
-      if(groups.length < 1){
-          throw new CustomError("no existe ningun grupo al cual el oficial pueda ser asignado por favor crea un grupo primero", "");
+      if(!isGroup){
+          throw new CustomError("el grupo al cual el oficial se trata de asignar no existe", "400");
       }
      
-      const groupExists =  groups.find((groupsGroup) => groupsGroup.name  == group);
 
-      if(groupExists !== undefined){
+      if(isGroup){
       const signUpOfficer = await createUserService({
         name: username,
         password: pwdToStore,
@@ -39,9 +40,7 @@ export const signUpOfficerController = tryCatch(
             message: `nuevo oficial creado ${signUpOfficer.name}`,
         });
       }
-      if(groupExists == undefined){
-        throw new CustomError( "el grupo al cual se trata de asignar el oficial no existe", "", 404);
-      } 
+  
     }
   );
   

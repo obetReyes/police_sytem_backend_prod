@@ -1,12 +1,11 @@
 import { TablesLayout, Pagination } from "../../../components";
 import { Outlet } from "react-router-dom";
 import { UsersModal } from "../components/UsersModal";
-//import { UsersTable } from "../components/UsersTable";
 import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../../../contexts";
 import { UsersTable } from "../components/UsersTable";
 import {useRecords, useSearchRecords} from "../../../hooks"
-import { UserResI, DecodedI, UsersResI } from "../../../helpers";
+import {  UsersResI } from "../../../helpers";
 import { useForm } from "react-hook-form";
 
 export const AllUsersPage = () => {
@@ -15,6 +14,8 @@ export const AllUsersPage = () => {
     currentPage: currentPageAll,
     setCurrentPage: setCurrentPageAll,
     recordsQuery,
+    limit:limitRecords,
+    setLimit:setLimitRecords
   } = useRecords<UsersResI>("users");
 
   const {
@@ -23,16 +24,17 @@ export const AllUsersPage = () => {
     currentPage: currentPageSearch,
     setCurrentPage: setCurrentPageSearch,
     setParam,
+    limit:limitSearch,
+    setLimit:SetLimitSearch
   } = useSearchRecords<UsersResI>("users", "FoundUsers");
 
   const { register, handleSubmit, reset } = useForm({
     mode: "onSubmit",
   });
   const [filtered, SetFiltered] = useState(recordsQuery);
+  
   const onSubmit = handleSubmit(async (data, e) => {
     setParam({ [data.param]: data.searchRecords });
-    console.log(param, "param")
-    console.log(data, "data")
   });
 
   const clearSearch = () => {
@@ -96,7 +98,7 @@ export const AllUsersPage = () => {
             <input className="btn btn-outline" type="submit" value="buscar" />
           )}
         </form>
-      {/* {role == "OPERATOR" && <UsersModal/>}  */}
+       {role == "OPERATOR" && <UsersModal/>}  
       </div>
       <div className="md:w-10/12 lg:w-8/12">
       <UsersTable query={filtered} />
@@ -109,6 +111,12 @@ export const AllUsersPage = () => {
               ? setCurrentPageSearch
               : setCurrentPageAll
           }
+          limit={  Object.keys(param).length > 0
+            ? limitSearch
+            : limitRecords
+          }
+          setLimit={Object.keys(param).length > 0
+          ? SetLimitSearch : setLimitRecords}
           query={filtered}
         />
       </div>

@@ -4,7 +4,7 @@ import { GroupsModal } from '../components/GroupsModal'
 import { useContext, useState, useEffect } from 'react'
 import { UserContext } from '../../../contexts'
 import { useRecords, useSearchRecords } from '../../../hooks'
-import { GroupsResI, DecodedI } from '../../../helpers'
+import { GroupsResI } from '../../../helpers'
 import { useForm } from "react-hook-form";
 
 import { GroupsTable } from '../components/GroupsTable'
@@ -16,6 +16,8 @@ export const AllGroupsPage = () => {
     currentPage: currentPageAll,
     setCurrentPage: setCurrentPageAll,
     recordsQuery,
+    limit:limitRecords,
+    setLimit:setLimitRecords
   } = useRecords<GroupsResI>("groups");
 
 
@@ -25,6 +27,8 @@ export const AllGroupsPage = () => {
     currentPage: currentPageSearch,
     setCurrentPage: setCurrentPageSearch,
     setParam,
+    limit:limitSearch,
+    setLimit:SetLimitSearch
   } = useSearchRecords<GroupsResI>("groups", "FoundGroups");
 
   const { register, handleSubmit, reset } = useForm({
@@ -112,6 +116,12 @@ export const AllGroupsPage = () => {
               ? setCurrentPageSearch
               : setCurrentPageAll
           }
+          limit={  Object.keys(param).length > 0
+            ? limitSearch
+            : limitRecords
+          }
+          setLimit={Object.keys(param).length > 0
+          ? SetLimitSearch : setLimitRecords}
           query={filtered}
         />
       </div>

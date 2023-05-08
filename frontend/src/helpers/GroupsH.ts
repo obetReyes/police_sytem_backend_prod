@@ -40,6 +40,9 @@ export interface  GroupActionResI{
 
 export interface GroupsResI{
     message:GroupsI[]
+     limit: number,
+    records: number,
+    starting_after: number
 }
 export interface GroupResI{
     message:GroupI

@@ -17,6 +17,8 @@ export const AllReportsPage = () => {
     currentPage: currentPageAll,
     setCurrentPage: setCurrentPageAll,
     recordsQuery,
+    limit:limitRecords,
+    setLimit:setLimitRecords
   } = useRecords<ReportsResI>("reports");
 
   const decoded: DecodedI = jwtDecode(token);
@@ -27,6 +29,8 @@ export const AllReportsPage = () => {
     currentPage: currentPageSearch,
     setCurrentPage: setCurrentPageSearch,
     setParam,
+    limit:limitSearch,
+    setLimit:SetLimitSearch
   } = useSearchRecords<ReportsResI>("reports", "FoundReports");
 
 
@@ -131,6 +135,12 @@ export const AllReportsPage = () => {
               ? setCurrentPageSearch
               : setCurrentPageAll
           }
+          limit={  Object.keys(param).length > 0
+            ? limitSearch
+            : limitRecords
+          }
+          setLimit={Object.keys(param).length > 0
+          ? SetLimitSearch : setLimitRecords}
           query={filtered}
         />
       </div>

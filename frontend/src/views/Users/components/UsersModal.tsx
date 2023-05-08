@@ -1,32 +1,40 @@
-import { useRecordMutation } from '../../../hooks'
-import { SignUpOfficerI, SignUpI, signUpOfficerSchema, signUpSchema, UserResI} from '../../../helpers'
+import { SignUpOfficerI, SignUpI, signUpOfficerSchema,  GlobalResI, GroupsResI} from '../../../helpers'
+import { useUsersMutation } from '../../../hooks/useUsers'
+import { useRecords } from '../../../hooks'
 import {useForm} from "react-hook-form"
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useState } from 'react'
 export const UsersModal = () => {
 
+  
+  const {mutate:DispatcherMutation, error:errorDispatcher, isError:IsErrorDispatcher, isLoading:isLoadingDisptacher} = useUsersMutation<GlobalResI, SignUpI>("signup-dispatcher");
+  const {mutate:OfficerMutation, error:errorOfficer, isError:isErrorOfficer, isLoading:isLoadingOfficer} = useUsersMutation<GlobalResI, SignUpOfficerI>("signup-officer");
 
-  const {mutate:DispatcherMutation, error:errorDispatcher, isError:IsErrorDispatcher, isLoading:isLoadingDisptacher} = useRecordMutation<UserResI, SignUpI>("auth/signup-officer", "");
-  const {mutate:OfficerMutation, error:errorOfficer, isError:isErrorOfficer, isLoading:isLoadingOfficer} = useRecordMutation<UserResI, SignUpOfficerI>("auth/signup-officer", "");
+  const {
+    currentPage: currentPageAll,
+    setCurrentPage: setCurrentPageAll,
+    recordsQuery,
+  } = useRecords<GroupsResI>("groups");
 
   const [isOfficer, setIsOfficer] = useState<boolean>(false)
   const [isModal, setIsModal] = useState<boolean>(false);
   
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<SignUpOfficerI | SignUpI>({
+  } = useForm<SignUpOfficerI>({
     mode: "onSubmit",
     resolver: yupResolver(signUpOfficerSchema),
   });
 
   const onSubmit = handleSubmit(async(data,e) => {
     
-    if(isOfficer && "group" in data)
+    if(isOfficer)
   {
-    OfficerMutation(data,{
+    OfficerMutation({username:data.username, group:data.group, password:data.password, cuip:data.cuip},{
       onSettled:() => {
         data.username = ""
         data.group = ""
@@ -36,8 +44,14 @@ export const UsersModal = () => {
       }
     })
     
-     }else{
-        DispatcherMutation(data,{
+     }
+     
+     if(!isOfficer){
+        DispatcherMutation({
+          username:data.username,
+          cuip:data.cuip,
+          password:data.password
+        },{
           onSettled:() =>{
             data.username = ""
             data.cuip = ""
@@ -58,7 +72,10 @@ export const UsersModal = () => {
 
   return (
     <>
-<label htmlFor="myModalUsers" className="btn" onClick={() => setIsModal(true)}>crear Agente</label>
+<label htmlFor="myModalUsers" className="btn" onClick={() =>{ setIsModal(true) 
+  reset()
+  setIsOfficer(false)
+  }}>crear Agente</label>
 {isModal &&
 <>
 <input type="checkbox" id="myModalUsers" className="modal-toggle" />
@@ -100,11 +117,11 @@ export const UsersModal = () => {
     </div>
 
   <div className="pb-4">
-  <label htmlFor="passwordInput" className="sr-only">Confirmar Contraseña</label>
+  <label htmlFor="confirmPasswordInput" className="sr-only">Confirmar Contraseña</label>
   
   <div className="relative">
     <input
-    id="PasswordInput"
+    id="confirmPasswordInput"
     type='password'
       className={inputStyles}
       placeholder="Confirmar Contraseña"
@@ -129,7 +146,7 @@ export const UsersModal = () => {
                 setIsOfficer(true)
           }
       }}
-     >   <option disabled selected>Elegir una funcion</option>
+     > 
         <option value="DISPATCHER">Operador 911</option>
       <option value="OFFICER">Oficial</option>
     </select>
@@ -152,22 +169,26 @@ export const UsersModal = () => {
     </div>
 
     {/* check if fucntion is seelected as oficial show group is dispatcher does not show it */}
-    
-    <div className='pb-4'>
-    <label htmlFor="GroupInput" className="sr-only">Grupo</label>
+    {isOfficer &&<div className='pb-4'>
+    <label htmlFor="officerGroupInput" className="sr-only">Grupo</label>
   
   <div className="relative">
   <select
-    id="functionInput"
+    id="officerGroupInput"
       className="select select-bordered  w-full"
-      placeholder="Funcion"
+      placeholder="grupo"
       autoComplete="off"
-     >   <option disabled selected>Elegir un grupo</option>
-        <option value="DISPATCHER">Operador 911</option>
-      <option value="OFFICER">Oficial</option>
+      {...register("group")}
+     > 
+      {recordsQuery.data?.message.map((group) => {
+        return(
+          <option key={group.id} value={group.name} >{group.name}</option>
+        )
+      })}
     </select>
     </div>
-    </div>
+    </div> }
+    
 
     <input type='submit' className='btn float-right' value="crear agente"></input>
     </form>

@@ -80,6 +80,7 @@ export const getAllUsersService = async (params:{
   }) => {
     const {take,skip, where} = params;
     return prisma.user.findMany({
+        
         select: {
             id:true,
             name: true,
@@ -93,7 +94,11 @@ export const getAllUsersService = async (params:{
                     summaries:true
                 }
             }
-        }
+        },
+        take,
+        where,
+        skip,
+        
     });
 };
 
