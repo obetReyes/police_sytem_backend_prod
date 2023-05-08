@@ -1,23 +1,29 @@
 import express from "express";
 import { cache, validator, verifyJwt, verifyRoles } from "../middlewares";
-import { userValidator, roles, userUpdateValidator, useQueryValidator } from "../utils";
+import { userValidator, roles, userUpdateValidator, useQueryValidator, userParamsValidator } from "../utils";
 import {
   getUserController,
   deleteUserController,
   getUsersController,
   updateUserController,
   getManyUsersController,
+  createUserController,
 } from "./controllers";
 
 export const router = express.Router();
 
+
+
 router.get("/", verifyJwt, verifyRoles(roles.OPERATOR), getUsersController);
+
+
+router.post("/", verifyJwt, verifyRoles(roles.OPERATOR), validator(userValidator), createUserController);
 
 router.get(
   "/user/:username",
   verifyJwt,
   verifyRoles(roles.DISPATCHER, roles.OPERATOR, roles.OFFICER),
-  validator(userValidator),
+  validator(userParamsValidator),
   cache("username"),
   getUserController
 );

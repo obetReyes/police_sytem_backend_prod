@@ -5,7 +5,6 @@ const passwordContraint = z.string().min(8,{message: "la contrasena debe incluir
 
 const cuipContraint = z.string().min(25, {message:"el cuip debe contener 25 carateres"}).max(25,{message:"el cuip debe contener 25 caracteres"}).trim();
 
-const groupContraint = z.string().min(6,{message: "el nombre de grupo de no puede tener menos de 6 caracteres"}).max(60, {message:"el nombre de usuario no puede exceder los 60 caracteres"}).trim();
 
 export const signInValidator = z.object({
     body: z.object({
@@ -14,14 +13,6 @@ export const signInValidator = z.object({
     }).strict("los unicos campos disponibles son: username y password")
 });
 
-export const signUpOfficerValidator = z.object({
-    body:z.object({
-        username:usernameContraint,
-        password:passwordContraint,
-        cuip:cuipContraint,
-        group:groupContraint
-    }).strict("los unicos campos disponibles son: username, email, password, cuip y group")
-});
 
 export const signUpValidator = z.object({
     body:z.object({
