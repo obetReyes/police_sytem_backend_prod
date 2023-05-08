@@ -4,7 +4,7 @@ the page is used to create operators after the operator was successfully created
 */
 import {useForm} from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup";
-import { signUpSchema, SignUpI } from "../../../helpers";
+import { signUpSchema, SignUpI, ErrorsI } from "../../../helpers";
 import { useSignUpMutation } from "../../../hooks/useSignUp";
 export const SingUpPage = () => {
   const {mutate, error, isError, isLoading} =  useSignUpMutation()
@@ -124,7 +124,7 @@ export const SingUpPage = () => {
       }
       </div>
 
-      {isError ? <p className={`${errorStyles} pt-4`}>{`${error?.message}`}</p> : null}
+      {isError ? <p  className={`${errorStyles} pt-4`}>{`${(error as ErrorsI).response.data.message}`}</p> : null}
     </form>
     
 

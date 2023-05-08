@@ -139,7 +139,7 @@ export const useRecordMutation = <T, U>(path: string, cacheKey:string,id?:string
     onSuccess: (data) => {
       // if the user is in filtered records refetch the fiteredOnes
       if(Object.keys(param).length > 0){
-        records.refetchQueries([cacheKey, path, param, currentPageSearch]);
+        records.refetchQueries([cacheKey, path]);
       }
       if(id){
         records.refetchQueries(["record", path, id])
@@ -147,7 +147,7 @@ export const useRecordMutation = <T, U>(path: string, cacheKey:string,id?:string
       else{
         
         //if the user is in allRecords feretch all the records
-        records.refetchQueries(["records", path, currentPageRecords])
+        records.refetchQueries(["records", path])
       }
       // refetch the queries with the updated currentPage and param values
     },

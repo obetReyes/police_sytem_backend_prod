@@ -1,23 +1,21 @@
-import { SignUpOfficerI, SignUpI, signUpOfficerSchema,  GlobalResI, GroupsResI} from '../../../helpers'
-import { useUsersMutation } from '../../../hooks/useUsers'
-import { useRecords } from '../../../hooks'
+import {  GroupsResI,createUserI, createUserSchema, UserResI, CreateUserResI} from '../../../helpers'
+import { useRecords, useRecordMutation } from '../../../hooks'
 import {useForm} from "react-hook-form"
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useState } from 'react'
 export const UsersModal = () => {
 
   
-  const {mutate:DispatcherMutation, error:errorDispatcher, isError:IsErrorDispatcher, isLoading:isLoadingDisptacher} = useUsersMutation<GlobalResI, SignUpI>("signup-dispatcher");
-  const {mutate:OfficerMutation, error:errorOfficer, isError:isErrorOfficer, isLoading:isLoadingOfficer} = useUsersMutation<GlobalResI, SignUpOfficerI>("signup-officer");
-
+  const {mutate, error, isError, isLoading} = useRecordMutation<CreateUserResI, createUserI>("users", "FoundUsers");
+  
+  
+  const [isOfficer, setIsOfficer] = useState<boolean>(false)
+  const [isModal, setIsModal] = useState<boolean>(false);
   const {
     currentPage: currentPageAll,
     setCurrentPage: setCurrentPageAll,
     recordsQuery,
   } = useRecords<GroupsResI>("groups");
-
-  const [isOfficer, setIsOfficer] = useState<boolean>(false)
-  const [isModal, setIsModal] = useState<boolean>(false);
   
 
   const {
@@ -25,38 +23,41 @@ export const UsersModal = () => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<SignUpOfficerI>({
+  } = useForm<createUserI>({
     mode: "onSubmit",
-    resolver: yupResolver(signUpOfficerSchema),
+    resolver: yupResolver(createUserSchema),
   });
 
   const onSubmit = handleSubmit(async(data,e) => {
     
     if(isOfficer)
   {
-    OfficerMutation({username:data.username, group:data.group, password:data.password, cuip:data.cuip},{
+    mutate({username:data.username, group:data.group, password:data.password, cuip:data.cuip, role:data.role},{
       onSettled:() => {
         data.username = ""
         data.group = ""
         data.cuip = ""
         data.password = ""
         data.password2 = ""
+        data.role = ""
       }
     })
     
      }
      
      if(!isOfficer){
-        DispatcherMutation({
+        mutate({
           username:data.username,
           cuip:data.cuip,
-          password:data.password
+          password:data.password,
+          role:data.role
         },{
           onSettled:() =>{
             data.username = ""
             data.cuip = ""
             data.password = ""
             data.password2 = ""
+            data.role = ""
           }
         })
      }
@@ -141,6 +142,7 @@ export const UsersModal = () => {
       className="select select-bordered  w-full"
       placeholder="Funcion"
       autoComplete="off"
+      {...register("role")}
       onChange={(event) => {
           if(event.target.value == "OFFICER"){
                 setIsOfficer(true)

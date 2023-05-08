@@ -42,7 +42,7 @@ export const UsersTable = ({query}:Props) => {
                       className="btn btn-outline btn-sm"
                       to={`/agentes/${user.name}`}
                     >
-                      ver grupo
+                      ver agente
                     </Link>
                   </td>
                 </tr>
