@@ -13,10 +13,13 @@ export const updateUserController = tryCatch(
   async (req: customReq, res: Response) => {
     const { group, username, role, password } = req.body;
 
+
+    
     if (Object.values(Role).includes(role)) {
       const getUser = await getUserService({
         name: username,
       });
+
       if (getUser) {
         if (role == "OFFICER" && !group) {
           throw new CustomError(
