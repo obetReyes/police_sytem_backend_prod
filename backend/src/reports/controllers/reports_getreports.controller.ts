@@ -24,8 +24,10 @@ export const getReportsController = tryCatch(
             where: {
               user: {
                 name: String(req.user),
+              
               },
             },
+
           })
         : await getReportsService({
             skip: Number(starting_after),

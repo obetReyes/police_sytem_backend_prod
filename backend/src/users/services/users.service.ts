@@ -69,6 +69,9 @@ export const getManyUsersService = async (  params:{
                 summaries:true
             }
         }
+       },
+       orderBy:{
+        createdAt:"desc"
        }
     });
 };
@@ -98,7 +101,9 @@ export const getAllUsersService = async (params:{
         take,
         where,
         skip,
-        
+        orderBy:{
+            createdAt:"desc"
+        }
     });
 };
 

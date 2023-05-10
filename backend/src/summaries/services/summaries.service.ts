@@ -22,7 +22,10 @@ export const getSummariesService = async(
     const {take,  skip} = params;
     return prisma.summary.findMany({
         take,
-        skip
+        skip,
+        orderBy:{
+            createdAt:"desc"
+        }
     });
 };
 
@@ -37,7 +40,10 @@ export const getManySummariesService = async(
     return prisma.summary.findMany({
         skip,
         take,
-        where
+        where,
+        orderBy:{
+            createdAt:"desc"
+        }
     });
 };
 

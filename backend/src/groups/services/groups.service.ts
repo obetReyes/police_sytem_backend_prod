@@ -54,6 +54,9 @@ export const getManyGroupsService = async( params:{
         skip,
         take,
         where,
+        orderBy:{
+            createdAt:"desc"
+        }
     });
 };
 
@@ -67,6 +70,9 @@ export const getGroupsService = async(params:{
         take,
         where,
         skip,
+        orderBy:{
+            createdAt:"desc"
+        }
     });
 };
 
