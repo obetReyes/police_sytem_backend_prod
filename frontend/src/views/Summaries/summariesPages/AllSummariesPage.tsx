@@ -76,7 +76,7 @@ const clearSearch = () => {
         sumarios
       </h1>
      <Outlet/>
-      <div className="h-20 my-6 flex justify-around md:w-10/12 lg:w-8/12 items-center">
+      <div className="h-20 my-2 flex justify-around md:w-10/12 lg:w-8/12 items-center">
         <form className="flex items-center gap-4" onSubmit={onSubmit}>
           <input
             autoComplete="off"

@@ -19,7 +19,7 @@ export const SingUpPage = () => {
   });
   
   const onSubmit = handleSubmit(async(data,e) => {
-    mutate(data,
+    mutate({username:data.username, password:data.password, cuip:data.cuip},
       {
         onSettled:() => {
           data.username = ""
@@ -123,8 +123,7 @@ export const SingUpPage = () => {
         </button>
       }
       </div>
-
-      {isError ? <p  className={`${errorStyles} pt-4`}>{`${(error as ErrorsI).response.data.message}`}</p> : null}
+      {isError ? <p  className={`${errorStyles} pt-4`}>{`${error?.response?.data ? (error as ErrorsI).response.data.message : error?.message}`}</p> : null}
     </form>
     
 

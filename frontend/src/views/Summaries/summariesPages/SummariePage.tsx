@@ -26,12 +26,12 @@ export const SummariePage = () => {
           </p>
 
           <h2>lugar de los hechos</h2>
-          <p>{summaryQuery.data?.message.location}</p>
+          <p className="pb-4">{summaryQuery.data?.message.location}</p>
           <h2>solicitante</h2>
-          <p>{summaryQuery.data?.message.requestor}</p>
+          <p className="pb-4">{summaryQuery.data?.message.requestor}</p>
           <h2></h2>
           <h2>notas</h2>
-          <p> {summaryQuery.data?.message.notes}</p>
+          <p className="pb-4"> {summaryQuery.data?.message.notes}</p>
           <div
             className="fixed flex items-center gap-4 top-8 right-12 hover:text-gray-500 cursor-pointer"
             onClick={() => navigate(-1)}

@@ -42,8 +42,8 @@ export const GroupUpdateModal = ({groupId, groupName}:Props) => {
 
     // common styles
   const inputStyles =
-  "w-full rounded-lg rounded-sm border-gray-300 p-4 pr-12 text-sm text-warning shadow-sm focus:border-zinc-800 focus:ring-transparent";
-const errorStyles = "absolute  text-sm  text-error font-semibold underline";
+  " w-full rounded-lg rounded-sm border-gray-300 p-4 pr-12 text-sm text-warning shadow-sm focus:border-zinc-800 focus:ring-transparent";
+const errorStyles = "absolute text-sm  !mt-0 !mb-0    text-error font-semibold underline";
   return (
         <div className="float-right">
       <label htmlFor="myModalGroups" className="btn" onClick={() => setIsModal(true)}>
@@ -55,21 +55,24 @@ const errorStyles = "absolute  text-sm  text-error font-semibold underline";
       <div className="modal modal-bottom sm:modal-middle">
         <div className="modal-box relative">
           <label
-            htmlFor="myModalGroups"
+            htmlFor="myModalUpdateGroup"
             className="btn btn-sm btn-circle absolute right-2 top-2"
-            onClick={() => setIsModal(false)} >
+            onClick={() => {
+              setIsModal(false)
+              reset()
+              }} >
             ✕
           </label>
           <h3 className="font-bold text-lg">modificar el grupo</h3>
-          <form onSubmit={onSubmit}>
+          <form className="flex flex-col gap-10" onSubmit={onSubmit}>
 
-            <div className="pb-4">
-              <label htmlFor="groupNameInput" className="sr-only">
+            <div>
+              <label htmlFor="NewGroupNameInput" className="sr-only">
               Nuevo  Nombre Del Grupo
               </label>
   
 
-              <div className="relative">
+              <div>
                 <input
                   type="text"
                   id="newGroupNameInput"
@@ -78,16 +81,18 @@ const errorStyles = "absolute  text-sm  text-error font-semibold underline";
                   autoComplete="off"
                   {...register("newName")}
                 />
+                 {errors.newName ? <p className={errorStyles}>{errors.newName?.message}</p> : null}
               </div>
-              {errors.newName ? <p className={errorStyles}>{errors.newName?.message}</p> : null}
-            </div>
+             
 
-            <div className="pb-4">
-              <label htmlFor="operationsAreaInput" className="sr-only">
+            </div>
+          
+            <div>
+              <label htmlFor="newOperationsAreaInput" className="sr-only">
                 Actualizar Area de Operaciones
               </label>
 
-              <div className="relative">
+              <div>
                 <input
                 type="text"
                   id="newOperationsAreaInput"
@@ -96,8 +101,8 @@ const errorStyles = "absolute  text-sm  text-error font-semibold underline";
                   autoComplete="off"
                   {...register("area")}
                 />
+                 {errors.area ? <p className={errorStyles}>{errors.area?.message}</p> : null}
               </div>
-              {errors.area ? <p className={errorStyles}>{errors.area?.message}</p> : null}
             </div>
             {isLoading ? <span className="loader"></span> :
   

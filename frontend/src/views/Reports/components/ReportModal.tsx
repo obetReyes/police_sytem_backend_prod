@@ -33,7 +33,7 @@ export const ReportModal = () => {
   
    // common styles 
  const inputStyles = "w-full rounded-lg rounded-sm border-gray-300 p-4 pr-12 text-sm text-warning shadow-sm focus:border-zinc-800 focus:ring-transparent"
- const errorStyles = "absolute  text-sm  text-error font-semibold underline"
+ const errorStyles = "absolute  text-sm  !mt-0 !mb-0 text-error font-semibold underline"
 
   return (
     <>
@@ -44,12 +44,16 @@ export const ReportModal = () => {
 <input type="checkbox" id="myModalReport" className="modal-toggle" />
 <div className="modal modal-bottom sm:modal-middle">
   <div className="modal-box relative">
-  <label htmlFor="myModalReport" className="btn btn-sm btn-circle absolute right-2 top-2" onClick={() => setIsModal(false)}>✕</label>
+  <label htmlFor="myModalReport" className="btn btn-sm btn-circle absolute right-2 top-2" onClick={() => {
+    setIsModal(false)
+    reset()
+    }}>✕</label>
     <h3 className="font-bold text-lg">Nuevo Reporte</h3>
     <div className="modal-action">
-    <form onSubmit={onSubmit}>
+    <form className="flex flex-col gap-10" onSubmit={onSubmit}>
   <label htmlFor="eventInput" className="sr-only">Suceso</label>
-  <div className="my-6">
+  
+  <div>
   <div className="relative">
     <input
     id="eventInput"
@@ -63,7 +67,7 @@ export const ReportModal = () => {
   {errors.event ? <p className={errorStyles}>{errors.event?.message}</p> : null}
   </div>
 
-  <div className="pb-6">
+  <div>
   <label htmlFor="actionsInput" className="sr-only">Acciones Tomadas</label>
   
   <div className="relative">
@@ -80,7 +84,7 @@ export const ReportModal = () => {
     {errors.actions ? <p className={errorStyles}>{errors.actions?.message}</p> : null}
     </div>
     
-    <div className='pb-6'>
+    <div>
     <label htmlFor="sucessSumaryInput" className="sr-only">Resumen Del Suceso</label>
   
   <div className="relative">
@@ -98,7 +102,7 @@ export const ReportModal = () => {
     </div>
     {isLoading ? <span className="loader"></span> :
   
-      <input  className=" btn float-right" type='submit'value="crear reporte"></input>
+      <input  className=" btn float-right" type='submit'value="crear reporte"/>
     }
     </form>
     </div>

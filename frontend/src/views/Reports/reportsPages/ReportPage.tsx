@@ -8,7 +8,7 @@ export const ReportPage = () => {
   return (
     <>
       <div className="flex items-center justify-center min-h-screen">
-        <div className=" py-8 w-12/12 prose lg:prose-lg">
+        <div className="w-12/12 prose lg:prose-lg h-[50rem] overflow-y-auto">
           <h1>{`${Number(reporteId)}`}</h1>
           {reportQuery.isLoading ? <span className="loader"></span> : null}
           {reportQuery.isError ? <h1>{`${reportQuery.error}`}</h1> : null}

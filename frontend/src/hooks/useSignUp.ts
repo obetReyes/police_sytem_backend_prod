@@ -13,7 +13,7 @@ export const useSignUpMutation = () => {
   >(
     async (body: SignUpI): Promise<GlobalResI> => {
       const { data } = await axiosPrivate.post<GlobalResI>(
-        "/auth/signup-operator",
+        "/auth/signup",
         body
       );
       return data;
@@ -23,6 +23,16 @@ export const useSignUpMutation = () => {
         navigate("/", {
             replace:true
         });
+      },
+      onError: (error) => {
+        if (axios.isAxiosError<ErrorsI, Record<string, unknown>>(error)) {
+          error.message = String(error.message);
+          // Do something with this error...
+        }
+        if (error.code == "ERR_NETWORK") {
+          error.message = "no se puedo establecer conexion con el servidor";
+        }
+        return error.message;
       },
     }
   );

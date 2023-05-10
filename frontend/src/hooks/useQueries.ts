@@ -19,11 +19,11 @@ export const useRecords = <T>(path: string) => {
         },
         
       });
-      console.log(data)
       return data;
     },
     {
-      keepPreviousData: true,
+    refetchOnWindowFocus:false,
+    keepPreviousData: true,
     }
   );
   return {
@@ -42,7 +42,7 @@ export const useSearchRecords = <T>(path: string, cacheKey:string) => {
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(25)
   const searchRecordsQuery = useQuery(
-    [cacheKey,path, param, currentPage],
+    ["searchRecords",cacheKey,path, param, currentPage],
     async (): Promise<T> => {
       const { data } = await axiosPrivate.get<T>(`/${path}/many`, {
         params:{  
@@ -51,7 +51,6 @@ export const useSearchRecords = <T>(path: string, cacheKey:string) => {
           ...param
         }
       });
-      console.log(limit)
       return data;
     },
     {
@@ -139,7 +138,7 @@ export const useRecordMutation = <T, U>(path: string, cacheKey:string,id?:string
     onSuccess: (data) => {
       // if the user is in filtered records refetch the fiteredOnes
       if(Object.keys(param).length > 0){
-        records.refetchQueries([cacheKey, path]);
+        records.refetchQueries(["searchRecords",cacheKey,path, param, currentPageSearch]);
       }
       if(id){
         records.refetchQueries(["record", path, id])

@@ -8,9 +8,9 @@ docs, the auth context is used to trigger authorization states across the app
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { SignInI, signInSchema } from "../../../helpers";
+import { SignInI, signInSchema , ErrorsI} from "../../../helpers";
 import { useSignInMutation } from "../../../hooks";
-import { ErrorsI } from "../../../helpers";
+
 
 export const SignInPage = () => {
   const {mutate, error, isError, isLoading} =  useSignInMutation()
@@ -97,7 +97,7 @@ export const SignInPage = () => {
   }
       </div>
        
-      {isError ? <p  className={`${errorStyles} pt-4`}>{`${(error as ErrorsI).response.data.message}`}</p> : null}
+      {isError ? <p  className={`${errorStyles} pt-4`}>{`${error?.response?.data ? (error as ErrorsI).response.data.message : error?.message}`}</p> : null}
     </form>
     
 

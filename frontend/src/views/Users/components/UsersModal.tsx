@@ -1,4 +1,4 @@
-import {  GroupsResI,createUserI, createUserSchema, UserResI, CreateUserResI} from '../../../helpers'
+import {  GroupsResI,createUserI, createUserSchema, UserResI, CreateUserResI, ErrorsI} from '../../../helpers'
 import { useRecords, useRecordMutation } from '../../../hooks'
 import {useForm} from "react-hook-form"
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -69,7 +69,7 @@ export const UsersModal = () => {
   
    // common styles 
  const inputStyles = "w-full rounded-lg rounded-sm border-gray-300 p-4 pr-12 text-sm text-warning shadow-sm focus:border-zinc-800 focus:ring-transparent"
- const errorStyles = "absolute  text-sm  text-error font-semibold underline"
+ const errorStyles = "absolute  text-sm  !mt-0 !mb-0 text-error font-semibold underline"
 
   return (
     <>
@@ -82,12 +82,16 @@ export const UsersModal = () => {
 <input type="checkbox" id="myModalUsers" className="modal-toggle" />
 <div className="modal modal-bottom sm:modal-middle">
   <div className="modal-box relative">
-  <label htmlFor="myModalUsers" className="btn btn-sm btn-circle absolute right-2 top-2" onClick={() => setIsModal(false)} >
+  <label htmlFor="myModalUsers" className="btn btn-sm btn-circle absolute right-2 top-2" onClick={() => {
+    setIsModal(false)
+    reset()
+  }} >
           ✕</label>
     <h3 className="font-bold text-lg">Nuevo Agente</h3>
-    <form onSubmit={onSubmit}>
+    <div className="modal-action">
+    <form className='flex flex-col gap-10' onSubmit={onSubmit}>
   <label htmlFor="name" className="sr-only">Nombre</label>
-  <div className="my-4">
+  <div>
   <div className="relative">
     <input
     id="name"
@@ -99,9 +103,10 @@ export const UsersModal = () => {
      //register goes here
     />
   </div>
+  {errors.username ? <p className={errorStyles}>{errors.username?.message}</p> : null}
   </div>
 
-  <div className="pb-4">
+  <div>
   <label htmlFor="passwordInput" className="sr-only">Contraseña</label>
   
   <div className="relative">
@@ -115,9 +120,10 @@ export const UsersModal = () => {
      //register goes here
     />
     </div>
+    {errors.password ? <p className={errorStyles}>{errors.password?.message}</p> : null}
     </div>
 
-  <div className="pb-4">
+  <div>
   <label htmlFor="confirmPasswordInput" className="sr-only">Confirmar Contraseña</label>
   
   <div className="relative">
@@ -131,9 +137,10 @@ export const UsersModal = () => {
      //register goes here
     />
     </div>
+    {errors.password2 ? <p className={errorStyles}>{errors.password2?.message}</p> : null}
     </div>
 
-    <div className='pb-4'>
+    <div>
     <label htmlFor="functionInput" className="sr-only">Funcion</label>
   
   <div className="relative">
@@ -153,9 +160,10 @@ export const UsersModal = () => {
       <option value="OFFICER">Oficial</option>
     </select>
     </div>
+    {errors.role ? <p className={errorStyles}>{errors.role?.message}</p> : null}
     </div>
 
-    <div className='pb-4'>
+    <div>
     <label htmlFor="cuipInput" className="sr-only">Cuip</label>
   
   <div className="relative">
@@ -168,10 +176,11 @@ export const UsersModal = () => {
      //register goes here
     />
     </div>
+    {errors.cuip ? <p className={errorStyles}>{errors.cuip?.message}</p> : null}
     </div>
 
     {/* check if fucntion is seelected as oficial show group is dispatcher does not show it */}
-    {isOfficer &&<div className='pb-4'>
+    {isOfficer &&<div>
     <label htmlFor="officerGroupInput" className="sr-only">Grupo</label>
   
   <div className="relative">
@@ -189,13 +198,14 @@ export const UsersModal = () => {
       })}
     </select>
     </div>
+    {errors.group ? <p className={errorStyles}>{errors.group?.message}</p> : null}
     </div> }
     
 
     <input type='submit' className='btn float-right' value="crear agente"></input>
     </form>
-    <div className="modal-action">
     </div>
+    {isError ? <p className={`${errorStyles} pt-4`}>{`${(error as ErrorsI).response.data.message}`}</p> : null}
   </div>
 </div>
 </>}

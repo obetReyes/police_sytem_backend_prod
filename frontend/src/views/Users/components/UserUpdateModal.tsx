@@ -49,7 +49,6 @@ export const UserUpdateModal = ({userId, role}:Props) => {
       setValue("username", userId)
       mutate(data, {
         onSettled: () => {
-          console.log(data.username, "username");
           reset();
         },
         onError: (error) => {
@@ -71,11 +70,11 @@ export const UserUpdateModal = ({userId, role}:Props) => {
     </label>
     {isModal &&
 <>
-    <input type="checkbox" id="myModalGroups" className="modal-toggle" />
+    <input type="checkbox" id="myModalUpdateUser" className="modal-toggle" />
     <div className="modal modal-bottom sm:modal-middle">
       <div className="modal-box relative">
         <label
-          htmlFor="myModalGroups"
+          htmlFor="myModalUpdateUser"
           className="btn btn-sm btn-circle absolute right-2 top-2"
           onClick={() => {
             setIsModal(false)   
@@ -84,9 +83,9 @@ export const UserUpdateModal = ({userId, role}:Props) => {
           ✕
         </label>
         <h3 className="font-bold text-lg">modificar el agente</h3>
-        <form onSubmit={onSubmit}>
+        <form  className="flex flex-col gap-10" onSubmit={onSubmit}>
 
-        <div className='pb-4'>
+        <div>
     <label htmlFor="functionInput" className="sr-only">Funcion</label>
   
   <div className="relative">
@@ -97,7 +96,7 @@ export const UserUpdateModal = ({userId, role}:Props) => {
       autoComplete="off"
       {...register("role")}
       onChange={(e) => {
-        console.log(e.target.value)
+        
         setCurrentRole(e.target.value)
 
       }}
@@ -108,9 +107,10 @@ export const UserUpdateModal = ({userId, role}:Props) => {
       {role !=  "OFFICER" && <option value="OFFICER">Oficial</option>}
     </select>
     </div>
+    {errors.role ? <p className={errorStyles}>{errors.role?.message}</p> : null}
     </div>
         {currentRole  == "OFFICER"  && 
-         <div className='pb-4'>
+         <div>
          <label htmlFor="officerGroupInput" className="sr-only">Grupo</label>
        
        <div className="relative">
@@ -128,12 +128,13 @@ export const UserUpdateModal = ({userId, role}:Props) => {
            })}
          </select>
          </div>
+         {errors.group ? <p className={errorStyles}>{errors.group?.message}</p> : null}
          </div>
         }
             
           {isLoading ? <span className="loader"></span> :
 
-    <input  className=" btn float-right" type='submit'value="actualizar agente"></input>
+    <input  className=" btn float-right" type='submit'value="actualizar agente"/>
   }
         </form>
       </div>

@@ -36,7 +36,7 @@ export const SummaryModal = () => {
 
    // common styles 
  const inputStyles = "w-full rounded-lg rounded-sm border-gray-300 p-4 pr-12 text-sm text-warning shadow-sm focus:border-zinc-800 focus:ring-transparent"
- const errorStyles = "absolute  text-sm  text-error font-semibold underline"
+ const errorStyles = "absolute  text-sm !mt-0 !mb-0 text-error font-semibold underline"
   return (
     <>
 <label htmlFor="myModalSummary" className="btn" onClick={() => {
@@ -46,9 +46,12 @@ export const SummaryModal = () => {
   <input type="checkbox" id="myModalSummary" className="modal-toggle" />
 <div className="modal modal-bottom sm:modal-middle">
   <div className="modal-box relative">
-  <label htmlFor="myModalSummary" className="btn btn-sm btn-circle absolute right-2 top-2" onClick={() => setIsModal(false)}>✕</label>
+  <label htmlFor="myModalSummary" className="btn btn-sm btn-circle absolute right-2 top-2" onClick={() => {
+    setIsModal(false)
+    reset()
+    }}>✕</label>
     <h3 className="font-bold text-lg">Nuevo Sumario</h3>
-    <form onSubmit={onSubmit}>
+    <form className="flex flex-col gap-10" onSubmit={onSubmit}>
   <label htmlFor="callTimeInput" className="sr-only">duracion de la llamada</label>
   <div className="my-4">
   <div className="relative">
@@ -65,7 +68,7 @@ export const SummaryModal = () => {
   {errors.callTime ? <p className={errorStyles}>{errors.callTime?.message}</p> : null}
   </div>
 
-  <div className="pb-4">
+  <div>
   <label htmlFor="requestorInput" className="sr-only">Solicitante</label>
   
   <div className="relative">
@@ -83,7 +86,7 @@ export const SummaryModal = () => {
     
 
 
-    <div className='pb-4'>
+    <div>
     <label htmlFor="incidentInput" className="sr-only">incidente o suceso</label>
   
   <div className="relative">
@@ -102,7 +105,7 @@ export const SummaryModal = () => {
     </div>
 
     
-    <div className='pb-4'>
+    <div>
     <label htmlFor="locationInput" className="sr-only">ubicación</label>
   
   <div className="relative">
@@ -118,7 +121,7 @@ export const SummaryModal = () => {
     </div>
     {errors.location ? <p className={errorStyles}>{errors.location?.message}</p> : null}
     </div>
-    <div className='pb-4'>
+    <div>
     <label htmlFor="notesInput" className="sr-only">notas</label>
   
   <div className="relative">
@@ -136,7 +139,7 @@ export const SummaryModal = () => {
     {errors.notes ? <p className={errorStyles}>{errors.notes?.message}</p> : null}
     </div>
 
-    <div className='pb-4'>
+    <div>
     <label htmlFor="phoneNumberInput" className="sr-only">numero de contacto</label>
   
   <div className="relative">
@@ -154,7 +157,7 @@ export const SummaryModal = () => {
     </div>
     {isLoading ? <span className="loader"></span> :
   
-  <input  className=" btn float-right" type='submit'value="crear sumario de llamada"></input>
+  <input  className=" btn float-right" type='submit'value="crear sumario de llamada"/>
 }
     </form>
     </div>

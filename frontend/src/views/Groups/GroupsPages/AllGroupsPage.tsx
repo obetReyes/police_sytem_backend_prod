@@ -74,7 +74,7 @@ export const AllGroupsPage = () => {
     <TablesLayout roles={["OPERATOR", "DISPATCHER"]}>
       <h1 className='fixed left-6 font-semibold text-2xl text-warning top-4'>Grupos</h1>
       <Outlet />
-      <div className="h-20 my-6 flex justify-around md:w-10/12 lg:w-8/12 items-center">
+      <div className="h-20 my-2 flex justify-around md:w-10/12 lg:w-8/12 items-center">
         <form className="flex items-center gap-4" onSubmit={onSubmit}>
           <input
             autoComplete="off"

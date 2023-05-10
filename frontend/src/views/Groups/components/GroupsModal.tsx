@@ -34,7 +34,7 @@ export const GroupsModal = () => {
   // common styles
   const inputStyles =
     "w-full rounded-lg rounded-sm border-gray-300 p-4 pr-12 text-sm text-warning shadow-sm focus:border-zinc-800 focus:ring-transparent";
-  const errorStyles = "absolute  text-sm  text-error font-semibold underline";
+  const errorStyles = "absolute  text-sm !mt-0 !mb-0  text-error font-semibold underline";
 
   return (
     <>
@@ -49,13 +49,16 @@ export const GroupsModal = () => {
           <label
             htmlFor="myModalGroups"
             className="btn btn-sm btn-circle absolute right-2 top-2"
-            onClick={() => setIsModal(false)} >
+            onClick={() => {
+              setIsModal(false)
+              reset()
+              }} >
             ✕
           </label>
           <h3 className="font-bold text-lg">Nuevo Grupo</h3>
-          <form onSubmit={onSubmit}>
+          <form className="flex flex-col gap-10" onSubmit={onSubmit}>
 
-            <div className="pb-4">
+            <div>
               <label htmlFor="groupNameInput" className="sr-only">
                 Nombre Del Grupo
               </label>
@@ -74,7 +77,7 @@ export const GroupsModal = () => {
               {errors.name ? <p className={errorStyles}>{errors.name?.message}</p> : null}
             </div>
 
-            <div className="pb-4">
+            <div>
               <label htmlFor="operationsAreaInput" className="sr-only">
                 Area de Operaciones
               </label>
