@@ -3,11 +3,15 @@ import { CreateSummaryI, ErrorsI, SummaryResI, createSummarySchema } from "../..
 import {useForm} from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
+import {useQueryClient} from "@tanstack/react-query"
 
-export const SummaryModal = () => {
+interface Props{
+  param:{}
+}
+export const SummaryModal = ({param}:Props) => {
   const {mutate, error, isError, isLoading} = useRecordMutation<SummaryResI, CreateSummaryI>("summaries", "FoundSummaries");
   const [isModal, setIsModal] = useState<boolean>(false);
-
+  const client = useQueryClient()
   const {
     register,
     handleSubmit,
@@ -29,6 +33,13 @@ export const SummaryModal = () => {
         data.requestor = ""
         e?.target.reset()
         reset()
+      },
+      onSuccess:() =>{
+        if(Object.keys(param).length >=1)
+        client.refetchQueries(["searchRecords", "FoundSummaries", "summaries"])
+      else{
+        client.refetchQueries(["records", "summaries"])
+      }
       }
     })
     setIsModal(false)

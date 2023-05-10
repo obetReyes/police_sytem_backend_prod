@@ -106,7 +106,7 @@ const clearSearch = () => {
           )}
         </form>
 
-        {role == "DISPATCHER" && <SummaryModal />}
+        {role == "DISPATCHER" && <SummaryModal param={param} />}
       </div>
       <div className="md:w-10/12 lg:w-8/12">
       <SummariesTable query={filtered} />

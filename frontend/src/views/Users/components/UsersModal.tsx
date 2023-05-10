@@ -3,14 +3,21 @@ import { useRecords, useRecordMutation } from '../../../hooks'
 import {useForm} from "react-hook-form"
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useState } from 'react'
-export const UsersModal = () => {
+import {useQueryClient} from "@tanstack/react-query"
 
-  
+
+
+interface Props{
+  param:{}
+}
+export const UsersModal = ({param}:Props) => {
+
   const {mutate, error, isError, isLoading} = useRecordMutation<CreateUserResI, createUserI>("users", "FoundUsers");
   
   
   const [isOfficer, setIsOfficer] = useState<boolean>(false)
   const [isModal, setIsModal] = useState<boolean>(false);
+  const client = useQueryClient()
   const {
     currentPage: currentPageAll,
     setCurrentPage: setCurrentPageAll,
@@ -40,7 +47,13 @@ export const UsersModal = () => {
         data.password = ""
         data.password2 = ""
         data.role = ""
-      }
+      },onSuccess:() => {
+        if(Object.keys(param).length >=1)
+          client.refetchQueries(["searchRecords", "FoundUsers", "users"])
+        else{
+          client.refetchQueries(["records", "users"])
+        }
+        }
     })
     
      }
@@ -58,7 +71,13 @@ export const UsersModal = () => {
             data.password = ""
             data.password2 = ""
             data.role = ""
-          }
+          },onSuccess:() => {
+            if(Object.keys(param).length >=1)
+              client.refetchQueries(["searchRecords", "FoundUsers", "users"])
+            else{
+              client.refetchQueries(["records", "users"])
+            }
+            }
         })
      }
      e?.target.reset()

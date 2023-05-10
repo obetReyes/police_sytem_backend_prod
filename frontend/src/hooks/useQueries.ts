@@ -1,8 +1,5 @@
-import { useState, useContext, useEffect } from "react";
+import { useState } from "react";
 import { useAxiosPrivate } from "./useAxiosPrivate";
-import { UserContext } from "../contexts";
-import { DecodedI } from "../helpers";
-import jwt_decode from "jwt-decode";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const useRecords = <T>(path: string) => {
@@ -22,8 +19,8 @@ export const useRecords = <T>(path: string) => {
       return data;
     },
     {
-    refetchOnWindowFocus:false,
-    keepPreviousData: true,
+      refetchOnWindowFocus: false,
+      keepPreviousData: true,
     }
   );
   return {
@@ -55,7 +52,7 @@ export const useSearchRecords = <T>(path: string, cacheKey:string) => {
     },
     {
       //refetchOnWindowFocus option is set to false to prevent the query from refetching
-      
+
       refetchOnWindowFocus: false,
       retry: 1,
       enabled:Object.keys(param).length > 0, // use enabled flag
@@ -124,7 +121,7 @@ export const useRecordMutation = <T, U>(path: string, cacheKey:string,id?:string
   const records = useQueryClient();
 
   const {currentPage:currentPageRecords} = useRecords(path)
-  const {param, currentPage:currentPageSearch} = useSearchRecords(path, cacheKey)
+  const {param, setParam, currentPage:currentPageSearch} = useSearchRecords(path, cacheKey)
 
   const createRecord = async (body: U): Promise<T> => {
     const { data } = await axiosPrivate.post<T>(`/${path}/`, body);
@@ -136,19 +133,23 @@ export const useRecordMutation = <T, U>(path: string, cacheKey:string,id?:string
     U
   >(createRecord, {
     onSuccess: (data) => {
+      /*
+
       // if the user is in filtered records refetch the fiteredOnes
-      if(Object.keys(param).length > 0){
-        records.refetchQueries(["searchRecords",cacheKey,path, param, currentPageSearch]);
-      }
+        if(Object.keys(param).length >= 1){
+        
+          records.refetchQueries(["searchRecords",path , param]);
+        }
+
       if(id){
         records.refetchQueries(["record", path, id])
+        
       }
       else{
-        
         //if the user is in allRecords feretch all the records
         records.refetchQueries(["records", path])
       }
-      // refetch the queries with the updated currentPage and param values
+      */
     },
   });
   return {

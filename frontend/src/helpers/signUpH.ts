@@ -10,7 +10,7 @@ export interface SignUpI{
 
 
 export const signUpSchema = yup.object({
-    username:yup.string().min(6, "el nombre de usuario no puede ser tan corto").max(30, "el nombre de usuario no puede tener mas de 30 caracteres").required("necesitas ingresar un nombre de usuario").matches(/^(\d|\w)+$/,"el nombre de usuario no puede contener espacios o caracteres especiales"),
+    username:yup.string().min(6, "el nombre de usuario no puede ser tan corto").max(30, "el nombre de usuario no puede tener mas de 30 caracteres").required("necesitas ingresar un nombre de usuario"),
     password:yup.string().trim("tu contrasena no puede contener espacios").min(6,"la contrasena no puede ser tan corta").max(60, "la contrasena no puede ser tan larga").required("la contrasena es requerida"),
     password2: yup.string()
      .oneOf([yup.ref('password')], 'las contrasenas no coinciden'),

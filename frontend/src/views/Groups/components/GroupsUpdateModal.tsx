@@ -1,8 +1,9 @@
 import { useRecordUpdateMutation } from "../../../hooks";
-import { UpdateGroupI, GroupResI, updateGroupSchema, ErrorsI, GroupActionResI } from "../../../helpers";
+import { UpdateGroupI, updateGroupSchema, ErrorsI, GroupActionResI } from "../../../helpers";
 import {useForm} from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useEffect, useState } from "react";
+import {useQueryClient} from "@tanstack/react-query"
 
 
 interface Props{
@@ -12,7 +13,8 @@ interface Props{
 export const GroupUpdateModal = ({groupId, groupName}:Props) => {
     const {mutate, error, isError, isLoading} = useRecordUpdateMutation<GroupActionResI, UpdateGroupI>("groups", groupId);
     const [isModal, setIsModal] = useState<boolean>(false);
-    
+    const client = useQueryClient()
+
     useEffect(() => {
       setValue("name", groupName); // Move the setValue call inside the useEffect hook
     }, []);
@@ -32,10 +34,11 @@ export const GroupUpdateModal = ({groupId, groupName}:Props) => {
         onSettled: () => {
           reset();
         },
-        onError: (error) => {
-          console.log(error);
+        onSuccess:() =>{
+          client.refetchQueries(["record", "groups", groupId])
+          client.refetchQueries(["records", "groups"])
         }
-      });
+       });
     
       setIsModal(false);
     });

@@ -98,7 +98,7 @@ export const AllUsersPage = () => {
             <input className="btn btn-outline" type="submit" value="buscar" />
           )}
         </form>
-       {role == "OPERATOR" && <UsersModal/>}  
+       {role == "OPERATOR" && <UsersModal  param={param}/>}  
       </div>
       <div className="md:w-10/12 lg:w-8/12">
       <UsersTable query={filtered} />

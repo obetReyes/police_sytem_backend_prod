@@ -3,11 +3,15 @@ import { CreateGroupI, GroupResI, createGroupSchema, ErrorsI } from "../../../he
 import {useForm} from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from "react";
+import {useQueryClient} from "@tanstack/react-query"
 
-export const GroupsModal = () => {
+interface Props{
+  param:{}
+}
+export const GroupsModal = ({param}:Props) => {
   const {mutate, error, isError, isLoading} = useRecordMutation<GroupResI, CreateGroupI>("groups", "FoundGroups");
   const [isModal, setIsModal] = useState<boolean>(false);
-
+  const client = useQueryClient()
   const {
     register,
     handleSubmit,
@@ -26,7 +30,15 @@ export const GroupsModal = () => {
         data.area = ""
         e?.target.reset()
         reset()
+      },
+      onSuccess:() => {
+      if(Object.keys(param).length >=1)
+        client.refetchQueries(["searchRecords", "FoundGroups", "groups"])
+      else{
+        client.refetchQueries(["records", "groups"])
       }
+      }
+    
     })
     setIsModal(false)
   })

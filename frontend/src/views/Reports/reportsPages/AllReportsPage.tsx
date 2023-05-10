@@ -72,6 +72,7 @@ export const AllReportsPage = () => {
   useEffect(() => {
     if (Object.keys(param).length > 0) {
       SetFiltered(searchRecordsQuery);
+      console.log(param)
     } else {
       SetFiltered(recordsQuery);
     }
@@ -122,7 +123,7 @@ export const AllReportsPage = () => {
           )}
         </form>
 
-        {role == "OFFICER" && <ReportModal />}
+        {role == "OFFICER" && <ReportModal param={param} />}
       </div>
       <div className="md:w-10/12 lg:w-8/12">
         <ReportsTable query={filtered} />

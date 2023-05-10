@@ -103,7 +103,7 @@ export const AllGroupsPage = () => {
           )}
         </form>
 
-        {role == "OPERATOR" && <GroupsModal />}
+        {role == "OPERATOR" && <GroupsModal param={param} />}
       </div>
       <div className="md:w-10/12 lg:w-8/12">
         <GroupsTable query={filtered} />

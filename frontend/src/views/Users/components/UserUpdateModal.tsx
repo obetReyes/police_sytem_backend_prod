@@ -9,10 +9,11 @@ import {
 } from "../../../helpers";
 import {useForm} from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
-
+import {useQueryClient} from "@tanstack/react-query"
 interface Props{
   userId:string
   role:string
+  
 } 
 
 export const UserUpdateModal = ({userId, role}:Props) => {
@@ -25,6 +26,7 @@ export const UserUpdateModal = ({userId, role}:Props) => {
     } = useRecords<GroupsResI>("groups");
     
     const [isModal, setIsModal] = useState<boolean>(false);
+    const client = useQueryClient()
     const [currentRole, setCurrentRole] = useState<string>(""); // Add a state to hold the current role
     useEffect(() => {// Move the setValue call inside the useEffect hook
       setCurrentRole(role);
@@ -51,9 +53,10 @@ export const UserUpdateModal = ({userId, role}:Props) => {
         onSettled: () => {
           reset();
         },
-        onError: (error) => {
-          console.log(error);
-        }
+          onSuccess:() =>{
+            client.refetchQueries(["record", "users", userId])
+            client.refetchQueries(["records", "users"])
+          }
       });
    
       setIsModal(false);
@@ -64,8 +67,8 @@ export const UserUpdateModal = ({userId, role}:Props) => {
     "w-full rounded-lg rounded-sm border-gray-300 p-4 pr-12 text-sm text-warning shadow-sm focus:border-zinc-800 focus:ring-transparent";
   const errorStyles = "absolute  text-sm  text-error font-semibold underline";
   return(
-    <div className="float-right">
-    <label htmlFor="myModalGroups" className="btn" onClick={() => setIsModal(true)}>
+    <>
+    <label htmlFor="myModalUpdateUser" className="btn" onClick={() => setIsModal(true)}>
      modificar agente
     </label>
     {isModal &&
@@ -142,6 +145,6 @@ export const UserUpdateModal = ({userId, role}:Props) => {
     </div>
     </>
   }
-  </div>
+  </>
   )
 };

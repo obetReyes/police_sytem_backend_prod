@@ -3,11 +3,17 @@ import { CreateReportI, ReportResI, createReportSchema, ErrorsI } from "../../..
 import {useForm} from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from "react";
+import {useQueryClient} from "@tanstack/react-query"
 
+interface Props{
+  param:{}
+}
+export const ReportModal = ({param}:Props) => {
 
-export const ReportModal = () => {
   const {mutate, error, isError, isLoading} = useRecordMutation<ReportResI, CreateReportI>("reports", "FoundReports");
+  
   const [isModal, setIsModal] = useState<boolean>(false);
+  const client = useQueryClient()
   const {
     register,
     handleSubmit,
@@ -18,6 +24,7 @@ export const ReportModal = () => {
     resolver: yupResolver(createReportSchema),
   });
 
+ 
   const onSubmit = handleSubmit(async(data,e) => {
     mutate(data,{
       onSettled:() => {
@@ -26,6 +33,9 @@ export const ReportModal = () => {
         data.summary = ""
         e?.target.reset()
         reset()
+      },
+      onSuccess:() => {
+        client.refetchQueries(["searchRecords", "FoundReports", "reports"])
       }
     })
     setIsModal(false)
