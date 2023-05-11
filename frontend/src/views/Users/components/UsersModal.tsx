@@ -77,12 +77,12 @@ export const UsersModal = ({param}:Props) => {
             else{
               client.refetchQueries(["records", "users"])
             }
+            setIsModal(false)
             }
         })
      }
      e?.target.reset()
      reset()
-     setIsModal(false)
   }
   )
   
@@ -222,9 +222,9 @@ export const UsersModal = ({param}:Props) => {
     
 
     <input type='submit' className='btn float-right' value="crear agente"></input>
+    {isError ? <p className={`${errorStyles} pt-4`}>{`${(error as ErrorsI).response.data.message}`}</p> : null}
     </form>
     </div>
-    {isError ? <p className={`${errorStyles} pt-4`}>{`${(error as ErrorsI).response.data.message}`}</p> : null}
   </div>
 </div>
 </>}

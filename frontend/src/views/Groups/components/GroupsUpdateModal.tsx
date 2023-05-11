@@ -37,10 +37,9 @@ export const GroupUpdateModal = ({groupId, groupName}:Props) => {
         onSuccess:() =>{
           client.refetchQueries(["record", "groups", groupId])
           client.refetchQueries(["records", "groups"])
+          setIsModal(false);
         }
        });
-    
-      setIsModal(false);
     });
 
     // common styles
@@ -111,9 +110,10 @@ const errorStyles = "absolute text-sm  !mt-0 !mb-0    text-error font-semibold u
   
       <input  className=" btn float-right" type='submit'value="actualizar grupo"></input>
     }
+     {isError ? <p className="   text-sm  !mt-0 !mb-0    text-error font-semibold underline">{`${(error as ErrorsI).response.data.message}`}</p> : null}
           </form>
+         
         </div>
-        {isError ? <p className={`${errorStyles} pt-4`}>{`${(error as ErrorsI).response.data.message}`}</p> : null}
       </div>
       </>
     }

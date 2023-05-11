@@ -36,9 +36,10 @@ export const ReportModal = ({param}:Props) => {
       },
       onSuccess:() => {
         client.refetchQueries(["searchRecords", "FoundReports", "reports"])
+        setIsModal(false)
       }
     })
-    setIsModal(false)
+   
   })
   
    // common styles 
@@ -114,11 +115,9 @@ export const ReportModal = ({param}:Props) => {
   
       <input  className=" btn float-right" type='submit'value="crear reporte"/>
     }
+        {isError ? <p className="   text-sm  !mt-0 !mb-0    text-error font-semibold underline">{`${(error as ErrorsI).response.data.message}`}</p> : null}
     </form>
     </div>
-  
-
-    {isError ? <p className={`${errorStyles} pt-4`}>{`${(error as ErrorsI).response.data.message}`}</p> : null}
   </div>
 </div>
 </>

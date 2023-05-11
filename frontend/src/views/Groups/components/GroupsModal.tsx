@@ -37,10 +37,10 @@ export const GroupsModal = ({param}:Props) => {
       else{
         client.refetchQueries(["records", "groups"])
       }
+      setIsModal(false)
       }
     
     })
-    setIsModal(false)
   })
   
   // common styles
@@ -110,9 +110,9 @@ export const GroupsModal = ({param}:Props) => {
   
       <input  className=" btn float-right" type='submit'value="crear grupo"></input>
     }
+     {isError ? <p className="   text-sm  !mt-0 !mb-0    text-error font-semibold underline">{`${(error as ErrorsI).response.data.message}`}</p> : null}
           </form>
         </div>
-        {isError ? <p className={`${errorStyles} pt-4`}>{`${(error as ErrorsI).response.data.message}`}</p> : null}
       </div>
       </>
     }
