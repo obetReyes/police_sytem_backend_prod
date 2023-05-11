@@ -6,7 +6,7 @@ export const updateGroupController = tryCatch(
     async (req: Request, res: Response) => {
         const { name, newName, area } = req.body;
         if(name  === newName){
-            throw new CustomError("el nuevo nombre del grupo no puede eser igual al nombre actual del grupo", "", 400);
+            throw new CustomError("el nuevo nombre del grupo no puede ser igual al nombre actual del grupo", "", 400);
         }
         const updateGroup = await updateGroupService({
             data: {

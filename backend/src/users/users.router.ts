@@ -14,7 +14,7 @@ export const router = express.Router();
 
 
 
-router.get("/", verifyJwt, verifyRoles(roles.OPERATOR), getUsersController);
+router.get("/", verifyJwt, verifyRoles(roles.OPERATOR, roles.DISPATCHER), getUsersController);
 
 
 router.post("/", verifyJwt, verifyRoles(roles.OPERATOR), validator(userValidator), createUserController);
