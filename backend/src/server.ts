@@ -3,10 +3,10 @@ import helmet from "helmet";
 import cors from "cors";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
-import {Server, createServer, routes} from "./server.utils";
+import {Server, createServer, routes, reportError} from "./server.utils";
 import { locationGateway } from "./sockets";
-import { seed } from "./utils/seed";
-import * as dotenv from "dotenv"; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+import compression from "compression";
+import * as dotenv from "dotenv"; 
 dotenv.config();
 export const app = express();
 export const server = createServer(app);
@@ -23,6 +23,7 @@ export const io = new Server(server, {
 
 
 const port = 8000;
+app.use(compression()); // Compress all routes
 app.use(helmet());
 app.disable("x-powered-by");
 app.use(
@@ -40,22 +41,19 @@ app.use(morgan("dev"));
 
 function main(){
   server.listen(port, () => {
-    console.log(`[Server]: I am running at http://localhost:${port}`);
+    console.log("startred");
   });
   routes(app);
   locationGateway({io});
-  if (process.env.NODE_ENV === "development") {
-   // use this only when is your frist time running the server seed();
-  }  
 }
 main();
 
 process.on("uncaughtException", function (err: Error) {
-  console.error(new Date().toUTCString() + "uncaughtException:", err.message);
-  console.error(err.stack);
+  console.log("Caught exception: " + err);
+  reportError(err.message, err.name);
 });
 process.on("unhandledRejection", (err: Error) => {
-  console.log("--------------------------", err);
- 
+  console.log("Caught rejection: " + err);
+  reportError(err.message, err.name);
 });
 

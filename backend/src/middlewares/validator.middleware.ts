@@ -12,7 +12,6 @@ export const validator =
 
       return next();
     } catch (err) {
-      console.log(err);
       if (err instanceof ZodError) {
         const issuesMsg = err.issues.map((issue) => {
           return issue.path + " " + issue.message;

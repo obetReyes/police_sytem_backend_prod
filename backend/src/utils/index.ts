@@ -11,3 +11,4 @@ export {roles} from "./roles.utils";
 export {  getUsernameIPkey, limiterConsecutiveFailsByUsernameAndIP, limiterSlowBruteByIP, maxConsecutiveFailsByUsernameAndIP ,maxWrongAttemptsByIPperDay } from "./auth/auth_bruteforce.utils";
 export { tokenLimiter, getLimiter,createLimiter, updateLimiter, deleteLimiter } from "./limiters.utils";
 export {CustomReq} from "./customs/custom_request.util";
+export {reportError} from "./reportError.utils";

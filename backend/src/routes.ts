@@ -5,7 +5,7 @@ import { groupsRoutes } from "./groups";
 import { reportsRoutes } from "./reports";
 import { errorInterceptor, notFound } from "./middlewares";
 import { summariesRoutes } from "./summaries";
-
+import { reportError } from "./utils";
 
 //rest apí routes
 export function routes(app:Express) {
@@ -21,8 +21,12 @@ export function routes(app:Express) {
     app.use(notFound);
     // custom error handler
       app.use((err:Error, req:Request, res:Response, next:NextFunction) => {
-        console.error(err.stack);
-        res.status(500).send("Something broke!");
+        reportError(err.message, err.name);
+        return res.status(500).json({
+          errorCode:500,
+          message:err.message,
+          href:""
+        });
         next();
       });
   }

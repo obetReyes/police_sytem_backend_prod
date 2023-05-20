@@ -5,7 +5,6 @@ import { createGroupService } from "../services/groups.service";
 export const createGroupController = tryCatch(
   async (req: Request, res: Response) => {
     const { name, area } = req.body;
-    console.log(name);
     const createGroup = await createGroupService({
       name: name,
       area: area,
